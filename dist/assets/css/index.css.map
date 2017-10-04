@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAAQ,4DAAoD;AACpD,2DAAmD;ACC3D,qBAAqB;EACjB,gBAAgB,EAAE,kBAAW",
+"mappings": "AAAQ,4DAAoD;AACpD,2DAAmD;ACC3D,qBAAqB;EACjB,gBAAgB,EAAE,kBAAW;;AAEjC,4BAA4B;EACxB,gBAAgB,EAAE,kBAAW",
 "sources": ["../../../sass/fonts.sass","../../../sass/index.sass"],
 "names": [],
 "file": "index.css"
