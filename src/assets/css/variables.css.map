@@ -1,7 +1,7 @@
 {
 "version": 3,
 "mappings": "AAAQ,4DAAoD;AACpD,2DAAmD",
-"sources": ["../sass/fonts.sass"],
+"sources": ["../../../sass/fonts.sass"],
 "names": [],
 "file": "variables.css"
 }
