@@ -6,50 +6,56 @@
         </md-card>
         <md-tab-group class="auth">
             <md-tab [label]="language[lang].reg">
-                <form>
-                    <md-input-container>
-                        <input mdInput [placeholder]="language[lang].name" [(ngModel)]="user.firstName" name="first" value="">
-                    </md-input-container>
-                    <md-input-container>
-                        <input mdInput [placeholder]="language[lang].sname" [(ngModel)]="user.lastName" name="last" value="">
-                    </md-input-container>
-                    <md-input-container>
-                        <input type="email" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
-                    </md-input-container>
-                    <md-input-container>
-                        <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
-                    </md-input-container>
-                </form>
-                <button md-fab [mdTooltip]="language[lang].log" mdTooltipPosition="left" (click)="login()"><md-icon>create</md-icon></button>
+                <md-card>
+                    <form>
+                        <md-input-container>
+                            <input mdInput [placeholder]="language[lang].name" [(ngModel)]="user.firstName" name="first" value="">
+                        </md-input-container>
+                        <md-input-container>
+                            <input mdInput [placeholder]="language[lang].sname" [(ngModel)]="user.lastName" name="last" value="">
+                        </md-input-container>
+                        <md-input-container>
+                            <input type="email" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
+                        </md-input-container>
+                        <md-input-container>
+                            <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
+                        </md-input-container>
+                    </form>
+                    <button class="auth-button" md-fab [mdTooltip]="language[lang].log" mdTooltipPosition="left" (click)="login()"><md-icon>create</md-icon></button>
+                </md-card>
             </md-tab>
             <md-tab [label]="language[lang].sign">
-                <form>
-                    <md-input-container>
-                        <input type="text" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
-                    </md-input-container>
-                    <md-input-container>
-                        <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
-                    </md-input-container>
-                    <button md-fab [mdTooltip]="language[lang].sup" mdTooltipPosition="left" (click)="log()"><md-icon>forward</md-icon></button>
-                </form>
+                <md-card>
+                    <form>
+                        <md-input-container>
+                            <input type="text" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
+                        </md-input-container>
+                        <md-input-container>
+                            <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
+                        </md-input-container>
+                    </form>
+                    <button class="auth-button" md-fab [mdTooltip]="language[lang].sup" mdTooltipPosition="left" (click)="log()"><md-icon>forward</md-icon></button>
+                </md-card>
             </md-tab>
         </md-tab-group>
     </div>
     <md-card class="footer">
-        <a href="https://vk.com/scrawlless" target="_blank">
-            <button md-button>
+        <div class="social">
+            <a href="https://vk.com/scrawlless" target="_blank">
+                <button md-button>
                         <img class="icon" src="../../../assets/img/vk.svg" alt="VK">
                     </button>
-        </a>
-        <a href="https://facebook.com/scrawlless/" target="_blank">
-            <button md-button>
+            </a>
+            <a href="https://facebook.com/scrawlless/" target="_blank">
+                <button md-button>
                         <img class="icon" src="../../../assets/img/facebook.svg" alt="Facebook">
                     </button>
-        </a>
-        <a href="https://ok.ru/group/53562840252602" target="_blank">
-            <button md-button>
+            </a>
+            <a href="https://ok.ru/group/53562840252602" target="_blank">
+                <button md-button>
                         <img class="icon" src="../../../assets/img/ok.svg" alt="OK.ru">
                     </button>
-        </a>
+            </a>
+        </div>
     </md-card>
 </div>
