@@ -25,6 +25,7 @@ import { SocketService } from './_services/socket.service';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     FormsModule,
     AppRoutingModule,

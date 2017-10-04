@@ -1,3 +1,4 @@
+@import "../../../../assets/css/index.css";
 .back {
     width: 100%;
     min-height: 100%;
@@ -18,4 +19,3 @@
     background-size: cover;
     z-index: 1;
 }
-
