@@ -101,28 +101,28 @@
 .mat-h1,
 .mat-headline,
 .mat-typography h1 {
-    font: 400 24px/32px Roboto, "Helvetica Neue", sans-serif;
+    font: 400 24px/32px 'Exo 2', sans-serif;
     margin: 0 0 16px
 }
 
 .mat-h2,
 .mat-title,
 .mat-typography h2 {
-    font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
+    font: 500 20px/32px 'Exo 2', sans-serif;
     margin: 0 0 16px
 }
 
 .mat-h3,
 .mat-subheading-2,
 .mat-typography h3 {
-    font: 400 16px/28px Roboto, "Helvetica Neue", sans-serif;
+    font: 400 16px/28px 'Exo 2', sans-serif;
     margin: 0 0 16px
 }
 
 .mat-h4,
 .mat-subheading-1,
 .mat-typography h4 {
-    font: 400 15px/24px Roboto, "Helvetica Neue", sans-serif;
+    font: 400 15px/24px 'Exo 2', sans-serif;
     margin: 0 0 16px
 }
 
@@ -130,7 +130,7 @@
 .mat-typography h5 {
     font-size: 11.62px;
     font-weight: 400;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     line-height: 20px;
     margin: 0 0 12px
 }
@@ -139,20 +139,20 @@
 .mat-typography h6 {
     font-size: 9.38px;
     font-weight: 400;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     line-height: 20px;
     margin: 0 0 12px
 }
 
 .mat-body-2,
 .mat-body-strong {
-    font: 500 14px/24px Roboto, "Helvetica Neue", sans-serif
+    font: 500 14px/24px 'Exo 2', sans-serif
 }
 
 .mat-body,
 .mat-body-1,
 .mat-typography {
-    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif
+    font: 400 14px/20px 'Exo 2', sans-serif
 }
 
 .mat-body p,
@@ -163,33 +163,33 @@
 
 .mat-caption,
 .mat-small {
-    font: 400 12px/20px Roboto, "Helvetica Neue", sans-serif
+    font: 400 12px/20px 'Exo 2', sans-serif
 }
 
 .mat-display-4,
 .mat-typography .mat-display-4 {
-    font: 300 112px/112px Roboto, "Helvetica Neue", sans-serif;
+    font: 300 112px/112px 'Exo 2', sans-serif;
     margin: 0 0 56px;
     letter-spacing: -.05em
 }
 
 .mat-display-3,
 .mat-typography .mat-display-3 {
-    font: 400 56px/56px Roboto, "Helvetica Neue", sans-serif;
+    font: 400 56px/56px 'Exo 2', sans-serif;
     margin: 0 0 64px;
     letter-spacing: -.02em
 }
 
 .mat-display-2,
 .mat-typography .mat-display-2 {
-    font: 400 45px/48px Roboto, "Helvetica Neue", sans-serif;
+    font: 400 45px/48px 'Exo 2', sans-serif;
     margin: 0 0 64px;
     letter-spacing: -.005em
 }
 
 .mat-display-1,
 .mat-typography .mat-display-1 {
-    font: 400 34px/40px Roboto, "Helvetica Neue", sans-serif;
+    font: 400 34px/40px 'Exo 2', sans-serif;
     margin: 0 0 64px
 }
 
@@ -198,17 +198,17 @@
 .mat-icon-button,
 .mat-mini-fab,
 .mat-raised-button {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 14px;
     font-weight: 500
 }
 
 .mat-button-toggle {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-card {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-card-title {
@@ -223,7 +223,7 @@
 }
 
 .mat-checkbox {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-checkbox-layout .mat-checkbox-label {
@@ -240,7 +240,7 @@
 }
 
 .mat-table {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-header-cell {
@@ -253,7 +253,7 @@
 }
 
 .mat-calendar {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-calendar-body {
@@ -272,21 +272,21 @@
 }
 
 .mat-dialog-title {
-    font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif
+    font: 500 20px/32px 'Exo 2', sans-serif
 }
 
 .mat-expansion-panel-header {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 15px;
     font-weight: 400
 }
 
 .mat-expansion-panel-content {
-    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif
+    font: 400 14px/20px 'Exo 2', sans-serif
 }
 
 .mat-form-field {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: inherit;
     font-weight: 400;
     line-height: 1.125
@@ -375,23 +375,23 @@ input.mat-input-element {
 }
 
 .mat-menu-item {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 16px
 }
 
 .mat-paginator,
 .mat-paginator-page-size .mat-select-trigger {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 12px
 }
 
 .mat-radio-button {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-select {
     padding-top: 16px;
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-select-trigger {
@@ -399,27 +399,27 @@ input.mat-input-element {
 }
 
 .mat-slide-toggle-content {
-    font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif
+    font: 400 14px/20px 'Exo 2', sans-serif
 }
 
 .mat-slider-thumb-label-text {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 12px;
     font-weight: 500
 }
 
 .mat-stepper-horizontal,
 .mat-stepper-vertical {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-tab-group {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-tab-label,
 .mat-tab-link {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 14px;
     font-weight: 500
 }
@@ -431,23 +431,23 @@ input.mat-input-element {
 .mat-toolbar h4,
 .mat-toolbar h5,
 .mat-toolbar h6 {
-    font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
+    font: 500 20px/32px 'Exo 2', sans-serif;
     margin: 0
 }
 
 .mat-tooltip {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 10px;
     padding-top: 6px;
     padding-bottom: 6px
 }
 
 .mat-list-item {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-list-option {
-    font-family: Roboto, "Helvetica Neue", sans-serif
+    font-family: 'Exo 2', sans-serif
 }
 
 .mat-list .mat-list-item,
@@ -497,7 +497,7 @@ input.mat-input-element {
 .mat-list .mat-subheader,
 .mat-nav-list .mat-subheader,
 .mat-selection-list .mat-subheader {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 14px;
     font-weight: 500
 }
@@ -549,22 +549,22 @@ input.mat-input-element {
 .mat-list[dense] .mat-subheader,
 .mat-nav-list[dense] .mat-subheader,
 .mat-selection-list[dense] .mat-subheader {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 12px;
     font-weight: 500
 }
 
 .mat-option {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 16px
 }
 
 .mat-optgroup-label {
-    font: 500 14px/24px Roboto, "Helvetica Neue", sans-serif
+    font: 500 14px/24px 'Exo 2', sans-serif
 }
 
 .mat-simple-snackbar {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-family: 'Exo 2', sans-serif;
     font-size: 14px
 }
 

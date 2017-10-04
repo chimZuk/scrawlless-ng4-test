@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Exo+2");
 @import url("https://fonts.googleapis.com/css?family=Itim");
-.mat-tab-label {
-  font-family: "Exo 2", sans-serif !important; }
+/deep/ .mat-tab-label {
+  background-color: #ffffff !important; }
 
 /*# sourceMappingURL=index.css.map */

@@ -1,37 +1,37 @@
-<div class="back">
+<div>
     <div class="logo"></div>
-    <div class="content">
-        <div class="demo-div first-section">
-            <div class="promo">
-                <iframe id="video-frame" class="video-frame" src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
-            </div>
+    <div>
+        <div>
+            <md-card>
+                <iframe src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
+            </md-card>
             <md-tab-group>
-                <md-tab class="tabs" [label]="language[lang].reg">
-                    <md-card class="form-div">
+                <md-tab [label]="language[lang].reg">
+                    <md-card>
                         <form>
-                            <md-input-container class="full-width input-style">
+                            <md-input-container>
                                 <input mdInput [placeholder]="language[lang].name" [(ngModel)]="user.firstName" name="first" value="">
                             </md-input-container>
-                            <md-input-container class="full-width input-style">
+                            <md-input-container>
                                 <input mdInput [placeholder]="language[lang].sname" [(ngModel)]="user.lastName" name="last" value="">
                             </md-input-container>
-                            <md-input-container class="full-width input-style">
+                            <md-input-container>
                                 <input type="email" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
                             </md-input-container>
-                            <md-input-container class="full-width input-style">
+                            <md-input-container>
                                 <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
                             </md-input-container>
                         </form>
-                        <button md-fab class="log-button" [mdTooltip]="language[lang].log" mdTooltipPosition="left" (click)="login()"><md-icon>create</md-icon></button>
+                        <button md-fab [mdTooltip]="language[lang].log" mdTooltipPosition="left" (click)="login()"><md-icon>create</md-icon></button>
                     </md-card>
                 </md-tab>
-                <md-tab class="tabs" [label]="language[lang].sign">
-                    <md-card class="form-div">
+                <md-tab [label]="language[lang].sign">
+                    <md-card>
                         <form>
-                            <md-input-container class="full-width input-style">
+                            <md-input-container>
                                 <input type="text" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
                             </md-input-container>
-                            <md-input-container class="full-width input-style">
+                            <md-input-container>
                                 <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
                             </md-input-container>
                             <button md-fab [mdTooltip]="language[lang].sup" mdTooltipPosition="left" (click)="log()"><md-icon>forward</md-icon></button>
@@ -40,8 +40,8 @@
                 </md-tab>
             </md-tab-group>
         </div>
-        <div class="demo-div">
-            <div class="second-section">
+        <md-card>
+            <div>
                 <a href="https://vk.com/scrawlless" target="_blank">
                     <button md-button>
                         <img src="../../../assets/img/vk.svg" alt="VK">
@@ -58,6 +58,6 @@
                     </button>
                 </a>
             </div>
-        </div>
+        </md-card>
     </div>
 </div>

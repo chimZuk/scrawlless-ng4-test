@@ -1,12 +1,15 @@
 @import url("https://fonts.googleapis.com/css?family=Exo+2");
 @import url("https://fonts.googleapis.com/css?family=Itim");
+/* Begining of tabs reset */
+/deep/ .mat-tab-list {
+  margin-left: 20px !important; }
+
 /deep/ .mat-tab-label {
   min-width: 0px !important;
   border-radius: 5px 5px 0px 0px !important;
   margin-right: 2px !important;
-  font-size: 20px !important;
+  font-size: 19px !important;
   padding: 0px 12px !important;
-  background-color: #f2f2f2 !important;
   opacity: 0.6 !important; }
 
 /deep/ .mat-tab-label-active {
@@ -18,5 +21,12 @@
 
 /deep/ .mat-tab-header {
   border: 0 !important; }
+
+/* End of tabs reset */
+/* Begining of card reset */
+/deep/ .mat-card {
+  border-radius: 5px !important; }
+
+/* End of card reset */
 
 /*# sourceMappingURL=app.css.map */
