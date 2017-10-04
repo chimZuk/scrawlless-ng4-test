@@ -1,0 +1,62 @@
+<div class="back">
+        <input type="email"/>
+        
+    <div class="logo"></div>
+    <div class="content">
+        <div class="demo-div first-section">
+            <div class="promo">
+                <iframe id="video-frame" class="video-frame" src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <md-tab-group>
+                <md-tab class="tabs" [label]="language[lang].reg">
+                    <div class="form-div">
+                        <form>
+                            
+                                <input mdInput [placeholder]="language[lang].name" [(ngModel)]="user.firstName" name="first" value="">
+                            
+                                <input mdInput [placeholder]="language[lang].sname" [(ngModel)]="user.lastName" name="last" value="">
+                            
+                                <input type="email" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
+                            
+                                <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
+                            
+                        </form>
+                        <button md-fab class="log-button" [mdTooltip]="language[lang].log" mdTooltipPosition="left" (click)="login()"><md-icon>create</md-icon></button>                        
+                    </div>
+                </md-tab>
+                <md-tab class="tabs" [label]="language[lang].sign">
+                    <div class="form-div">
+                        <form>
+                            
+                                <input type="text" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
+                            
+                                <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
+                            
+                            <button md-fab [mdTooltip]="language[lang].sup" mdTooltipPosition="left" (click)="log()"><md-icon>forward</md-icon></button>                        
+                        </form>
+                        <input type="email"/>
+                    </div>
+                </md-tab>
+            </md-tab-group>
+        </div>
+        <div class="demo-div">
+            <div class="second-section">
+                <a href="https://vk.com/scrawlless" target="_blank">
+                    <button md-button>
+                        <img src="../../../assets/img/vk.svg" alt="VK">
+                    </button>
+                </a>
+                <a href="https://facebook.com/scrawlless/" target="_blank">
+                    <button md-button>
+                        <img src="../../../assets/img/facebook.svg" alt="Facebook">
+                    </button>
+                </a>
+                <a href="https://ok.ru/group/53562840252602" target="_blank">
+                    <button md-button>
+                        <img src="../../../assets/img/ok.svg" alt="OK.ru">
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

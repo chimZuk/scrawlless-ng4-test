@@ -1,0 +1,21 @@
+.back {
+    width: 100%;
+    min-height: 100%;
+    position: absolute;
+    background-image: url(../../../../assets/img/back.png);
+    background-size: cover;
+    z-index: 20;
+    background-position-x: center;
+}
+
+.logo {
+    position: absolute;
+    width: 318px;
+    height: 108px;
+    top: 0px;
+    right: 8%;
+    background-image: url(../../../../assets/img/back.gif);
+    background-size: cover;
+    z-index: 1;
+}
+
