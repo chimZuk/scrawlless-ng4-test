@@ -1,0 +1,7 @@
+<div class="sidenav-menu">
+    <button [routerLink]="['lists']" md-fab [mdTooltip]="language[lang].tasks" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/lists'}"><md-icon>description</md-icon></button>
+    <button [routerLink]="['marks']" md-fab [mdTooltip]="language[lang].diary" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/marks'}"><md-icon>insert_invitation</md-icon></button>
+    <button [routerLink]="['users']" md-fab [mdTooltip]="language[lang].users" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/users' || pageName == '/dashboard/edit'}"><md-icon>people</md-icon></button>
+    <button [routerLink]="['im']" md-fab [mdTooltip]="language[lang].messages" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': isMessage()}"><md-icon>email</md-icon></button>
+    <button [routerLink]="['devices']" md-fab [mdTooltip]="language[lang].devices" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/devices'}"><md-icon>cast</md-icon></button>
+</div>

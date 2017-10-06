@@ -196,7 +196,14 @@ export class AuthenticationService {
 
   subjects: any[];
 
+  getLanguage: string = 'ru';
+
+  setLanguage() {
+    this.getLanguage = navigator.language;
+  }
+
   constructor(private http: Http) {
+    this.setLanguage();
     var currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
     if (navigator.language == "ru") {

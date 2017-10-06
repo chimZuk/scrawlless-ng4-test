@@ -1,12 +1,15 @@
-import { NgModule } from '@angular/core';
-import { ModuleWithProviders } from '@angular/core'
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
+import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-import { IndexComponent } from './_components/pages/index/index.component';
-
-const appRoutes: Routes = [
-  { path: '', component: IndexComponent },
+export const router: Routes = [
+    {
+        path: '',
+        loadChildren: './_components/pages/index/index.module#IndexModule'
+    },
+    {
+        path: 'dashboard',
+        loadChildren: './_components/pages/dashboard/dashboard.module#DashboardModule'
+    }
 ];
 
-export const AppRoutingModule: ModuleWithProviders = RouterModule.forRoot(appRoutes)
+export const appRouter: ModuleWithProviders = RouterModule.forRoot(router);

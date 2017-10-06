@@ -5,7 +5,7 @@ import { AuthenticationService } from '../../../_services/authentication.service
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-index',
+  selector: 'index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })

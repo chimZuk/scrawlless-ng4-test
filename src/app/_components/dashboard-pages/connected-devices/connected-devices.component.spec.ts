@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IndexComponent } from './index.component';
+import { ConnectedDevicesComponent } from './connected-devices.component';
 
-describe('IndexComponent', () => {
-  let component: IndexComponent;
-  let fixture: ComponentFixture<IndexComponent>;
+describe('ConnectedDevicesComponent', () => {
+  let component: ConnectedDevicesComponent;
+  let fixture: ComponentFixture<ConnectedDevicesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IndexComponent ]
+      declarations: [ ConnectedDevicesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IndexComponent);
+    fixture = TestBed.createComponent(ConnectedDevicesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

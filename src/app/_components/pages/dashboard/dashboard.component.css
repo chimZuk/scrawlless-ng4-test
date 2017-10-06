@@ -1,0 +1,61 @@
+@import url(../../../../assets/css/dashboard.css);
+@import url("https://fonts.googleapis.com/css?family=Exo+2");
+@import url("https://fonts.googleapis.com/css?family=Itim");
+.main-bar {
+  display: flex;
+  width: calc(100% - 10px);
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 5px; }
+
+.logo {
+  background-image: url("../../../../assets/img/logo.gif");
+  width: 100px;
+  height: 140px;
+  background-size: cover;
+  background-position: center;
+  border: none !important; }
+
+.sub-bar {
+  flex: 5;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; }
+
+.date {
+  flex: 5;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 2%; }
+  .date * {
+    cursor: pointer; }
+
+.date-el {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1px;
+  font-size: 23px;
+  color: #ffffff;
+  padding: 5px 5px;
+  background-color: #ed7e28;
+  padding: 5px 3px !important; }
+
+.date-el:hover {
+  box-shadow: none; }
+
+.menu-button {
+  flex: 1; }
+
+.avatar {
+  background-size: cover;
+  background-position: center;
+  z-index: 100; }
+
+.icon {
+  color: #2f3332; }
+
+/*# sourceMappingURL=dashboard.component.css.map */
