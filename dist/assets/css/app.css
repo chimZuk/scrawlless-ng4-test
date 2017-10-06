@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css?family=Exo+2");
+@import url("https://fonts.googleapis.com/css?family=Itim");
+/* Begining of tabs reset */
+/deep/ .mat-tab-list {
+  margin-left: 20px !important; }
+
+/deep/ .mat-tab-label {
+  min-width: 0px !important;
+  border-radius: 5px 5px 0px 0px !important;
+  margin-right: 2px !important;
+  font-size: 19px !important;
+  padding: 0px 12px !important;
+  opacity: 0.6 !important; }
+
+/deep/ .mat-tab-label-active {
+  opacity: 1 !important; }
+
+/deep/ .mat-ink-bar {
+  height: 0 !important;
+  visibility: hidden !important; }
+
+/deep/ .mat-tab-header {
+  border: 0 !important; }
+
+/deep/ .mat-tab-body-content {
+  overflow: hidden !important; }
+
+/deep/ .mat-tab-body-wrapper {
+  border-radius: 5px !important;
+  padding: 0px 24px 0px 24px !important;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12); }
+
+/* End of tabs reset */
+/* Begining of card reset */
+/deep/ .mat-card {
+  border-radius: 5px !important;
+  padding: 20px !important; }
+
+/* End of card reset */
+/* Begining of button reset */
+/deep/ button {
+  min-width: 0 !important;
+  line-height: auto !important;
+  padding: 0 !important;
+  align-content: center !important;
+  justify-content: center !important; }
+
+/* End of button reset */
+/* Begining of input reset */
+/deep/ .mat-form-field {
+  width: 100% !important; }
+
+/* End of input reset */
+/* Begining of menu reset */
+/deep/ .mat-menu-panel {
+  box-shadow: none !important;
+  padding: 5px !important;
+  margin: -5px !important;
+  background: transparent !important;
+  max-width: none !important;
+  min-width: none !important; }
+
+/deep/ .mat-menu-content {
+  padding: 0 !important; }
+
+/* End of menu reset */
+
+/*# sourceMappingURL=app.css.map */
