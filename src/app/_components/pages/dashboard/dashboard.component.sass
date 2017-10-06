@@ -7,7 +7,13 @@
     width: calc(100% - 10px)
     flex-direction: row
     align-items: flex-start
+    justify-content: space-between
+    flex-wrap: wrap
     padding: 5px
+    @media screen and (max-width: $b-small)
+        align-items: center
+        justify-content: center
+        flex-direction: column
 
 .logo
     background-image: url("../../../../assets/img/logo.gif")
@@ -15,14 +21,26 @@
     height: 140px
     background-size: cover
     background-position: center
-    border: none !important
+    @media screen and (max-width: $b-small)
+        background-image: url("../../../../assets/img/back.gif")
+        width: 410px
+    @media screen and (max-width: $b-tiny)
+        background-image: url("../../../../assets/img/logo.gif")
+        width: 100px    
+    @media screen and (max-width: $b-medium)            
+    @media screen and (min-width: $b-large)
 
 .sub-bar
-    flex: 5
     display: flex
     flex-direction: row
     justify-content: center
     align-items: center
+    @media screen and (max-width: $b-small) and (min-width: $b-tiny + 1)
+        flex-direction: column-reverse
+        margin-top: -19px
+        .avatar
+            margin-bottom: 20px
+
 
 .date
     flex: 5
@@ -33,6 +51,9 @@
     padding: 0 2%
     *
         cursor: pointer
+    @media screen and (max-width: $b-tiny)
+        justify-content: center
+        flex-wrap: wrap
 
 .date-el 
     display: flex  
@@ -55,6 +76,32 @@
     background-size: cover
     background-position: center
     z-index: 100
+    @media screen and (max-width: $b-tiny)
+        position: absolute
+        top: 5px
+        right: 5px
 
 .icon
     color: $d-color
+
+.user-image
+    background-size: cover
+    background-position: center
+    width: 70px
+    height: 70px
+    border-radius: 100%
+    box-shadow: inset 0px 0px 15px 0px rgba(50, 50, 50, 0.82)
+    margin: 5px
+
+.menu-content
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-wrap: wrap
+
+.user-name
+    margin-bottom: 10px
+    text-align: center
+
+.card-buttons
+    @media screen and (max-width: $b-tiny)

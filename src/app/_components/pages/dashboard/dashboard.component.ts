@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-
-import { DatePipe } from '@angular/common';
-
-
-import { Location } from '@angular/common';
-
-import { MdSnackBar } from '@angular/material';
-
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
-//import { ProfileViewDialogComponent } from '../../dialogs/profile-view-dialog/profile-view-dialog.component';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../../_services/authentication.service';
 import { SocketService } from '../../../_services/socket.service';
 
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+
+import { MdSnackBar } from '@angular/material';
+import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+
+import { DatePipe } from '@angular/common';
+
+//import { ProfileViewDialogComponent } from '../../dialogs/profile-view-dialog/profile-view-dialog.component';
 
 @Component({
   selector: 'dashboard',

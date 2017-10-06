@@ -6,22 +6,41 @@
   width: calc(100% - 10px);
   flex-direction: row;
   align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
   padding: 5px; }
+  @media screen and (max-width: 640px) {
+    .main-bar {
+      align-items: center;
+      justify-content: center;
+      flex-direction: column; } }
 
 .logo {
   background-image: url("../../../../assets/img/logo.gif");
   width: 100px;
   height: 140px;
   background-size: cover;
-  background-position: center;
-  border: none !important; }
+  background-position: center; }
+  @media screen and (max-width: 640px) {
+    .logo {
+      background-image: url("../../../../assets/img/back.gif");
+      width: 410px; } }
+  @media screen and (max-width: 400px) {
+    .logo {
+      background-image: url("../../../../assets/img/logo.gif");
+      width: 100px; } }
 
 .sub-bar {
-  flex: 5;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center; }
+  @media screen and (max-width: 640px) and (min-width: 401px) {
+    .sub-bar {
+      flex-direction: column-reverse;
+      margin-top: -19px; }
+      .sub-bar .avatar {
+        margin-bottom: 20px; } }
 
 .date {
   flex: 5;
@@ -32,6 +51,10 @@
   padding: 0 2%; }
   .date * {
     cursor: pointer; }
+  @media screen and (max-width: 400px) {
+    .date {
+      justify-content: center;
+      flex-wrap: wrap; } }
 
 .date-el {
   display: flex;
@@ -54,8 +77,32 @@
   background-size: cover;
   background-position: center;
   z-index: 100; }
+  @media screen and (max-width: 400px) {
+    .avatar {
+      position: absolute;
+      top: 5px;
+      right: 5px; } }
 
 .icon {
   color: #2f3332; }
+
+.user-image {
+  background-size: cover;
+  background-position: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  box-shadow: inset 0px 0px 15px 0px rgba(50, 50, 50, 0.82);
+  margin: 5px; }
+
+.menu-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap; }
+
+.user-name {
+  margin-bottom: 10px;
+  text-align: center; }
 
 /*# sourceMappingURL=dashboard.component.css.map */

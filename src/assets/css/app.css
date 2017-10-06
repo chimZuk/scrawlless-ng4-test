@@ -51,5 +51,18 @@
   width: 100% !important; }
 
 /* End of input reset */
+/* Begining of menu reset */
+/deep/ .mat-menu-panel {
+  box-shadow: none !important;
+  padding: 5px !important;
+  margin: -5px !important;
+  background: transparent !important;
+  max-width: none !important;
+  min-width: none !important; }
+
+/deep/ .mat-menu-content {
+  padding: 0 !important; }
+
+/* End of menu reset */
 
 /*# sourceMappingURL=app.css.map */

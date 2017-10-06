@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAAA,aAAa;EACT,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;EACtB,WAAW,EAAE,MAAM;EACnB,eAAe,EAAE,MAAM;EACvB,KAAK,EAAE,KAAK;;AAEhB,eAAe;EACX,MAAM,EAAE,GAAG",
-"sources": ["user-sidebar.component.sass"],
+"mappings": "AAAQ,4DAAoD;AACpD,2DAAmD;ACC3D,aAAa;EACT,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;EACtB,WAAW,EAAE,MAAM;EACnB,eAAe,EAAE,MAAM;EACvB,KAAK,EAAE,KAAK;EACZ,oCAAuC;IAN3C,aAAa;MAOL,cAAc,EAAE,GAAG;MACnB,WAAW,EAAE,MAAM;MACnB,SAAS,EAAE,IAAI;MACf,KAAK,EAAE,IAAI;;AAInB,eAAe;EACX,MAAM,EAAE,GAAG",
+"sources": ["../../../../../sass/fonts.sass","user-sidebar.component.sass"],
 "names": [],
 "file": "user-sidebar.component.css"
 }

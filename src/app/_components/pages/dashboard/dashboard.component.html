@@ -32,10 +32,10 @@
 
 <md-menu #menu="mdMenu" class="popup">
     <md-card *ngIf="!loading" class="card">
-        <div>
+        <div class="menu-content">
             <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
             <div class="info-div">
-                <h2>{{user?.firstName + ' ' + user?.lastName}}</h2>
+                <h2 class="user-name">{{user?.firstName + ' ' + user?.lastName}}</h2>
                 <div class="card-buttons">
                     <button md-mini-fab [mdTooltip]="language[lang].profile" (click)="viewProfileDialog(user?.id, 3)"><md-icon>person</md-icon></button>
                     <button md-mini-fab [mdTooltip]="language[lang].logout" routerLink="/" routerLinkActive="active" onclick="remToken()" (click)="logOut()"><md-icon>directions_run</md-icon></button>

@@ -1,9 +1,17 @@
+@import url("https://fonts.googleapis.com/css?family=Exo+2");
+@import url("https://fonts.googleapis.com/css?family=Itim");
 .sidenav-menu {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 105px; }
+  @media screen and (max-width: 640px) {
+    .sidenav-menu {
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      width: auto; } }
 
 .sidenav-button {
   margin: 2px; }

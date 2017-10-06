@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
-import { AuthenticationService } from '../../../_services/authentication.service';
-
 import { Router } from '@angular/router';
+
+import { AuthenticationService } from '../../../_services/authentication.service';
+import { SocketService } from '../../../_services/socket.service';
+
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'index',
