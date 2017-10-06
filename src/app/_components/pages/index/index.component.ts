@@ -41,7 +41,6 @@ export class IndexComponent implements OnInit {
   }];
 
   login() {
-    console.log(this.user);
     this.loading = true;
     this.authenticationService.login(this.user)
       .subscribe(result => {
@@ -64,7 +63,6 @@ export class IndexComponent implements OnInit {
       .subscribe(result => {
         if (result === true) {
           this.router.navigate(['/dashboard']);
-          //location.reload();
         } else {
           this.error = 'Username or password is incorrect';
           this.loading = false;
@@ -73,6 +71,6 @@ export class IndexComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.router.navigate(['/dashboard']);
+    //this.router.navigate(['/dashboard']);
   }
 }
