@@ -64,5 +64,12 @@
   padding: 0 !important; }
 
 /* End of menu reset */
+/* Begining of tooltip reset */
+/deep/ .mat-tooltip {
+  font-size: 25px !important;
+  padding-top: 5px !important;
+  padding-bottom: 6px !important; }
+
+/* End of tooltp reset */
 
 /*# sourceMappingURL=app.css.map */
