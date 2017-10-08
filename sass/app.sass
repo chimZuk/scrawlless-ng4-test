@@ -29,7 +29,7 @@
 /deep/ .mat-tab-body-wrapper
     border-radius: 5px $i
     padding: 0px 24px 0px 24px $i
-    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12)
+    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 $i
     
 
 /* End of tabs reset */
@@ -40,6 +40,8 @@
 /deep/ .mat-card
     border-radius: 5px $i
     padding: 20px $i
+    box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 $i
+
 
 /* End of card reset */
 
@@ -88,3 +90,22 @@
     padding-bottom: 6px $i
 
 /* End of tooltp reset */
+
+/deep/ input
+    font: inherit
+    background: 0 0
+    border: none
+    border-bottom: 1px solid rgba(0, 0, 0, .42)
+    outline: 0
+    padding: 10px
+    margin: 0
+    width: calc(100% - 20px)
+    -webkit-user-select: none
+
+/deep/ input:focus
+    border-bottom: 1px solid $s-color
+
+/deep/ form
+    position: relative
+    input
+        margin-bottom: 20px

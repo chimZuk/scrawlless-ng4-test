@@ -1,61 +1,49 @@
 <div class="back">
     <div class="logo"></div>
     <div class="content">
-        <md-card class="video-content">
+        <mat-card class="video-content">
             <iframe class="video" src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
-        </md-card>
-        <md-tab-group class="auth">
-            <md-tab [label]="language[lang].reg">
-                <md-card>
+        </mat-card>
+        <mat-tab-group class="auth">
+            <mat-tab [label]="language[lang].reg">
+                <mat-card>
                     <form>
-                        <md-input-container>
-                            <input mdInput [placeholder]="language[lang].name" [(ngModel)]="user.firstName" name="first" value="">
-                        </md-input-container>
-                        <md-input-container>
-                            <input mdInput [placeholder]="language[lang].sname" [(ngModel)]="user.lastName" name="last" value="">
-                        </md-input-container>
-                        <md-input-container>
-                            <input type="email" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
-                        </md-input-container>
-                        <md-input-container>
-                            <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
-                        </md-input-container>
+                        <input [placeholder]="language[lang].name" [(ngModel)]="user.firstName" name="first" value="">
+                        <input [placeholder]="language[lang].sname" [(ngModel)]="user.lastName" name="last" value="">
+                        <input type="email" [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
+                        <input type="password" [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
                     </form>
-                    <button class="auth-button" md-fab [mdTooltip]="language[lang].log" mdTooltipPosition="left" (click)="login()"><md-icon>create</md-icon></button>
-                </md-card>
-            </md-tab>
-            <md-tab [label]="language[lang].sign">
-                <md-card>
+                    <button class="auth-button" mat-fab [matTooltip]="language[lang].log" matTooltipPosition="left" (click)="login()"><mat-icon>create</mat-icon></button>
+                </mat-card>
+            </mat-tab>
+            <mat-tab [label]="language[lang].sign">
+                <mat-card>
                     <form>
-                        <md-input-container>
-                            <input type="text" mdInput [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
-                        </md-input-container>
-                        <md-input-container>
-                            <input type="password" mdInput [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
-                        </md-input-container>
+                        <input type="email" [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
+                        <input type="password" [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
                     </form>
-                    <button class="auth-button" md-fab [mdTooltip]="language[lang].sup" mdTooltipPosition="left" (click)="log()"><md-icon>forward</md-icon></button>
-                </md-card>
-            </md-tab>
-        </md-tab-group>
+                    <button class="auth-button" mat-fab [matTooltip]="language[lang].sup" matTooltipPosition="left" (click)="log()"><mat-icon>forward</mat-icon></button>
+                </mat-card>
+            </mat-tab>
+        </mat-tab-group>
     </div>
-    <md-card class="footer">
+    <mat-card class="footer">
         <div class="social">
             <a href="https://vk.com/scrawlless" target="_blank">
-                <button md-button>
+                <button mat-button>
                       <img class="icon" src="../../../assets/img/vk.svg" alt="VK">
                   </button>
             </a>
             <a href="https://facebook.com/scrawlless/" target="_blank">
-                <button md-button>
+                <button mat-button>
                       <img class="icon" src="../../../assets/img/facebook.svg" alt="Facebook">
                   </button>
             </a>
             <a href="https://ok.ru/group/53562840252602" target="_blank">
-                <button md-button>
+                <button mat-button>
                       <img class="icon" src="../../../assets/img/ok.svg" alt="OK.ru">
                   </button>
             </a>
         </div>
-    </md-card>
+    </mat-card>
 </div>

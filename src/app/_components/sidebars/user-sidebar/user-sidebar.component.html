@@ -1,7 +1,7 @@
 <div class="sidenav-menu">
-    <button [routerLink]="['lists']" md-fab [mdTooltip]="language[lang].tasks" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/lists'}"><md-icon>description</md-icon></button>
-    <button [routerLink]="['marks']" md-fab [mdTooltip]="language[lang].diary" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/marks'}"><md-icon>insert_invitation</md-icon></button>
-    <button [routerLink]="['users']" md-fab [mdTooltip]="language[lang].users" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/users' || pageName == '/dashboard/edit'}"><md-icon>people</md-icon></button>
-    <button [routerLink]="['im']" md-fab [mdTooltip]="language[lang].messages" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': isMessage()}"><md-icon>email</md-icon></button>
-    <button [routerLink]="['devices']" md-fab [mdTooltip]="language[lang].devices" mdTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/devices'}"><md-icon>cast</md-icon></button>
+    <button [routerLink]="['lists']" mat-fab [matTooltip]="language[lang].tasks" matTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/lists'}"><mat-icon>description</mat-icon></button>
+    <button [routerLink]="['marks']" mat-fab [matTooltip]="language[lang].diary" matTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/marks'}"><mat-icon>insert_invitation</mat-icon></button>
+    <button [routerLink]="['users']" mat-fab [matTooltip]="language[lang].users" matTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/users' || pageName == '/dashboard/edit'}"><mat-icon>people</mat-icon></button>
+    <button [routerLink]="['im']" mat-fab [matTooltip]="language[lang].messages" matTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': isMessage()}"><mat-icon>email</mat-icon></button>
+    <button [routerLink]="['devices']" mat-fab [matTooltip]="language[lang].devices" matTooltipPosition="after" [ngClass]="{'sidenav-button': true, 'current': pageName == '/dashboard/devices'}"><mat-icon>cast</mat-icon></button>
 </div>

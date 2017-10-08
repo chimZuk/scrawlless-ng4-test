@@ -6,8 +6,8 @@ import { SocketService } from '../../../_services/socket.service';
 
 import { Location } from '@angular/common';
 
-import { MdSnackBar } from '@angular/material';
-import { MdDialog, MdDialogRef, MdDialogConfig } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 
 import { DatePipe } from '@angular/common';
 
@@ -17,11 +17,11 @@ import { DatePipe } from '@angular/common';
   selector: 'dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
-  providers: [MdDialogConfig, DatePipe],
+  providers: [MatDialogConfig, DatePipe],
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(public datePipe: DatePipe, private router: Router, public snackBar: MdSnackBar, private socket: SocketService, private location: Location, public dialog: MdDialog, public config: MdDialogConfig, private authenticationService: AuthenticationService) { }
+  constructor(public datePipe: DatePipe, private router: Router, public snackBar: MatSnackBar, private socket: SocketService, private location: Location, public dialog: MatDialog, public config: MatDialogConfig, private authenticationService: AuthenticationService) { }
 
   mydate = new Date();
   ngOnInit() {

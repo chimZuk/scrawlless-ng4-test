@@ -1,27 +1,24 @@
 import { NgModule } from '@angular/core';
-import { IndexComponent } from './index.component';
-
-import { FormsModule } from '@angular/forms';
+import { DevicesComponent } from './devices.component';
 
 import { AuthenticationService } from '../../../_services/authentication.service';
 import { SocketService } from '../../../_services/socket.service';
 
-import { IndexRouter } from './index.router'
+import { DevicesRouter } from './devices.router'
 
 import { SharedModule } from '../../../_modules/shared/shared.module'
 
 @NgModule({
   imports: [
-    FormsModule,
-    IndexRouter,
+    DevicesRouter,
     SharedModule
   ],
   declarations: [
-    IndexComponent
+    DevicesComponent
   ],
   providers: [
     AuthenticationService,
     SocketService
-  ],
+  ]
 })
-export class IndexModule { }
+export class DevicesModule { }

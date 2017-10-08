@@ -3,20 +3,20 @@
 
     <div class="sub-bar">
         <div class="date">
-            <md-card class="date-el">
-                <md-icon class="icon">date_range</md-icon>
+            <mat-card class="date-el">
+                <mat-icon class="icon">date_range</mat-icon>
                 <a id="day">{{ mydate | date:'EEE' | capitalize }}</a>
-            </md-card>
-            <md-card class="date-el">
+            </mat-card>
+            <mat-card class="date-el">
                 <a id="date">{{ mydate | date:'d' }}</a>
-            </md-card>
-            <md-card class="date-el">
+            </mat-card>
+            <mat-card class="date-el">
                 <a id="month">{{ mydate | date:'MMMM' | decapitalize | month }}</a>
-            </md-card>
+            </mat-card>
         </div>
 
         <div class="menu-buton">
-            <button *ngIf="!loading" md-fab [mdTooltip]="language[lang].profile" mdTooltipPosition="before" class="avatar" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}" [mdMenuTriggerFor]="menu"></button>
+            <button *ngIf="!loading" mat-fab [matTooltip]="language[lang].profile" matTooltipPosition="before" class="avatar" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}" [matMenuTriggerFor]="menu"></button>
         </div>
     </div>
 </div>
@@ -30,20 +30,20 @@
 
 
 
-<md-menu #menu="mdMenu" class="popup">
-    <md-card *ngIf="!loading" class="card">
+<mat-menu #menu="matMenu" class="popup">
+    <mat-card *ngIf="!loading" class="card">
         <div class="menu-content">
             <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
             <div class="info-div">
                 <h2 class="user-name">{{user?.firstName + ' ' + user?.lastName}}</h2>
                 <div class="card-buttons">
-                    <button md-mini-fab [mdTooltip]="language[lang].profile" (click)="viewProfileDialog(user?.id, 3)"><md-icon>person</md-icon></button>
-                    <button md-mini-fab [mdTooltip]="language[lang].logout" routerLink="/" routerLinkActive="active" onclick="remToken()" (click)="logOut()"><md-icon>directions_run</md-icon></button>
+                    <button mat-mini-fab [matTooltip]="language[lang].profile" (click)="viewProfileDialog(user?.id, 3)"><mat-icon>person</mat-icon></button>
+                    <button mat-mini-fab [matTooltip]="language[lang].logout" routerLink="/" routerLinkActive="active" onclick="remToken()" (click)="logOut()"><mat-icon>directions_run</mat-icon></button>
                 </div>
             </div>
         </div>
-    </md-card>
-    <md-spinner *ngIf="loading"></md-spinner>
-</md-menu>
+    </mat-card>
+    <mat-spinner *ngIf="loading"></mat-spinner>
+</mat-menu>
 
 <!--<img src onerror="setToken();">-->
