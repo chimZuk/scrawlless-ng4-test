@@ -87,7 +87,8 @@
   border-bottom: 1px solid #ed7e28; }
 
 /deep/ form {
-  position: relative; }
+  position: relative;
+  -webkit-user-select: auto; }
   /deep/ form input {
     margin-bottom: 20px; }
 
