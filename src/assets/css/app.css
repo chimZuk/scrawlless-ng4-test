@@ -80,16 +80,21 @@
   outline: 0;
   padding: 10px;
   margin: 0;
-  width: calc(100% - 20px);
-  -webkit-user-select: none; }
+  width: calc(100% - 20px); }
 
 /deep/ input:focus {
   border-bottom: 1px solid #ed7e28; }
 
 /deep/ form {
-  position: relative;
-  -webkit-user-select: auto; }
+  position: relative; }
   /deep/ form input {
     margin-bottom: 20px; }
+
+/deep/ input, input:before, input:after {
+  -webkit-user-select: initial !important;
+  -khtml-user-select: initial !important;
+  -moz-user-select: initial !important;
+  -ms-user-select: initial !important;
+  user-select: initial !important; }
 
 /*# sourceMappingURL=app.css.map */

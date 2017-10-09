@@ -100,13 +100,18 @@
     padding: 10px
     margin: 0
     width: calc(100% - 20px)
-    -webkit-user-select: none
 
 /deep/ input:focus
     border-bottom: 1px solid $s-color
 
 /deep/ form
     position: relative
-    -webkit-user-select: auto $i
     input
         margin-bottom: 20px
+
+/deep/ input, input:before, input:after
+    -webkit-user-select: initial $i
+    -khtml-user-select: initial $i
+    -moz-user-select: initial $i
+    -ms-user-select: initial $i
+    user-select: initial $i
