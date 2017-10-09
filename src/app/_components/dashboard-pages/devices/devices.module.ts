@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { DevicesComponent } from './devices.component';
 
+import { FormsModule } from '@angular/forms';
+
 import { AuthenticationService } from '../../../_services/authentication.service';
 import { SocketService } from '../../../_services/socket.service';
 
@@ -10,6 +12,7 @@ import { SharedModule } from '../../../_modules/shared/shared.module'
 
 @NgModule({
   imports: [
+    FormsModule,
     DevicesRouter,
     SharedModule
   ],

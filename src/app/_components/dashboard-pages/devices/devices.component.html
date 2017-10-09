@@ -1,12 +1,16 @@
 <mat-tab-group>
     <mat-tab class="tabs" [label]="language[lang].forMobile">
-        <div class="content">
-            <div class="no-devices">
-                <p class="search-info">{{language[lang].mobileTip}}</p>
+        <div class="tab">
+            <div class="search">
             </div>
-            <button mat-raised-button [routerLink]="['/mobile']" class="primary"><i class="material-icons">keyboard</i></button>
-            <div class="no-devices">
-                <p class="search-info">{{language[lang].appTip}}</p>
+            <div class="tab-content">
+                <div class="no-devices">
+                    <p class="search-info">{{language[lang].mobileTip}}</p>
+                </div>
+                <button mat-raised-button [routerLink]="['/mobile']" class="primary"><i class="material-icons">keyboard</i></button>
+                <div class="no-devices">
+                    <p class="search-info">{{language[lang].appTip}}</p>
+                </div>
             </div>
         </div>
     </mat-tab>

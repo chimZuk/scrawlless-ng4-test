@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { LOCALE_ID } from '@angular/core';
 
+import { AuthGuard } from './_guards/auth.guard';
+
 import { RouterModule, Routes } from '@angular/router';
 import { appRouter } from './app-routing.module';
 
@@ -25,8 +27,9 @@ import { AppComponent } from './app.component';
   providers: [
     {
       provide: LOCALE_ID,
-      useValue: navigator.language
-    }
+      useValue: navigator.language,
+    },
+    AuthGuard
   ]
 })
 export class AppModule { }

@@ -7,6 +7,11 @@ const DASHBOARD_ROUTER: Routes = [
         component: DashboardComponent,
         children: [
             {
+                path: '',
+                redirectTo: 'lists', 
+                pathMatch: 'full'
+            },
+            {
                 path: 'lists',
                 loadChildren: '../../dashboard-pages/devices/devices.module#DevicesModule'
             },

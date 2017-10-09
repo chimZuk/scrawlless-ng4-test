@@ -11,6 +11,8 @@
 
 /deep/ .mat-tab-group
     height: calc(100vh - 20px)
+    @media screen and (max-width: $b-small)
+        height: auto
 
 *
     -moz-user-select: none
@@ -18,3 +20,36 @@
     -o-user-select: none
     -webkit-user-select: none
     user-select: none
+
+::-webkit-scrollbar 
+    width: 10px
+ 
+::-webkit-scrollbar-track 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+    border-radius: 10px
+    margin: 0px 0px 0px 0px
+
+ 
+::-webkit-scrollbar-thumb 
+    border-radius: 10px
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5)
+    background-color: $s-color
+
+
+
+/deep/ .tab
+    height: 100%
+
+/deep/ .search
+    box-shadow: 0 2px 3px -1px rgba(0,0,0,.12)
+    padding: 15px 20px 0 20px
+    background-color: white
+    z-index: 999
+    position: relative $i
+    border-radius: 5px
+
+/deep/ .tab-content
+    overflow-y: auto
+    height: calc(100% - 80px)
+    padding: 0px 7px 0px 7px
+    margin: 0px 5px

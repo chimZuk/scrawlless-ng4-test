@@ -3,12 +3,11 @@
         <div class="tab">
             <div class="search">
                 <form>
-                    <input type="text" [placeholder]="language[lang].typeReq" [(ngModel)]="name" name="search" value="">
+                    <input type="text" [placeholder]="language[lang].searchUser" [(ngModel)]="name" name="search" value="">
                 </form>
             </div>
-            <div class="content">
+            <div class="tab-content">
                 <div *ngIf="!loading">
-                    <h1 class="category-header friends-header">{{language[lang].friends}}</h1>
                     <div class="no-friends" *ngIf="students.accepted.length == 0">
                         <p class="search-info">{{language[lang].friendTip}}</p>
                         <button mat-mini-fab (click)="searchDialog()" [matTooltip]="language[lang].search" matTooltipPosition="below"><mat-icon >search</mat-icon></button>
@@ -84,78 +83,86 @@
         </div>
     </mat-tab>
     <mat-tab class="tabs" [label]="language[lang].teachers">
-        <div *ngIf="!loading">
-            <h1 class="category-header friends-header">{{language[lang].myTeachers}}</h1>
-            <div class="no-friends" *ngIf="teachers.accepted.length == 0">
-                <p class="search-info">{{language[lang].teachTip}}</p>
-                <button mat-mini-fab (click)="searchDialog()" [matTooltip]="language[lang].search" matTooltipPosition="below"><mat-icon >search</mat-icon></button>
+        <div class="tab">
+            <div class="search">
+                <form>
+                    <input type="text" [placeholder]="language[lang].searchUser" [(ngModel)]="name" name="search" value="">
+                </form>
             </div>
-            <div class="cards">
-                <div *ngFor="let user of teachers.accepted; let i = index" class="card">
-                    <mat-card *ngIf="user.type == 2" class="user-card">
-                        <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
-                        <div class="user-actions">
-                            <h1>{{ user.firstName + ' ' + user.lastName }}</h1>
-                            <div class="kek" [ngClass]="{'offline': true, 'online': user?.onlineStatus}">
-                                <div [ngClass]="{'circle': true}"></div>
-                                <p *ngIf="!user?.onlineStatus">offline</p>
-                                <p *ngIf="user?.onlineStatus">online</p>
-                            </div>
-                            <div class="buttons">
-                                <button mat-mini-fab (click)="viewProfileDialog(user?.id, 2);" [matTooltip]="language[lang].profile" matTooltipPosition="below"><mat-icon >person</mat-icon></button>
-                                <button mat-mini-fab (click)="createDialog(user?.id);" [matTooltip]="language[lang].chat" matTooltipPosition="below"><mat-icon>email</mat-icon></button>
-                                <button mat-mini-fab (click)="deleteFriend(user?.id)" [matTooltip]="language[lang].delFriend" matTooltipPosition="below"><mat-icon>cancel</mat-icon></button>
-                            </div>
+            <div class="tab-content">
+                <div *ngIf="!loading">
+                    <div class="no-friends" *ngIf="teachers.accepted.length == 0">
+                        <p class="search-info">{{language[lang].teachTip}}</p>
+                        <button mat-mini-fab (click)="searchDialog()" [matTooltip]="language[lang].search" matTooltipPosition="below"><mat-icon >search</mat-icon></button>
+                    </div>
+                    <div class="cards">
+                        <div *ngFor="let user of teachers.accepted; let i = index" class="card">
+                            <mat-card *ngIf="user.type == 2" class="user-card">
+                                <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
+                                <div class="user-actions">
+                                    <h1>{{ user.firstName + ' ' + user.lastName }}</h1>
+                                    <div class="kek" [ngClass]="{'offline': true, 'online': user?.onlineStatus}">
+                                        <div [ngClass]="{'circle': true}"></div>
+                                        <p *ngIf="!user?.onlineStatus">offline</p>
+                                        <p *ngIf="user?.onlineStatus">online</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button mat-mini-fab (click)="viewProfileDialog(user?.id, 2);" [matTooltip]="language[lang].profile" matTooltipPosition="below"><mat-icon >person</mat-icon></button>
+                                        <button mat-mini-fab (click)="createDialog(user?.id);" [matTooltip]="language[lang].chat" matTooltipPosition="below"><mat-icon>email</mat-icon></button>
+                                        <button mat-mini-fab (click)="deleteFriend(user?.id)" [matTooltip]="language[lang].delFriend" matTooltipPosition="below"><mat-icon>cancel</mat-icon></button>
+                                    </div>
+                                </div>
+                            </mat-card>
                         </div>
-                    </mat-card>
+                    </div>
                 </div>
+                <div *ngIf="!loading && teachers.incomReq.length != 0">
+                    <h1 class="category-header">{{language[lang].incom}}</h1>
+                    <div class="cards">
+                        <div *ngFor="let user of teachers.incomReq; let i = index" class="card">
+                            <mat-card *ngIf="user.type == 2" class="user-card">
+                                <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
+                                <div class="user-actions">
+                                    <h1>{{ user.firstName + ' ' + user.lastName }}</h1>
+                                    <div class="kek" [ngClass]="{'offline': true, 'online': user?.onlineStatus}">
+                                        <div [ngClass]="{'circle': true}"></div>
+                                        <p *ngIf="!user?.onlineStatus">offline</p>
+                                        <p *ngIf="user?.onlineStatus">online</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button mat-mini-fab (click)="viewProfileDialog(user?.id, 0)" [matTooltip]="language[lang].profile" matTooltipPosition="below"><mat-icon >person</mat-icon></button>
+                                        <button mat-mini-fab (click)="acceptFriend(user?.id)" [matTooltip]="language[lang].acceptReq" matTooltipPosition="below"><mat-icon >done</mat-icon></button>
+                                        <button mat-mini-fab (click)="declineFriend(user?.id)" [matTooltip]="language[lang].decline" matTooltipPosition="below"><mat-icon>close</mat-icon></button>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!loading && teachers.outcomReq.length != 0">
+                    <h1 class="category-header">{{language[lang].outg}}</h1>
+                    <div class="cards">
+                        <div *ngFor="let user of teachers.outcomReq; let i = index" class="card">
+                            <mat-card *ngIf="user.type == 2" class="user-card">
+                                <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
+                                <div class="user-actions">
+                                    <h1>{{ user.firstName + ' ' + user.lastName }}</h1>
+                                    <div class="kek" [ngClass]="{'offline': true, 'online': user?.onlineStatus}">
+                                        <div [ngClass]="{'circle': true}"></div>
+                                        <p *ngIf="!user?.onlineStatus">offline</p>
+                                        <p *ngIf="user?.onlineStatus">online</p>
+                                    </div>
+                                    <div class="buttons">
+                                        <button mat-mini-fab (click)="viewProfileDialog(user?.id, 1)" [matTooltip]="language[lang].profile" matTooltipPosition="below"><mat-icon >person</mat-icon></button>
+                                        <button mat-mini-fab (click)="cancelRequest(user?.id)" [matTooltip]="language[lang].cancelReq" matTooltipPosition="below"><mat-icon >schedule</mat-icon></button>
+                                    </div>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </div>
+                </div>
+                <mat-spinner *ngIf="loading"></mat-spinner>
             </div>
         </div>
-        <div *ngIf="!loading && teachers.incomReq.length != 0">
-            <h1 class="category-header">{{language[lang].incom}}</h1>
-            <div class="cards">
-                <div *ngFor="let user of teachers.incomReq; let i = index" class="card">
-                    <mat-card *ngIf="user.type == 2" class="user-card">
-                        <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
-                        <div class="user-actions">
-                            <h1>{{ user.firstName + ' ' + user.lastName }}</h1>
-                            <div class="kek" [ngClass]="{'offline': true, 'online': user?.onlineStatus}">
-                                <div [ngClass]="{'circle': true}"></div>
-                                <p *ngIf="!user?.onlineStatus">offline</p>
-                                <p *ngIf="user?.onlineStatus">online</p>
-                            </div>
-                            <div class="buttons">
-                                <button mat-mini-fab (click)="viewProfileDialog(user?.id, 0)" [matTooltip]="language[lang].profile" matTooltipPosition="below"><mat-icon >person</mat-icon></button>
-                                <button mat-mini-fab (click)="acceptFriend(user?.id)" [matTooltip]="language[lang].acceptReq" matTooltipPosition="below"><mat-icon >done</mat-icon></button>
-                                <button mat-mini-fab (click)="declineFriend(user?.id)" [matTooltip]="language[lang].decline" matTooltipPosition="below"><mat-icon>close</mat-icon></button>
-                            </div>
-                        </div>
-                    </mat-card>
-                </div>
-            </div>
-        </div>
-        <div *ngIf="!loading && teachers.outcomReq.length != 0">
-            <h1 class="category-header">{{language[lang].outg}}</h1>
-            <div class="cards">
-                <div *ngFor="let user of teachers.outcomReq; let i = index" class="card">
-                    <mat-card *ngIf="user.type == 2" class="user-card">
-                        <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}"></div>
-                        <div class="user-actions">
-                            <h1>{{ user.firstName + ' ' + user.lastName }}</h1>
-                            <div class="kek" [ngClass]="{'offline': true, 'online': user?.onlineStatus}">
-                                <div [ngClass]="{'circle': true}"></div>
-                                <p *ngIf="!user?.onlineStatus">offline</p>
-                                <p *ngIf="user?.onlineStatus">online</p>
-                            </div>
-                            <div class="buttons">
-                                <button mat-mini-fab (click)="viewProfileDialog(user?.id, 1)" [matTooltip]="language[lang].profile" matTooltipPosition="below"><mat-icon >person</mat-icon></button>
-                                <button mat-mini-fab (click)="cancelRequest(user?.id)" [matTooltip]="language[lang].cancelReq" matTooltipPosition="below"><mat-icon >schedule</mat-icon></button>
-                            </div>
-                        </div>
-                    </mat-card>
-                </div>
-            </div>
-        </div>
-        <mat-spinner *ngIf="loading"></mat-spinner>
     </mat-tab>
 </mat-tab-group>

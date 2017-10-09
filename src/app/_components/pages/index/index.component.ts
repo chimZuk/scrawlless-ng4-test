@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../../_services/authentication.service';
@@ -72,7 +72,7 @@ export class IndexComponent implements OnInit {
       });
   }
 
+  
   ngOnInit() {
-    //this.router.navigate(['/dashboard']);
   }
 }
