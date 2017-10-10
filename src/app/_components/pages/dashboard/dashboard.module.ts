@@ -3,9 +3,6 @@ import { DashboardComponent } from './dashboard.component';
 
 import { FormsModule } from '@angular/forms';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
-import { SocketService } from '../../../_services/socket.service';
-
 import { DashboardRouter } from './dashboard.router'
 
 import { SharedModule } from '../../../_modules/shared/shared.module'
@@ -30,9 +27,6 @@ import { TeacherSidebarComponent } from '../../sidebars/teacher-sidebar/teacher-
     DecapitalizePipe, 
     MonthPipe
   ],
-  providers: [
-    AuthenticationService,
-    SocketService
-  ],
+  providers: []
 })
 export class DashboardModule { }

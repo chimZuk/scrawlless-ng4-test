@@ -7,7 +7,7 @@ const DASHBOARD_ROUTER: Routes = [
         component: DashboardComponent,
         children: [
             {
-                path: '',
+                path: '', 
                 redirectTo: 'lists', 
                 pathMatch: 'full'
             },

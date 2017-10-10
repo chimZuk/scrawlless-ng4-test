@@ -6,4 +6,10 @@
 /deep/ .mat-tab-body-wrapper {
   background-color: #ffffff !important; }
 
+/deep/ .form-error {
+  color: red;
+  text-align: left;
+  font-size: 15px;
+  margin-bottom: 10px; }
+
 /*# sourceMappingURL=index.css.map */

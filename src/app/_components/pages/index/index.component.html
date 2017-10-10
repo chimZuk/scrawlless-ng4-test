@@ -13,7 +13,7 @@
                         <input type="email" [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
                         <input type="password" [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
                     </form>
-                    <button class="auth-button" mat-fab [matTooltip]="language[lang].log" matTooltipPosition="left" (click)="login()"><mat-icon>create</mat-icon></button>
+                    <button class="auth-button" mat-fab [matTooltip]="language[lang].log" matTooltipPosition="left" (click)="register()"><mat-icon>create</mat-icon></button>
                 </mat-card>
             </mat-tab>
             <mat-tab [label]="language[lang].sign">
@@ -22,7 +22,8 @@
                         <input type="email" [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
                         <input type="password" [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
                     </form>
-                    <button class="auth-button" mat-fab [matTooltip]="language[lang].sup" matTooltipPosition="left" (click)="log()"><mat-icon>forward</mat-icon></button>
+                    <p class="form-error">{{ error }}</p>
+                    <button class="auth-button" mat-fab [matTooltip]="language[lang].sup" matTooltipPosition="left" (click)="login()"><mat-icon>forward</mat-icon></button>
                 </mat-card>
             </mat-tab>
         </mat-tab-group>

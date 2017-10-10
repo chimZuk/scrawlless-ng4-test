@@ -3,9 +3,6 @@ import { UsersComponent } from './users.component';
 
 import { FormsModule } from '@angular/forms';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
-import { SocketService } from '../../../_services/socket.service';
-
 import { UsersRouter } from './users.router'
 
 import { SharedModule } from '../../../_modules/shared/shared.module'
@@ -19,9 +16,6 @@ import { SharedModule } from '../../../_modules/shared/shared.module'
   declarations: [
     UsersComponent
   ],
-  providers: [
-    AuthenticationService,
-    SocketService
-  ],
+  providers: []
 })
 export class UsersModule { }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
+import { LanguageService } from '../../../_services/language/language.service';
 
 @Component({
   selector: 'teacher-sidebar',
@@ -9,10 +9,12 @@ import { AuthenticationService } from '../../../_services/authentication.service
 })
 export class TeacherSidebarComponent implements OnInit {
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(
+    private languageService: LanguageService
+  ) { }
 
-  language: any = this.authenticationService.language;
-  lang: number = this.authenticationService.lang;
+  language: any = this.languageService.language;
+  lang: number = this.languageService.lang;
 
   ngOnInit() {
   }

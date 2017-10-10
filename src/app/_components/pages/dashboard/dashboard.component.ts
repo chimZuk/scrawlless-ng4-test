@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
-import { SocketService } from '../../../_services/socket.service';
-
 import { Location } from '@angular/common';
 
-import { MatSnackBar } from '@angular/material';
-import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
+import { LanguageService } from '../../../_services/language/language.service';
+import { SocketService } from '../../../_services/socket/socket.service';
+import { UserService } from '../../../_services/user/user.service';
+
+import { MatDialog, MatDialogRef, MatDialogConfig, MatSnackBar } from '@angular/material';
 
 import { DatePipe } from '@angular/common';
 
@@ -21,11 +21,20 @@ import { DatePipe } from '@angular/common';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(public datePipe: DatePipe, private router: Router, public snackBar: MatSnackBar, private socket: SocketService, private location: Location, public dialog: MatDialog, public config: MatDialogConfig, private authenticationService: AuthenticationService) { }
+  constructor(
+    public dialog: MatDialog,
+    public config: MatDialogConfig,
+    public snackBar: MatSnackBar,
+    private router: Router,
+    private location: Location,
+    private languageService: LanguageService,
+    private socket: SocketService,
+    private userService: UserService,
+    public datePipe: DatePipe
+  ) { }
 
   mydate = new Date();
   ngOnInit() {
-    this.getConnectedUser()
     this.getUserInfo()
     /*this.connection = this.socket.authorized().subscribe(data => {
       var result = JSON.parse(String(data));
@@ -72,7 +81,7 @@ export class DashboardComponent implements OnInit {
       id: id
     }
     this.loading = true;
-    this.authenticationService.getUserByID(data)
+    this.userService.getUserByID(data)
       .subscribe(result => {
         this.loading = false;
         return result;
@@ -89,7 +98,7 @@ export class DashboardComponent implements OnInit {
           token: token,
           id: String(data.id)
         }
-        this.authenticationService.getUserByID(sendData)
+        this.userService.getUserByID(sendData)
           .subscribe(result => {
             name = result.firstName + ' ' + result.lastName;
             if (data.type == 'online') {
@@ -177,11 +186,10 @@ export class DashboardComponent implements OnInit {
   isInfo: boolean = true;
   loading: boolean = false;
 
-  language: any = this.authenticationService.language;
-  lang: number = this.authenticationService.lang;
+  language: any = this.languageService.language;
+  lang: number = this.languageService.lang;
 
   user: any;
-  users: any;
   connection: any;
 
   getUserInfo() {
@@ -190,24 +198,10 @@ export class DashboardComponent implements OnInit {
       token: token
     }
     this.loading = true;
-    this.authenticationService.getUserInfo(data)
+    this.userService.getUserInfo(data)
       .subscribe(result => {
         this.user = result;
         this.loading = false;
-      });
-  }
-
-  getConnectedUser() {
-    let token = JSON.parse(localStorage.getItem('currentUser')).token;
-    let data = {
-      token: token
-    }
-    this.loading = true;
-    this.authenticationService.getConnectedUser(data)
-      .subscribe(result => {
-        this.users = result;
-        this.loading = false;
-        console.log(this.users);
       });
   }
 

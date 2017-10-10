@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
-import { SocketService } from '../../../_services/socket.service';
+import { LanguageService } from '../../../_services/language/language.service';
+import { SocketService } from '../../../_services/socket/socket.service';
 
 @Component({
   selector: 'devices',
@@ -10,10 +10,12 @@ import { SocketService } from '../../../_services/socket.service';
 })
 export class DevicesComponent implements OnInit {
 
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(
+    private languageService: LanguageService
+  ) { }
 
-  language: any = this.authenticationService.language;
-  lang: number = this.authenticationService.lang;
+  language: any = this.languageService.language;
+  lang: number = this.languageService.lang;
 
   ngOnInit() {
   }

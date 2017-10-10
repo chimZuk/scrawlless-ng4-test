@@ -3,9 +3,6 @@ import { IndexComponent } from './index.component';
 
 import { FormsModule } from '@angular/forms';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
-import { SocketService } from '../../../_services/socket.service';
-
 import { IndexRouter } from './index.router'
 
 import { SharedModule } from '../../../_modules/shared/shared.module'
@@ -19,9 +16,6 @@ import { SharedModule } from '../../../_modules/shared/shared.module'
   declarations: [
     IndexComponent
   ],
-  providers: [
-    AuthenticationService,
-    SocketService
-  ],
+  providers: []
 })
 export class IndexModule { }

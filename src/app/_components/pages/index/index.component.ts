@@ -1,10 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
-import { SocketService } from '../../../_services/socket.service';
-
-import { MatSnackBar } from '@angular/material';
+import { AuthenticationService } from '../../../_services/authentication/authentication.service';
+import { LanguageService } from '../../../_services/language/language.service';
 
 @Component({
   selector: 'index',
@@ -13,16 +11,19 @@ import { MatSnackBar } from '@angular/material';
 })
 export class IndexComponent implements OnInit {
 
-  constructor(private router: Router, private authenticationService: AuthenticationService) {
-    this.lang = this.authenticationService.lang;
-  }
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private languageService: LanguageService
+  ) { }
+
+
+  //region Variables
 
   loading = false;
-  error;
-
-  language: any = this.authenticationService.language;
-
-  lang: number = this.authenticationService.lang;
+  error: String;
+  language: any = this.languageService.language;
+  lang: number = this.languageService.lang;
   data: any;
   user: any = {
     firstName: '',
@@ -31,8 +32,6 @@ export class IndexComponent implements OnInit {
     email: '',
     password: ''
   }
-  errorMessage: any;
-
   types = [{
     code: '1',
     name: this.language[this.lang].stud
@@ -42,9 +41,13 @@ export class IndexComponent implements OnInit {
     name: this.language[this.lang].teach
   }];
 
-  login() {
+  //endregion Variables
+
+  //region HTTP requests
+
+  register() {
     this.loading = true;
-    this.authenticationService.login(this.user)
+    this.authenticationService.register(this.user)
       .subscribe(result => {
         if (result === true) {
           this.router.navigate(['/dashboard']);
@@ -55,24 +58,28 @@ export class IndexComponent implements OnInit {
       });
   }
 
-  log() {
+  login() {
     var data = {
       email: this.user.email,
       password: this.user.password
     }
     this.loading = true;
-    this.authenticationService.log(data)
+    this.authenticationService.login(data)
       .subscribe(result => {
         if (result === true) {
           this.router.navigate(['/dashboard']);
         } else {
-          this.error = 'Username or password is incorrect';
+          this.error = this.language[this.lang].incorrectData;
+          console.log(this.error);
           this.loading = false;
         }
       });
   }
 
-  
+  //endregion HTTP requests
+
+
   ngOnInit() {
   }
+
 }

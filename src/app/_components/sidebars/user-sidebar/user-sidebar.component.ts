@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../../../_services/authentication.service';
+import { LanguageService } from '../../../_services/language/language.service';
 
 @Component({
   selector: 'user-sidebar',
@@ -12,18 +12,22 @@ import { AuthenticationService } from '../../../_services/authentication.service
 })
 export class UserSidebarComponent implements OnInit {
 
-  constructor(private location: Location, private router: Router, private authenticationService: AuthenticationService) { 
+  constructor(
+    private router: Router,
+    private location: Location,
+    private languageService: LanguageService
+  ) {
     router.events.subscribe((val) => {
       this.pageName = this.location.path();
     });
   }
 
-  language: any = this.authenticationService.language;
-  lang: number = this.authenticationService.lang;
+  language: any = this.languageService.language;
+  lang: number = this.languageService.lang;
 
   pageName: any = this.location.path();
-  
-  isMessage(){
+
+  isMessage() {
     return this.pageName.indexOf('/dashboard/im') > -1;
   }
 
