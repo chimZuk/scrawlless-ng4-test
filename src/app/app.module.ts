@@ -7,6 +7,8 @@ import { LOCALE_ID } from '@angular/core';
 
 import { AuthGuard } from './_guards/auth.guard';
 
+import { SharedModule } from './_modules/shared/shared.module'
+
 import { RouterModule, Routes } from '@angular/router';
 import { appRouter } from './app-routing.module';
 
@@ -21,7 +23,8 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
-    appRouter
+    appRouter,
+    SharedModule
   ],
   bootstrap: [AppComponent],
   providers: [

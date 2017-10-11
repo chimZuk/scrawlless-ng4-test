@@ -205,4 +205,23 @@ export class LanguageService {
       exitnsave: 'Save and exit'
     }
   ]
+
+  titles: any[] = [
+    {
+      index: "Добро пожаловать! | Scrawlless",
+      lists: "Задания | Scrawlless",
+      marks: "Табель | Scrawlless",
+      users: "Пользователи | Scrawlless",
+      im: "Сообщения | Scrawlless",
+      devices: "Устройства | Scrawlless"
+    },
+    {
+      index: "Welcome! | Scrawlless",
+      lists: "Tasks | Scrawlless",
+      marks: "Diary | Scrawlless",
+      users: "Users | Scrawlless",
+      im: "Messages | Scrawlless",
+      devices: "Devices | Scrawlless"
+    }
+  ]
 }
