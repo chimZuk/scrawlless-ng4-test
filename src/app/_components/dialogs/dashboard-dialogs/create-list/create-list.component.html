@@ -1,0 +1,13 @@
+<div>
+    <form>
+        <input name="name" [placeholder]="language[lang].description" [(ngModel)]="data.info.data.description">
+        <select name="subject" size="1" [(ngModel)]="data.info.subjectId">
+          <option *ngFor="let item of subjects" [value]="item.value">
+            {{ item.name }}
+          </option>
+        </select>
+    </form>
+</div>
+<div>
+    <button mat-dialog-close mat-fab class="dialog-create" (click)="listCreate()"><mat-icon>done</mat-icon></button>
+</div>

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { DashboardComponent } from './dashboard.component';
 
-import { FormsModule } from '@angular/forms';
-
 import { DashboardRouter } from './dashboard.router'
 
 import { SharedModule } from '../../../_modules/shared/shared.module'

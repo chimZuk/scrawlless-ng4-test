@@ -91,6 +91,15 @@
 
 /* End of tooltp reset */
 
+
+/* Begining of dialog reset */
+
+/deep/ .mat-dialog-container
+    border-radius: 5px $i
+
+/* End of dialog reset */
+
+
 /deep/ input
     font: inherit
     background: 0 0
@@ -100,6 +109,7 @@
     padding: 10px
     margin: 0
     width: calc(100% - 20px)
+    font-family: $m-font $i
 
 /deep/ input:focus
     border-bottom: 1px solid $s-color
@@ -108,6 +118,8 @@
     position: relative
     input
         margin-bottom: 20px
+    select
+        margin-bottom: 20px
 
 /deep/ input, input:before, input:after
     -webkit-user-select: initial $i
@@ -115,3 +127,18 @@
     -moz-user-select: initial $i
     -ms-user-select: initial $i
     user-select: initial $i
+
+
+/deep/ select
+    font: inherit 
+    background: 0 0 
+    border: none 
+    border-bottom: 1px solid rgba(0, 0, 0, .42) 
+    outline: 0 
+    padding: 10px 
+    margin: 0 
+    width: 100%
+    font-family: $m-font $i
+
+/deep/ select:focus
+    border-bottom: 1px solid $s-color

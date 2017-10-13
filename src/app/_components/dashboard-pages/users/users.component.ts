@@ -97,6 +97,7 @@ export class UsersComponent implements OnInit {
   }
 
   getUserInfo() {
+    this.loading = true;
     let token = JSON.parse(localStorage.getItem('currentUser')).token;
     let data = {
       token: token
@@ -136,6 +137,7 @@ export class UsersComponent implements OnInit {
   }
 
   getConnectedUser() {
+    this.loading = true;
     let token = JSON.parse(localStorage.getItem('currentUser')).token;
     let data = {
       token: token

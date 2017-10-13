@@ -36,7 +36,6 @@ export class AppComponent {
           case "devices": this.titleService.setTitle(this.titles[this.lang].devices);
           default: break;
         }
-        console.log();
       });
   }
   titles: any = this.languageService.titles;

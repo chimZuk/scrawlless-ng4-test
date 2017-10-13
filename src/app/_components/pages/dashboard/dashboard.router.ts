@@ -13,7 +13,7 @@ const DASHBOARD_ROUTER: Routes = [
             },
             {
                 path: 'lists',
-                loadChildren: '../../dashboard-pages/devices/devices.module#DevicesModule'
+                loadChildren: '../../dashboard-pages/lists/lists.module#ListsModule'
             },
             {
                 path: 'marks',

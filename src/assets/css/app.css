@@ -72,6 +72,11 @@
   padding-bottom: 6px !important; }
 
 /* End of tooltp reset */
+/* Begining of dialog reset */
+/deep/ .mat-dialog-container {
+  border-radius: 5px !important; }
+
+/* End of dialog reset */
 /deep/ input {
   font: inherit;
   background: 0 0;
@@ -80,7 +85,8 @@
   outline: 0;
   padding: 10px;
   margin: 0;
-  width: calc(100% - 20px); }
+  width: calc(100% - 20px);
+  font-family: "Exo 2", sans-serif !important; }
 
 /deep/ input:focus {
   border-bottom: 1px solid #ed7e28; }
@@ -89,6 +95,8 @@
   position: relative; }
   /deep/ form input {
     margin-bottom: 20px; }
+  /deep/ form select {
+    margin-bottom: 20px; }
 
 /deep/ input, input:before, input:after {
   -webkit-user-select: initial !important;
@@ -96,5 +104,19 @@
   -moz-user-select: initial !important;
   -ms-user-select: initial !important;
   user-select: initial !important; }
+
+/deep/ select {
+  font: inherit;
+  background: 0 0;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  outline: 0;
+  padding: 10px;
+  margin: 0;
+  width: 100%;
+  font-family: "Exo 2", sans-serif !important; }
+
+/deep/ select:focus {
+  border-bottom: 1px solid #ed7e28; }
 
 /*# sourceMappingURL=app.css.map */
