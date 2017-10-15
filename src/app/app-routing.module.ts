@@ -19,11 +19,6 @@ export const router: Routes = [
         canActivate: [AuthGuard]
     },
     { 
-        path: 'task/:id',
-        loadChildren: './_components/pages/workspace/workspace.module#DashboardModule',
-        canActivate: [AuthGuard]
-    },
-    { 
         path: 'homework/:id',
         loadChildren: './_components/pages/workspace/workspace.module#WorkspaceModule',
         canActivate: [AuthGuard]
