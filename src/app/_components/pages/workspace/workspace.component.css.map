@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAAQ,iDAAsC;ACAtC,4DAAoD;AACpD,2DAAmD",
+"sources": ["workspace.component.sass","../../../../../sass/fonts.sass"],
+"names": [],
+"file": "workspace.component.css"
+}

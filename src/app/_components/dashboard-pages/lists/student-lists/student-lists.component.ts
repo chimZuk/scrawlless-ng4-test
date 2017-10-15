@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
+import { Router } from '@angular/router';
+
 import { LanguageService } from '../../../../_services/language/language.service';
 import { HomeworkService } from '../../../../_services/homework/homework.service';
 
@@ -16,6 +18,7 @@ export class StudentListsComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
+    private router: Router,
     private homeworkService: HomeworkService,
     private languageService: LanguageService
   ) { }
@@ -70,9 +73,9 @@ export class StudentListsComponent implements OnInit {
       });
   }
 
-  /*directToList(id) {
+  directToList(id) {
     this.router.navigate(['homework', id]);
-  }*/
+  }
 
   deleteList(homeworkId) {
     console.log(homeworkId)

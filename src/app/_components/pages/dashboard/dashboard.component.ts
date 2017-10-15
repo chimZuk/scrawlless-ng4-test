@@ -177,7 +177,7 @@ export class DashboardComponent implements OnInit {
 
 
   ngOnDestroy() {
-    this.connection.unsubscribe();
+    //this.connection.unsubscribe();
   }
 
 
