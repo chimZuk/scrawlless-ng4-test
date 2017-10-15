@@ -1,5 +1,40 @@
 @import url(../../../../assets/css/workspace.css);
 @import url("https://fonts.googleapis.com/css?family=Exo+2");
 @import url("https://fonts.googleapis.com/css?family=Itim");
+svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%; }
+
+rect.button {
+  width: 15vw;
+  height: 7vw;
+  rx: 5px;
+  ry: 5px; }
+
+@keyframes example {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: 0.7; }
+  100% {
+    opacity: 1; } }
+rect.button:active {
+  animation-name: example;
+  animation-duration: 0.5s; }
+
+rect.p-button {
+  fill: #427a8d; }
+
+rect.s-button {
+  fill: #ed7e28; }
+
+rect.w-button {
+  fill: #ffffff; }
+
+rect.l-button {
+  fill: #f2f2f2; }
 
 /*# sourceMappingURL=workspace.component.css.map */

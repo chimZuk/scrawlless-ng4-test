@@ -1,2 +1,39 @@
 @import "../../../../assets/css/workspace.css"
 @import "../../../../../sass/variables.sass"
+
+svg
+    position: fixed
+    top: 0
+    left: 0
+    height: 100%
+    width: 100%
+
+rect.button
+    width: 15vw
+    height: 7vw
+    rx: 5px
+    ry: 5px
+
+@keyframes example
+    0%
+        opacity: 1
+    50%
+        opacity: 0.70
+    100%
+        opacity: 1
+
+rect.button:active
+    animation-name: example
+    animation-duration: 0.5s
+
+rect.p-button
+    fill: $p-color
+
+rect.s-button
+    fill: $s-color
+
+rect.w-button
+    fill: $w-color
+
+rect.l-button
+    fill: $l-color

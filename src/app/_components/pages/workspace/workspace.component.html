@@ -1,5 +1,17 @@
 <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
 
+    <defs>
+        <filter id="shadow" width="200%" height="200%">
+            <feOffset in="SourceAlpha" dx="1" dy="2" />
+            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+            <feBlend in="SourceGraphic" />
+        </filter>
+    </defs>
+
+    <rect x="20" y="100" filter="url(#shadow)" class="button w-button"/>
+    <rect x="20" y="200" filter="url(#shadow)" class="button l-button"/>
+    <rect x="20" y="300" filter="url(#shadow)" class="button p-button"/>
+    <rect x="20" y="400" filter="url(#shadow)" class="button s-button"/>
 
 
 </svg>

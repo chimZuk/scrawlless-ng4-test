@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAAQ,iDAAsC;ACAtC,4DAAoD;AACpD,2DAAmD",
-"sources": ["workspace.component.sass","../../../../../sass/fonts.sass"],
+"mappings": "AAAQ,iDAAsC;ACAtC,4DAAoD;AACpD,2DAAmD;ADE3D,GAAG;EACC,QAAQ,EAAE,KAAK;EACf,GAAG,EAAE,CAAC;EACN,IAAI,EAAE,CAAC;EACP,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;;AAEf,WAAW;EACP,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,GAAG;EACX,EAAE,EAAE,GAAG;EACP,EAAE,EAAE,GAAG;;;;IAIH,OAAO,EAAE,CAAC;;IAEV,OAAO,EAAE,GAAI;;IAEb,OAAO,EAAE,CAAC;AAElB,kBAAkB;EACd,cAAc,EAAE,OAAO;EACvB,kBAAkB,EAAE,IAAI;;AAE5B,aAAa;EACT,IAAI,EE3BE,OAAO;;AF6BjB,aAAa;EACT,IAAI,EE7BE,OAAO;;AF+BjB,aAAa;EACT,IAAI,EE7BE,OAAO;;AF+BjB,aAAa;EACT,IAAI,EEjCE,OAAO",
+"sources": ["workspace.component.sass","../../../../../sass/fonts.sass","../../../../../sass/variables.sass"],
 "names": [],
 "file": "workspace.component.css"
 }
