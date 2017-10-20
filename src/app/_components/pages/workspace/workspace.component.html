@@ -1,17 +1,66 @@
-<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
-
+<div class="keyboard">
+        <div class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="p-button" />
+            </svg>
+        </div>
+    
+        <div class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="s-button" />
+            </svg>
+        </div>
+    
+        <div class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="l-button" />
+            </svg>
+        </div>
+    
+        <div class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="w-button" />
+            </svg>
+        </div>
+    </div>
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" class="main-field" version="1.1">
     <defs>
-        <filter id="shadow" width="200%" height="200%">
-            <feOffset in="SourceAlpha" dx="1" dy="2" />
-            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
-            <feBlend in="SourceGraphic" />
+        <filter id="blurFilter" height="200%" width="200%">
+            <feOffset in="SourceAlpha" dx="3" dy="3" result="offset2" />
+            <feGaussianBlur in="offset2" stdDeviation="3" result="blur2" />
+
+            <feMerge>
+                <feMergeNode in="blur2" />
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
         </filter>
+
+        <filter id="innershadow" x0="-50%" y0="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"></feGaussianBlur>
+            <feOffset dy="2" dx="3"></feOffset>
+            <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowDiff"></feComposite>
+
+            <feFlood flood-color="#444444" flood-opacity="0.75"></feFlood>
+            <feComposite in2="shadowDiff" operator="in"></feComposite>
+            <feComposite in2="SourceGraphic" operator="over" result="firstfilter"></feComposite>
+
+
+            <feGaussianBlur in="firstfilter" stdDeviation="3" result="blur2"></feGaussianBlur>
+            <feOffset dy="-2" dx="-3"></feOffset>
+            <feComposite in2="firstfilter" operator="arithmetic" k2="-1" k3="1" result="shadowDiff"></feComposite>
+
+            <feFlood flood-color="#444444" flood-opacity="0.75"></feFlood>
+            <feComposite in2="shadowDiff" operator="in"></feComposite>
+            <feComposite in2="firstfilter" operator="over"></feComposite>
+        </filter>
+
+
     </defs>
-
-    <rect x="20" y="100" filter="url(#shadow)" class="button w-button"/>
-    <rect x="20" y="200" filter="url(#shadow)" class="button l-button"/>
-    <rect x="20" y="300" filter="url(#shadow)" class="button p-button"/>
-    <rect x="20" y="400" filter="url(#shadow)" class="button s-button"/>
-
+    <line x1="1350" y1="0" x2="1350" y2="2000" stroke="red" stroke-width="2" />
+    <a *ngFor="let k of getArr(40); let h = index">
+        <rect *ngFor="let c of getArr(32); let i = index" [attr.x]="i * 50" [attr.y]="h * 50" width="50" height="50" filter="url(#innershadow)"
+            class="cell" />
+    </a>
 
 </svg>
+
