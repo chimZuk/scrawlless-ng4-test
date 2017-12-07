@@ -19,7 +19,8 @@ import {
   MatTabsModule,
   MatMenuModule,
   MatSnackBarModule,
-  MatDialogModule
+  MatDialogModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 @NgModule({
@@ -33,7 +34,8 @@ import {
     MatInputModule,
     MatMenuModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     CommonModule,
@@ -45,18 +47,19 @@ import {
     MatInputModule,
     MatMenuModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   declarations: [],
   providers:
-  [
-    AuthenticationService,
-    DialogsService,
-    FriendsService,
-    HomeworkService,
-    LanguageService,
-    SocketService,
-    UserService
-  ]
+    [
+      AuthenticationService,
+      DialogsService,
+      FriendsService,
+      HomeworkService,
+      LanguageService,
+      SocketService,
+      UserService
+    ]
 })
 export class SharedModule { }

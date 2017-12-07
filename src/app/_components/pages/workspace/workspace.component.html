@@ -1,28 +1,28 @@
 <div class="keyboard">
-        <div class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="p-button" />
-            </svg>
-        </div>
-    
-        <div class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="s-button" />
-            </svg>
-        </div>
-    
-        <div class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="l-button" />
-            </svg>
-        </div>
-    
-        <div class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="w-button" />
-            </svg>
-        </div>
+    <div class="button">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="p-button" />
+        </svg>
     </div>
+
+    <div class="button">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="s-button" />
+        </svg>
+    </div>
+
+    <div class="button">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="l-button" />
+        </svg>
+    </div>
+
+    <div class="button">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="w-button" />
+        </svg>
+    </div>
+</div>
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" class="main-field" version="1.1">
     <defs>
         <filter id="blurFilter" height="200%" width="200%">
@@ -56,11 +56,94 @@
 
 
     </defs>
-    <line x1="1350" y1="0" x2="1350" y2="2000" stroke="red" stroke-width="2" />
-    <a *ngFor="let k of getArr(40); let h = index">
-        <rect *ngFor="let c of getArr(32); let i = index" [attr.x]="i * 50" [attr.y]="h * 50" width="50" height="50" filter="url(#innershadow)"
-            class="cell" />
+
+
+    <rect x="0" y="0" width="3.125%" height="3.125%" filter="url(#innershadow)" class="cell" />
+    <!--<a>
+        <rect x="0" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="50" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="100" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="150" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="200" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="250" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="300" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="350" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="400" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="450" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="500" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="550" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="600" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="650" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="700" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="750" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="800" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="850" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="900" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="950" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1000" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1050" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1100" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1150" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1200" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1250" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1300" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1350" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1400" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1450" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1500" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1550" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1600" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1650" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1700" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1750" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1800" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1850" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1900" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1950" y="0" width="50" height="50" filter="url(#innershadow)" class="cell" />
     </a>
+    <a>
+        <rect x="0" y="50" width="3.125%" height="3.125%" filter="url(#innershadow)" class="cell" />
+        <rect x="50" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="100" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="150" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="200" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="250" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="300" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="350" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="400" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="450" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="500" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="550" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="600" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="650" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="700" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="750" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="800" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="850" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="900" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="950" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1000" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1050" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1100" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1150" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1200" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1250" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1300" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1350" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1400" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1450" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1500" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1550" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1600" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1650" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1700" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1750" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1800" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1850" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1900" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+        <rect x="1950" y="50" width="50" height="50" filter="url(#innershadow)" class="cell" />
+    </a>-->
+
+    <line x1="1600" y1="0" x2="1600" y2="2000" stroke="orange" stroke-width="2" />
 
 </svg>
-
