@@ -2,33 +2,43 @@
 @import url("https://fonts.googleapis.com/css?family=Exo+2");
 @import url("https://fonts.googleapis.com/css?family=Itim");
 .button {
-  width: 15vw;
-  height: 7vw;
-  padding: 8px; }
+    width: 15vw;
+    height: 7vw;
+    padding: 8px;
+}
 
 .keyboard {
-  display: flex; }
+    display: flex;
+}
 
 .main-field {
-  position: absolute; }
+    position: absolute;
+}
 
 .cell {
-  fill: #f2f2f2; }
+    fill: #f2f2f2;
+}
 
 svg {
-  height: 100%;
-  width: 100%; }
+    height: 100%;
+    width: 100%;
+}
 
 rect.p-button {
-  fill: #427a8d; }
+    fill: #427a8d;
+}
 
 rect.s-button {
-  fill: #ed7e28; }
+    fill: #ed7e28;
+}
 
 rect.l-button {
-  fill: #f2f2f2; }
+    fill: #f2f2f2;
+}
 
 rect.w-button {
-  fill: #ffffff; }
+    fill: #ffffff;
+}
 
-/*# sourceMappingURL=workspace.component.css.map */
+
+/*# sourceMappingURL= workspace.component.css.map */

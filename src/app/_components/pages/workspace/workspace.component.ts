@@ -1,12 +1,10 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 
+import { TweenLite } from "gsap";
 import * as Draggable from "gsap/Draggable";
-import TweenLite from "gsap";
-import ThrowPropsPlugin from "gsap/ThrowPropsPlugin.min";
-
-console.log(ThrowPropsPlugin);
+import * as CSSPlugin from "gsap/CSSPlugin";
 
 @Component({
   selector: 'workspace',
@@ -28,6 +26,9 @@ export class WorkspaceComponent implements OnInit {
   currentY = 0;
   currentMatrix: any;
 
+  scaleX = 1;
+  scaleY = 1;
+
   rectangle: any = {
     x: 20,
     y: 20,
@@ -38,76 +39,26 @@ export class WorkspaceComponent implements OnInit {
 
   wHeight: any;
   wWidth: any;
+  vHeight: any;
 
   sek: any = Draggable;
 
   transMatrix = [1, 0, 0, 1, 0, 0];
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.wWidth = window.innerWidth;
+    this.wHeight = this.wWidth * 1.30;
+    this.vHeight = window.innerHeight;
+  }
+
   @ViewChild('mapmatrix') el: ElementRef;
 
   zoom(scale) {
-    for (var i = 0; i < this.transMatrix.length; i++) {
-      this.transMatrix[i] *= scale;
-    }
-
-    console.log(this.el);
-
-    this.transMatrix[4] += (1 - scale) * this.el.nativeElement.attributes.width.value / 2;
-    this.transMatrix[5] += (1 - scale) * this.el.nativeElement.attributes.height.value / 2;
-
-    var newMatrix = "matrix(" + this.transMatrix.join(' ') + ")";
-    this.el.nativeElement.attributes.transform.value = newMatrix;
+    this.scaleX *= scale;
+    this.scaleY *= scale;
+    TweenLite.to(".draggable", 0.5, { scaleX: this.scaleX, scaleY: this.scaleY });
   }
-
-  pan(dx, dy) {
-    this.transMatrix[4] += dx;
-    this.transMatrix[5] += dy;
-
-    var newMatrix = "matrix(" + this.transMatrix.join(' ') + ")";
-    this.el.nativeElement.attributes.transform.value = newMatrix;
-  }
-
-  dragover() {
-    alert('drag');
-  }
-
-
-  selectElement(ev) {
-    this.selectedElement = this.el;
-    this.currentX = ev.clientX;
-    this.currentY = ev.clientY;
-    this.currentMatrix = this.transMatrix;
-
-    for (var i = 0; i < this.currentMatrix.length; i++) {
-      this.currentMatrix[i] = parseFloat(this.currentMatrix[i]);
-    }
-
-    this.el.nativeElement.setAttributeNS(null, "mousemove", "moveElement(evt)");
-  }
-
-  moveElement(ev) {
-    if (this.selectedElement) {
-      var dx = ev.clientX - this.currentX;
-      var dy = ev.clientY - this.currentY;
-      this.currentMatrix[4] += dx;
-      this.currentMatrix[5] += dy;
-      var newMatrix = "matrix(" + this.currentMatrix.join(' ') + ")";
-      this.el.nativeElement.attributes.transform.value = newMatrix;
-      this.currentX = ev.clientX;
-      this.currentY = ev.clientY;
-    }
-
-  }
-
-
-  deselectElement() {
-    this.selectedElement = 0;
-  }
-
-
-
-
-
 
   getArr = function (i) {
     return new Array(i);
@@ -121,14 +72,39 @@ export class WorkspaceComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });
-    this.wHeight = window.innerHeight;
     this.wWidth = window.innerWidth;
+    this.wHeight = this.wWidth * 1.30;
+    this.vHeight = window.innerHeight;
 
-    Draggable.create(".draggable", {
+    Draggable.create(".p-button", {
       bounds: "workspace",
       edgeResistance: 0.65,
-      throwProps: true
+      throwProps: true,
+      onDragEnd: function () {
+        console.log("drag ended");
+      },
+      onDrag: function () {
+        this._eventTarget.attributes.x.value = Number(this._eventTarget.attributes.x.value) + Number(this.deltaX);
+      },
+      onDragStart: function () {
+
+      }
     });
+
+    /*Draggable.create(".draggable", {
+      bounds: "workspace",
+      edgeResistance: 0.65,
+      throwProps: true,
+      onDragEnd: function () {
+        console.log("drag ended");
+      },
+      onDrag: function () {
+        this._eventTarget.attributes.x.value = Number(this._eventTarget.attributes.x.value) + Number(this.deltaX);
+      },
+      onDragStart: function () {
+
+      }
+    });*/
   }
 
 }
