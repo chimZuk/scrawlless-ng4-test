@@ -57,10 +57,18 @@
 </style>
 
 <div style="display: flex">
-    <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" [attr.width]="wWidth" [attr.height]="wHeight">
+    <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" [attr.width]="wWidth" [attr.height]="wHeight" id="workspace">
 
     
-        <g #mapmatrix transform="matrix(1 0 0 1 0 0)" width="480" height="320" fill="green" (drag)="drag()" (dragstart)="dragover()" (drop)="drop()" (mousedown)="selectElement($event)" (mousemove)="moveElement($event)" (mouseup)="deselectElement()"> 
+        <!--<g class="draggable" #mapmatrix transform="matrix(1 0 0 1 0 0)" width="480" height="320" fill="green" (drag)="drag()" (dragstart)="dragover()" (drop)="drop()" (mousedown)="selectElement($event)" (mousemove)="moveElement($event)" (mouseup)="deselectElement()"> 
+            <rect [attr.x]="0" [attr.y]="0" width="100%" height="100%" fill="orange"/>
+            <svg:rect class="draggable" [attr.x]="wWidth / 2 - 100" [attr.y]="wHeight / 2 - 50" width="200" height="100" fill="red" />
+            <text x = "40" y = "70" font-family = "Calibri Light" font-size = "50" fill="black">
+                    Листик с домашкой #{{id}}
+                  </text>
+        </g>-->
+
+        <g class="draggable" #mapmatrix transform="matrix(1 0 0 1 0 0)" width="480" height="320" fill="green"> 
             <rect [attr.x]="0" [attr.y]="0" width="100%" height="100%" fill="orange"/>
             <svg:rect class="draggable" [attr.x]="wWidth / 2 - 100" [attr.y]="wHeight / 2 - 50" width="200" height="100" fill="red" />
             <text x = "40" y = "70" font-family = "Calibri Light" font-size = "50" fill="black">

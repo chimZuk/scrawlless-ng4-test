@@ -2,12 +2,16 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular
 
 import { ActivatedRoute } from '@angular/router';
 
+import * as Draggable from "gsap/Draggable";
+import TweenLite from "gsap";
+import ThrowPropsPlugin from "gsap/ThrowPropsPlugin.min";
 
+console.log(ThrowPropsPlugin);
 
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
-  styleUrls: ['./workspace.component.css']
+  styleUrls: ['./workspace.component.css'],
 })
 export class WorkspaceComponent implements OnInit {
 
@@ -35,7 +39,7 @@ export class WorkspaceComponent implements OnInit {
   wHeight: any;
   wWidth: any;
 
-
+  sek: any = Draggable;
 
   transMatrix = [1, 0, 0, 1, 0, 0];
 
@@ -119,6 +123,12 @@ export class WorkspaceComponent implements OnInit {
     });
     this.wHeight = window.innerHeight;
     this.wWidth = window.innerWidth;
+
+    Draggable.create(".draggable", {
+      bounds: "workspace",
+      edgeResistance: 0.65,
+      throwProps: true
+    });
   }
 
 }
