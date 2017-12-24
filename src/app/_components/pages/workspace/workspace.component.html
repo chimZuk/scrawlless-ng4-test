@@ -1,72 +1,12 @@
-<!--<div class="keyboard">
-    <div class="button">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="p-button" />
-        </svg>
-    </div>
-
-    <div class="button">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="s-button" />
-        </svg>
-    </div>
-
-    <div class="button">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="l-button" />
-        </svg>
-    </div>
-
-    <div class="button">
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-            <svg:rect width="70%" height="70%" x="3px" y="3px" rx="10px" ry="10px" filter="url(#blurFilter)" class="w-button" />
-        </svg>
-    </div>
-</div>
--->
-
-<style>
-    svg {
-        height: auto !important;
-        width: auto !important;
-        background-color: #f2f2f2;
-        margin: auto;
-    }
+<svg version="1.1" id="container" baseProfile="full" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <svg:rect class="container1" x="0" y="0" [attr.width]="0.5 * vw" [attr.height]="0.5 * vh" fill="red"/>
+    <svg:rect class="container2" [attr.x]="0.5 * vw" y="0" [attr.width]="0.5 * vw" [attr.height]="0.5 * vh" fill="green"/>
+    <svg:rect class="container3" x="0" [attr.y]="0.5 * vh" [attr.width]="0.5 * vw" [attr.height]="0.5 * vh" fill="yellow"/>
+    <svg:rect class="container4" [attr.x]="0.5 * vw" [attr.y]="0.5 * vh" [attr.width]="0.5 * vw" [attr.height]="0.5 * vh" fill="orange"/>
     
-    .button {
-        fill: #225EA8;
-        stroke: #0C2C84;
-        stroke-miterlimit: 6;
-        stroke-linecap: round;
-    }
-    
-    .button:hover {
-        stroke-width: 2;
-    }
-    
-    .plus-minus {
-        fill: #fff;
-        pointer-events: none;
-    }
-</style>
+    <svg:rect class="box1" [attr.x]="0.15 * vw" [attr.y]="0.15 * vh" [attr.width]="0.2 * vw" [attr.height]="0.2 * vh" fill="orange"/>
+    <svg:rect class="box2" [attr.x]="0.65 * vw" [attr.y]="0.15 * vh" [attr.width]="0.2 * vw" [attr.height]="0.2 * vh" fill="yellow"/>
+    <svg:rect class="box4" [attr.x]="0.65 * vw" [attr.y]="0.65 * vh" [attr.width]="0.2 * vw" [attr.height]="0.2 * vh" fill="red"/>
+    <svg:rect class="box3" [attr.x]="0.15 * vw" [attr.y]="0.65 * vh" [attr.width]="0.2 * vw" [attr.height]="0.2 * vh" fill="green"/>
 
-<div style="display: flex">
-    <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" [attr.width]="wWidth" [attr.height]="vHeight" id="workspace">
-              
-        <g class="draggable" x="0" y="0" #mapmatrix [attr.width]="wWidth" [attr.height]="wHeight" fill="#ffffff"> 
-
-            <rect [attr.x]="0" [attr.y]="0" [attr.width]="wWidth" [attr.height]="wHeight" />
-            
-            <svg:rect width="150" height="60" x="5" y="5" rx="10" ry="10" class="p-button" />
-
-        </g>     
-            
-        <circle class="button"  cx="100" cy="60" r="20" (click)="zoom(0.8)"/>
-        <circle class="button"  cx="100" cy="105" r="20" (click)="zoom(1.25)"/>
-        
-        <rect class="plus-minus" x="96" y="59" width="8" height="3"/>
-        <rect class="plus-minus" x="96" y="104" width="8" height="3"/>
-        <rect class="plus-minus" x="98.5" y="101.6" width="3" height="8"/>  
-     
-    </svg>
-</div>
+</svg>

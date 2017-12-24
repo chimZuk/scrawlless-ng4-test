@@ -21,90 +21,57 @@ export class WorkspaceComponent implements OnInit {
   sub: any;
   pageName: any;
 
-  selectedElement: any;
-  currentX = 0;
-  currentY = 0;
-  currentMatrix: any;
-
-  scaleX = 1;
-  scaleY = 1;
-
-  rectangle: any = {
-    x: 20,
-    y: 20,
-    width: 50,
-    height: 50,
-    fill: "red"
-  }
-
-  wHeight: any;
-  wWidth: any;
-  vHeight: any;
-
-  sek: any = Draggable;
-
-  transMatrix = [1, 0, 0, 1, 0, 0];
+  vw: any;
+  vh: any;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.wWidth = window.innerWidth;
-    this.wHeight = this.wWidth * 1.30;
-    this.vHeight = window.innerHeight;
-  }
-
-  @ViewChild('mapmatrix') el: ElementRef;
-
-  zoom(scale) {
-    this.scaleX *= scale;
-    this.scaleY *= scale;
-    TweenLite.to(".draggable", 0.5, { scaleX: this.scaleX, scaleY: this.scaleY });
+    this.vw = window.innerWidth;
+    this.vh = window.innerHeight;
   }
 
   getArr = function (i) {
     return new Array(i);
   }
 
-  lineHeight(i) {
-    return Number(i) * Number(100)
-  }
-
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });
-    this.wWidth = window.innerWidth;
-    this.wHeight = this.wWidth * 1.30;
-    this.vHeight = window.innerHeight;
 
-    Draggable.create(".p-button", {
-      bounds: "workspace",
+
+    this.vw = window.innerWidth;
+    this.vh = window.innerHeight;
+
+
+    Draggable.create(".box1", {
+      type: "x,y",
       edgeResistance: 0.65,
-      throwProps: true,
-      onDragEnd: function () {
-        console.log("drag ended");
-      },
-      onDrag: function () {
-        this._eventTarget.attributes.x.value = Number(this._eventTarget.attributes.x.value) + Number(this.deltaX);
-      },
-      onDragStart: function () {
-
-      }
+      bounds: ".container1",
+      throwProps: true
     });
 
-    /*Draggable.create(".draggable", {
-      bounds: "workspace",
+    Draggable.create(".box2", {
+      type: "x,y",
       edgeResistance: 0.65,
-      throwProps: true,
-      onDragEnd: function () {
-        console.log("drag ended");
-      },
-      onDrag: function () {
-        this._eventTarget.attributes.x.value = Number(this._eventTarget.attributes.x.value) + Number(this.deltaX);
-      },
-      onDragStart: function () {
+      bounds: ".container2",
+      throwProps: true
+    });
 
-      }
-    });*/
+    Draggable.create(".box3", {
+      type: "x,y",
+      edgeResistance: 0.65,
+      bounds: ".container3",
+      throwProps: true
+    });
+
+    Draggable.create(".box4", {
+      type: "x,y",
+      edgeResistance: 0.65,
+      bounds: ".container4",
+      throwProps: true
+    });
+
   }
 
 }
