@@ -3,14 +3,19 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
+import { BaseHrefModule } from '../../_modules/base-href/base-href.module';
+
+
 @Injectable()
 export class HomeworkService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private basehref: BaseHrefModule) { }
 
+  href: string = this.basehref.base;
+  
   listCreate(data: any): Observable<any> {
     var url;
-    (localStorage.getItem('mode') == '1') ? url = 'https://scrawlless.org/api/homework.create' : url = 'https://scrawlless.org/api/task.create';
+    (localStorage.getItem('mode') == '1') ? url = this.href + 'api/homework.create' : url = this.href + 'api/task.create';
 
     return this.http.post(url, { data })
       .map((response: Response) => {
@@ -24,7 +29,7 @@ export class HomeworkService {
   }
 
   deleteList(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/homework.delete', { data })
+    return this.http.post(this.href + 'api/homework.delete', { data })
       .map((response: Response) => {
         let list = response.json();
         if (list) {
@@ -36,7 +41,7 @@ export class HomeworkService {
   }
 
   getHomeworks(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/homeworks.read', { data })
+    return this.http.post(this.href + 'api/homeworks.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -48,7 +53,7 @@ export class HomeworkService {
   }
 
   getTasks(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/tasks.read', { data })
+    return this.http.post(this.href + 'api/tasks.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -60,7 +65,7 @@ export class HomeworkService {
   }
 
   homeworkRead(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/homework.read', { data })
+    return this.http.post(this.href + 'api/homework.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -72,7 +77,7 @@ export class HomeworkService {
   }
 
   taskRead(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/task.read', { data })
+    return this.http.post(this.href + 'api/task.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -84,7 +89,7 @@ export class HomeworkService {
   }
 
   saveHomework(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/homework.update', { data })
+    return this.http.post(this.href + 'api/homework.update', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -96,7 +101,7 @@ export class HomeworkService {
   }
 
   saveTask(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/task.update', { data })
+    return this.http.post(this.href + 'api/task.update', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -108,7 +113,7 @@ export class HomeworkService {
   }
 
   sendToStudent(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/homeworkFromTeacher.create', { data })
+    return this.http.post(this.href + 'api/homeworkFromTeacher.create', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -120,7 +125,7 @@ export class HomeworkService {
   }
 
   sendToTeacher(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/homework.send', { data })
+    return this.http.post(this.href + 'api/homework.send', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {

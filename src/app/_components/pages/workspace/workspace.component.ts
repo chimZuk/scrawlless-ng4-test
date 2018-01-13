@@ -3,6 +3,7 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit }
 import { ActivatedRoute } from '@angular/router';
 
 import { TweenLite } from "gsap";
+import { TweenMax } from "gsap";
 import * as Draggable from "gsap/Draggable";
 import * as CSSPlugin from "gsap/CSSPlugin";
 
@@ -24,6 +25,9 @@ export class WorkspaceComponent implements OnInit {
   vw: any;
   vh: any;
 
+  sheetDrag: any;
+  sheetDragEnabled = true;
+
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.vw = window.innerWidth;
@@ -34,6 +38,22 @@ export class WorkspaceComponent implements OnInit {
     return new Array(i);
   }
 
+  dragSwitch = function () {
+    if (this.sheetDragEnabled) {
+      this.sheetDrag[0].disable();
+      this.sheetDragEnabled = false;
+    } else {
+      this.sheetDrag[0].enable();
+      this.sheetDragEnabled = true;
+    }
+
+  }
+
+  zoom = function (x) {
+    TweenLite.to("#main", 0.2, { zoom: x });
+    this.value = x;
+  }
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
@@ -42,7 +62,6 @@ export class WorkspaceComponent implements OnInit {
 
     this.vw = window.innerWidth;
     this.vh = window.innerHeight;
-
 
     Draggable.create(".box1", {
       type: "x,y",
@@ -72,6 +91,38 @@ export class WorkspaceComponent implements OnInit {
       throwProps: true
     });
 
+    Draggable.create("#dragSwitch", {
+      type: "x,y",
+      edgeResistance: 0.65,
+      bounds: "workspace",
+      throwProps: true
+    });
+
+    Draggable.create(".zoomButtons", {
+      type: "x,y",
+      edgeResistance: 0.65,
+      bounds: "workspace",
+      throwProps: true
+    });
+
+    /*Draggable.create("#cover", {
+      type: "x,y",
+      edgeResistance: 0.65,
+      bounds: "#main",
+      throwProps: true
+    });*/
+
+    this.sheetDrag = Draggable.create("#cover", {
+      type: "x,y",
+      edgeResistance: 0.65,
+      bounds: "#container",
+      throwProps: true
+    });
+
   }
+
+  SX: any;
+  SY: any;
+  value = 1;
 
 }

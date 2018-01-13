@@ -3,13 +3,18 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
+import { BaseHrefModule } from '../../_modules/base-href/base-href.module';
+
+
 @Injectable()
 export class FriendsService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private basehref: BaseHrefModule) { }
 
+  href: string = this.basehref.base;
+  
   getConnectedUsers(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/connectedUsers.read', { data })
+    return this.http.post(this.href + 'api/connectedUsers.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -21,7 +26,7 @@ export class FriendsService {
   }
 
   addFriend(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/userConnection.create', { data })
+    return this.http.post(this.href + 'api/userConnection.create', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -33,7 +38,7 @@ export class FriendsService {
   }
 
   deleteFriend(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/userConnection.delete', { data })
+    return this.http.post(this.href + 'api/userConnection.delete', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -45,7 +50,7 @@ export class FriendsService {
   }
 
   acceptFriend(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/userConnection.accept', { data })
+    return this.http.post(this.href + 'api/userConnection.accept', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -57,7 +62,7 @@ export class FriendsService {
   }
 
   declineFriend(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/userConnection.decline', { data })
+    return this.http.post(this.href + 'api/userConnection.decline', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -69,7 +74,7 @@ export class FriendsService {
   }
 
   cancelRequest(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/userConnectionRequest.cancel', { data })
+    return this.http.post(this.href + 'api/userConnectionRequest.cancel', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {

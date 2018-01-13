@@ -77,6 +77,15 @@
   border-radius: 5px !important; }
 
 /* End of dialog reset */
+/* Begining of button reset */
+/deep/ .mat-button-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 0px !important;
+  padding: 0 !important; }
+
+/* End of button reset */
 /deep/ input {
   font: inherit;
   background: 0 0;

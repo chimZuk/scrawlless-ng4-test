@@ -3,15 +3,17 @@ import { Http, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map'
 
-
+import { BaseHrefModule } from '../../_modules/base-href/base-href.module';
 
 @Injectable()
 export class UserService {
 
-  constructor(private http: Http) { }
+  constructor(private http: Http, private basehref: BaseHrefModule) { }
 
+  href: string = this.basehref.base;
+  
   getUserInfo(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/userInfo.read', { data })
+    return this.http.post(this.href + 'api/userInfo.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -23,7 +25,7 @@ export class UserService {
   }
 
   updateUserInfo(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/userInfo.update', { data })
+    return this.http.post(this.href + 'api/userInfo.update', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -35,7 +37,7 @@ export class UserService {
   }
 
   getUserByID(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/user.read', { data })
+    return this.http.post(this.href + 'api/user.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
@@ -47,7 +49,7 @@ export class UserService {
   }
 
   searchUsers(data: any): Observable<any> {
-    return this.http.post('https://scrawlless.org/api/findUsers', { data })
+    return this.http.post(this.href + 'api/findUsers', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {

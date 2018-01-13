@@ -28,7 +28,7 @@ export class IndexComponent implements OnInit {
   user: any = {
     firstName: '',
     lastName: '',
-    type: '',
+    type: '1',
     email: '',
     password: ''
   }

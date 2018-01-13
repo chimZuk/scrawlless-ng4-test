@@ -1,44 +1,38 @@
 @import url(../../../../assets/css/workspace.css);
 @import url("https://fonts.googleapis.com/css?family=Exo+2");
 @import url("https://fonts.googleapis.com/css?family=Itim");
-.button {
-    width: 15vw;
-    height: 7vw;
-    padding: 8px;
-}
+#main {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0; }
 
-.keyboard {
-    display: flex;
-}
+#dragSwitch {
+  position: absolute;
+  width: 10vw;
+  height: 10vw;
+  top: 1vw;
+  left: 1vw; }
 
-.main-field {
-    position: absolute;
-}
+#dragSwitch button {
+  width: 100%;
+  height: 100%; }
 
-.cell {
-    fill: #f2f2f2;
-}
+#dragSwitch .mat-icon, .zoomButtons .mat-icon {
+  height: auto !important;
+  width: auto !important;
+  font-size: 5vw !important; }
 
-svg {
-    height: 100%;
-    width: 100%;
-}
+.zoomButtons {
+  position: absolute;
+  width: 10vw;
+  height: 10vw;
+  top: 15vw;
+  left: 1vw; }
 
-rect.p-button {
-    fill: #427a8d;
-}
+.zoomButtons button {
+  width: 100%;
+  height: 100%; }
 
-rect.s-button {
-    fill: #ed7e28;
-}
-
-rect.l-button {
-    fill: #f2f2f2;
-}
-
-rect.w-button {
-    fill: #ffffff;
-}
-
-
-/*# sourceMappingURL= workspace.component.css.map */
+/*# sourceMappingURL=workspace.component.css.map */

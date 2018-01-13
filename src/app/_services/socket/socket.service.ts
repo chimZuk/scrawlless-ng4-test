@@ -3,9 +3,11 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
 
+
 @Injectable()
 export class SocketService {
-  private url = 'https://scrawlless.com';
+
+  private url = "http://scrawlless.me/";
   private socket;
 
   sendMessage(message, id) {
