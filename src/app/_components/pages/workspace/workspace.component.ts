@@ -49,10 +49,10 @@ export class WorkspaceComponent implements OnInit {
 
   }
 
-  zoom = function (x) {
-    TweenLite.to("#main", 0.2, { zoom: x });
+  /*zoom = function (x) {
+    TweenLite.to("#container", 0.2, { zoom: x });
     this.value = x;
-  }
+  }*/
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -63,7 +63,7 @@ export class WorkspaceComponent implements OnInit {
     this.vw = window.innerWidth;
     this.vh = window.innerHeight;
 
-    Draggable.create(".box1", {
+    /*Draggable.create(".box1", {
       type: "x,y",
       edgeResistance: 0.65,
       bounds: ".container1",
@@ -83,13 +83,12 @@ export class WorkspaceComponent implements OnInit {
       bounds: ".container3",
       throwProps: true
     });
-
     Draggable.create(".box4", {
       type: "x,y",
       edgeResistance: 0.65,
       bounds: ".container4",
       throwProps: true
-    });
+    });*/
 
     Draggable.create("#dragSwitch", {
       type: "x,y",
