@@ -7,7 +7,7 @@
     <title>Scrawlless</title>
 
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
@@ -25,6 +25,58 @@
             <div style='top:80px;left:80px;width:40px;height:40px;background:#ee7e28;-webkit-transform:rotate(315deg) translate(0,-80px);transform:rotate(315deg) translate(0,-80px);border-radius:40px;position:absolute;'></div>
         </div>
     </app-root>
+
+    <script>
+        function $(o) {
+            var r = false;
+            if (document.querySelectorAll) {
+                r = document.querySelectorAll(o);
+            }
+            return r;
+        }
+
+
+        function editor_fullscreen() {
+            //e.preventDefault();
+            if ($('body')[0].requestFullscreen) {
+                $('body')[0].requestFullscreen();
+            } else if ($('body')[0].mozRequestFullScreen) {
+                $('body')[0].mozRequestFullScreen();
+            } else if ($('body')[0].webkitRequestFullScreen) {
+                $('body')[0].webkitRequestFullScreen();
+            } else if ($('body')[0].msRequestFullscreen) {
+                $('body')[0].msRequestFullscreen();
+            } else if (e.target.msRequestFullScreen) {
+                //alert('e.targe.parent.parent.parent.parent....');
+            } else {
+                console.log('DEveloper: full screen support is not detected; check method letter casing?');
+            }
+        }
+
+        function editor_exitFullscreen() {
+            // e.preventDefault();
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+
+
+        /*$('.fullscreen')[0].onclick = function(e) {
+            editor_fullscreen(e);
+        }
+        $('.exitFullscreen')[0].onclick = function(e) {
+            editor_exitFullscreen(e);
+        }*/
+    </script>
 </body>
 
 </html>
