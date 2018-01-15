@@ -18,6 +18,24 @@ export class WorkspaceComponent implements OnInit {
     private location: Location
   ) { }
 
+  brows = function () {
+    var ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if (/trident/i.test(M[1])) {
+      tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+      return { name: 'IE', version: (tem[1] || '') };
+    }
+    if (M[1] === 'Chrome') {
+      tem = ua.match(/\bOPR|Edge\/(\d+)/)
+      if (tem != null) { return { name: 'Opera', version: tem[1] }; }
+    }
+    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+    if ((tem = ua.match(/version\/(\d+)/i)) != null) { M.splice(1, 1, tem[1]); }
+    return {
+      name: M[0],
+      version: M[1]
+    };
+  }
+
   absUrl = window.location.href;
 
   private id;
@@ -47,7 +65,6 @@ export class WorkspaceComponent implements OnInit {
 
   select = function (event) {
     if (this.notSaved(this.selected, event.target)) {
-
       event.target.attributes.class.value = "svgDraggable touch";
       event.target.setAttribute('stroke-width', "3");
       event.target.attributes.r.value = String(Number(event.target.attributes.r.value) + 1);
@@ -95,7 +112,12 @@ export class WorkspaceComponent implements OnInit {
 
     var container = this.container.nativeElement;
     var selected = this.selected;
-    console.log(container);
+
+    var notSaved = this.notSaved;
+
+    var select = this.select;
+
+    var browser = this.brows();
     interact('.svgDraggable')
       .draggable({
         autoScroll: true,
@@ -105,12 +127,21 @@ export class WorkspaceComponent implements OnInit {
         onmove: dragMoveListener,
         onend: function (event) {
         }
-      }).on("tap", function () {
-        console.log("tap")
+      }).on("tap", function (event) {
+        if (browser.name === "Safari") {
+          if (!notSaved(selected, event.target)) {
+            event.target.attributes.class.value = "";
+            event.target.setAttribute('stroke-width', "1");
+            event.target.attributes.r.value = String(Number(event.target.attributes.r.value) - 1);
+            selected.splice(selected.indexOf(event.target), 1);
+            if (selected.length == 0) {
+              container.attributes.class.value = "";
+            }
+          }
+        }
       });
 
     function dragMoveListener(event) {
-      console.log(event);
       var target = event.target,
         x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
         y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
