@@ -1,4 +1,4 @@
-<mat-card *ngIf="user?.type == 1" class="user-card">
+<mat-card *ngIf="type == '1'" class="user-card">
     <div class="user-image" [ngStyle]="{'background-image': 'url(' + user?.img + ')'}">
         <div class="circle" [ngClass]="{'offline': true, 'online': user?.onlineStatus}"></div>
     </div>

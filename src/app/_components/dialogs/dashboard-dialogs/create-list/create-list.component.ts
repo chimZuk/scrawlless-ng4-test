@@ -49,7 +49,7 @@ export class CreateListComponent implements OnInit {
   
     loading: boolean = false;
   
-    listCreate(data) {
+    listCreate() {
       console.log(this.data);
       this.loading = true;
       this.homeworkService.listCreate(this.data)

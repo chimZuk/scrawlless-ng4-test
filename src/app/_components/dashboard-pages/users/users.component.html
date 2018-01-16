@@ -8,7 +8,7 @@
             </div>
             <div class="tab-content">
                 <div *ngIf="!loading">
-                    <div class="no-friends" *ngIf="1 == 0">
+                    <div class="no-friends" *ngIf="false">
                         <p class="search-info">{{language[lang].friendTip}}</p>
                         <button mat-mini-fab (click)="searchDialog()" [matTooltip]="language[lang].search" matTooltipPosition="below"><mat-icon >search</mat-icon></button>
                     </div>
@@ -47,7 +47,7 @@
             </div>
             <div class="tab-content">
                 <div *ngIf="!loading">
-                    <div class="no-friends" *ngIf="1 == 0">
+                    <div class="no-friends" *ngIf="false">
                         <p class="search-info">{{language[lang].friendTip}}</p>
                         <button mat-mini-fab (click)="searchDialog()" [matTooltip]="language[lang].search" matTooltipPosition="below"><mat-icon >search</mat-icon></button>
                     </div>

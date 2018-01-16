@@ -9,6 +9,9 @@ import { SharedModule } from '../../../_modules/shared/shared.module'
   imports: [
     SharedModule
   ],
+  exports: [
+    UserCardComponent
+  ],
   declarations: [UserCardComponent]
 })
 export class UserCardModule { }

@@ -6,17 +6,17 @@ import { FormsModule } from '@angular/forms';
 import { UsersRouter } from './users.router'
 
 import { SharedModule } from '../../../_modules/shared/shared.module'
-import { UserCardComponent } from '../../web-elements/user-card/user-card.component'
+import { UserCardModule } from '../../web-elements/user-card/user-card.module'
 
 @NgModule({
   imports: [
     FormsModule,
     UsersRouter,
     SharedModule,
+    UserCardModule
   ],
   declarations: [
-    UsersComponent,
-    UserCardComponent
+    UsersComponent
   ],
   providers: []
 })
