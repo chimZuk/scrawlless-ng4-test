@@ -51,6 +51,9 @@ export class WorkspaceComponent implements OnInit {
   selected: any = [];
 
   isFullscreen = false;
+
+  mode: string = "";
+
   @ViewChild('container') container: ElementRef;
 
   @HostListener('window:resize', ['$event'])
@@ -92,8 +95,13 @@ export class WorkspaceComponent implements OnInit {
     return true;
   }
 
-  touched() {
-
+  switchMode(mode) {
+    if(this.mode === "" || this.mode != "" && this.mode != mode ) {
+      this.mode = mode;
+    } else {
+      this.mode = "";
+    }
+    
   }
 
   zoom(scale) {

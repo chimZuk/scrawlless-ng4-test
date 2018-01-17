@@ -17,7 +17,7 @@ export class UserCardComponent implements OnInit {
     console.log(this.user)
   }
 
-  @Input('user') user: string;
+  @Input('user') user: any;
   @Input('type') type: string;
 
   language: any = this.languageService.language;

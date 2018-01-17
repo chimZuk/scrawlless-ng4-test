@@ -78,7 +78,7 @@
 
 /* End of dialog reset */
 /* Begining of button reset */
-/deep/ .mat-button-wrapper {
+/deep/ .mat-fab .mat-button-wrapper {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
