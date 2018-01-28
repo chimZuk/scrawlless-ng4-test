@@ -3,13 +3,12 @@
 
 @font-face
   font-family: 'scwlsWorkspace'
-  src:  url('../../../../assets/fonts/scwlsWorkspace.eot?az3qka')
-  src:  url('../../../../assets/fonts/scwlsWorkspace.eot?az3qka#iefix') format('embedded-opentype'), url('../../../../assets/fonts/scwlsWorkspace.ttf?az3qka') format('truetype'), url('../../../../assets/fonts/scwlsWorkspace.woff?az3qka') format('woff'), url('../../../../assets/fonts/scwlsWorkspace.svg?az3qka#scwlsWorkspace') format('svg')
+  src:  url('../../../../assets/fonts/scwlsWorkspace.eot?5zc743')
+  src:  url('../../../../assets/fonts/scwlsWorkspace.eot?5zc743#iefix') format('embedded-opentype'), url('../../../../assets/fonts/scwlsWorkspace.woff2?5zc743') format('woff2'), url('../../../../assets/fonts/scwlsWorkspace.ttf?5zc743') format('truetype'), url('../../../../assets/fonts/scwlsWorkspace.woff?5zc743') format('woff'), url('../../../../assets/fonts/scwlsWorkspace.svg?5zc743#scwlsWorkspace') format('svg')
   font-weight: normal
   font-style: normal
 
-
-[class^="i-"], [class*=" i-"]
+[class^="i-"], [class*=" i-"] 
   font-family: 'scwlsWorkspace' !important
   speak: none
   font-style: normal
@@ -72,88 +71,140 @@
 .i-comma:before 
   content: "\e910"
 
+.i-cursour:before 
+  content: "\e911"
+
 
 .flex-row
-    display: flex
+  display: flex
 
 .flex-column
-    display: flex
-    flex-direction: column
+  display: flex
+  flex-direction: column
+
+
+@keyframes cursor
+  0%
+    fill: black
+  50%
+    fill: transparent
+  100%
+    fill: black
+
+#cursor
+    animation-name: cursor
+    animation-duration: 1s
+    animation-iteration-count: infinite
+    cursor: text
+
+#list
+  cursor: text
+
+text, line
+  user-select: none
+  cursor: pointer
+
+.element:hover .expression, .number:hover .expression
+  stroke: #ed7e28
+
+.expression:hover
+  cursor: text
+
+.number:hover
+  fill: #427a8d
+
+.operator:hover
+  fill: green
+
+.eq:hover
+  fill: yellow
+
+.fr:hover
+  stroke: orange
+
 
 
 #main
-    position: absolute
-    top: 0
-    bottom: 0
-    left: 0
-    right: 0
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  right: 0
 
 .ui
-    position: fixed
-    padding: 0.2vw $i
+  position: fixed
+  padding: 0.2vw $i
 
 .ui .mat-icon, .ui .i-font 
-    height: auto $i
-    width: auto $i
-    font-size: 5vw $i
+  height: auto $i
+  width: auto $i
+  font-size: 5vw $i
 
 .squareSingle
-    width: 7vw
-    height: 7vw
+  width: 7vw
+  height: 7vw
 
 .squareSingle button
-    width: 100%
-    height: 100%
+  width: 100%
+  height: 100%
 
 .zIn
-    top: 1vw
-    right: 2vw
+  top: 1vw
+  right: 2vw
 
 .zOut
-    top: 1vw
-    left: 1vw
+  top: 1vw
+  left: 1vw
 
 #fullscreen
-    top: 11vw
-    right: 2vw
+  top: 11vw
+  right: 2vw
 
 .keyboard
-    display: flex
+  display: flex
 
 #numbers
-    bottom: 2vw
-    right: 2vw
+  bottom: 2vw
+  right: 2vw
 
 #operators
-    bottom: 2vw
-    right: 20vw
+  bottom: 2vw
+  right: 20vw
 
 .tools
-    left: 1vw
-    top: 15vw
-    display: flex
-    flex-direction: column
+  left: 1vw
+  top: 15vw
+  display: flex
+  flex-direction: column
 
 .selectedTool
-    background-color: #fff
-    color: #ed7e28
+  background-color: #fff
+  color: #ed7e28
 
-.tools button, .keyboard button
-    margin: 0.1vw
-    transition: all 0.5s
-    padding: 0.4vw 0 !important
-    flex: 1
+.tools button, #operators button
+  margin: 0.1vw
+  transition: all 0.5s
+  padding: 0.4vw 0 !important
+  flex: 1
+
+#numbers button
+  margin: 0.2vw
+  padding: 0.4vw 0.8vw !important
+  flex: 1
 
 #cover
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75)
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75)
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75)
-    margin: auto
-    display: block
-    transition: all 0.5s
-    margin-top: 10px
-    margin-bottom: 10px
-    
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75)
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75)
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75)
+  margin: auto
+  display: block
+  transition: all 0.5s
+  margin-top: 10px
+  margin-bottom: 10px
+  
 .touch
-    touch-action: none !important
-    
+  touch-action: none !important
+  cursor: move
+
+circle
+  cursor: pointer
