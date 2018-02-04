@@ -42,7 +42,7 @@
         <g class="element" *ngFor="let exp of line.expressions; let j = index">
             <rect
             (click)="setCursor($event, 'ex', exp);"
-            [attr.x] = "line.x + ex[exp].x + ex[ex[exp].pe].x * c - 2" 
+            [attr.x] = "setExpression(exp, 'x') - 2" 
             [attr.y] = "
             (line.y + fr[ex[exp].pf].y * hc + ex[exp].t * hc)
             * 
@@ -57,26 +57,13 @@
             [attr.width]="ex[exp].s * c + 20" 
             [attr.height]="ex[exp].h * hc" 
             class="expression" stroke="transparent" fill="transparent" stroke-width="2"/>
-
-
+        </g>
+        <g class="element" *ngFor="let dig of line.digits; let j = index">
             <text 
-            [attr.x] = "setExpression(exp, 'x')" 
-            [attr.y] = "setExpression(exp, 'y')"
-            class="number" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="ex[exp].text"></text>
+            [attr.x] = "line.x + (ex[di[dig].pe].x - 1) * c + (di[dig].x - 1) * c " 
+            [attr.y] = "line.y + ex[di[dig].pe].y * hc + ex[di[dig].pe].t * hc"
+            class="number" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="di[dig].text"></text>
 
-            <!--<text 
-            [attr.x] = "line.x + ex[exp].x + ex[ex[exp].pe].x * c" 
-            [attr.y] = 
-            "
-            (line.y + fr[ex[exp].pf].y * hc + ex[exp].t * hc)
-            * 
-            ex[exp].zn 
-            + 
-            (line.y + fr[ex[exp].pf].y * hc - (ex[exp].b + 2) * hc)
-            * 
-            ex[exp].ch
-            " 
-            class="number" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="ex[exp].text"></text>-->
         </g>
         <line 
         *ngFor="let fra of line.fractions; let j = index" 

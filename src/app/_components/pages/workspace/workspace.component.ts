@@ -63,6 +63,113 @@ export class WorkspaceComponent implements OnInit {
   hc: number = 10;
   c: number = 20;
 
+  di: any = {
+    0: {
+      line: 0,
+      x: 0,
+      pe: 0,
+      s: 0,
+      value: "",
+      text: ""
+    },
+    1: {
+      line: 0,
+      x: 1,
+      pe: 1,
+      s: 1,
+      value: "1",
+      text: "&#xe900;"
+    },
+    2: {
+      line: 0,
+      x: 1,
+      pe: "2",
+      s: 1,
+      value: "2",
+      text: "&#xe901;"
+    },
+    3: {
+      line: 0,
+      x: 1,
+      pe: "3",
+      s: 1,
+      value: "3",
+      text: "&#xe902;"
+    },
+    4: {
+      line: 0,
+      x: 1,
+      pe: "4",
+      s: 1,
+      value: "4",
+      text: "&#xe903;"
+    },
+    5: {
+      line: 0,
+      x: 1,
+      pe: "5",
+      s: 1,
+      value: "5",
+      text: "&#xe904;"
+    },
+    6: {
+      line: 0,
+      x: 1,
+      pe: "6",
+      s: 1,
+      value: "6",
+      text: "&#xe905;"
+    },
+    7: {
+      line: 0,
+      x: 1,
+      pe: "7",
+      s: 1,
+      value: "7",
+      text: "&#xe906;"
+    },
+    8: {
+      line: 1,
+      x: 1,
+      pe: 0,
+      s: 1,
+      value: "8",
+      text: "&#xe907;"
+    },
+    9: {
+      line: 1,
+      x: 1,
+      pe: "9",
+      s: 1,
+      value: "9",
+      text: "&#xe908;"
+    },
+    10: {
+      line: 1,
+      x: 1,
+      pe: "10",
+      s: 2,
+      value: "10",
+      text: "&#xe900;&#xe909;"
+    },
+    100: {
+      line: 0,
+      x: 2,
+      pe: 2,
+      s: 1,
+      value: "-",
+      text: "&#xe90b;"
+    },
+    101: {
+      line: 0,
+      x: 2,
+      pe: 1,
+      s: 1,
+      value: "+",
+      text: "&#xe90a;"
+    }
+  }
+
   ex: any = {
     0: {
       line: 0,
@@ -75,9 +182,7 @@ export class WorkspaceComponent implements OnInit {
       pe: 0,
       cf: 0,
       ch: 1, zn: 0,
-      s: 0,
-      value: "",
-      text: ""
+      s: 0
     },
     1: {
       line: 0,
@@ -90,13 +195,11 @@ export class WorkspaceComponent implements OnInit {
       pe: 0,
       cf: 1,
       ch: "0", zn: "1",
-      s: 6,
-      value: "1",
-      text: "&#xe900;"
+      s: 6
     },
     2: {
       line: 0,
-      x: 2,
+      x: 3,
       y: 0,
       b: 3,
       t: 1,
@@ -104,13 +207,11 @@ export class WorkspaceComponent implements OnInit {
       pf: 1,
       pe: "1",
       ch: "1", zn: "0",
-      s: 4,
-      value: "2",
-      text: "&#xe901;"
+      s: 4
     },
     3: {
       line: 0,
-      x: 2,
+      x: 3,
       y: 6,
       b: 0,
       t: 0,
@@ -118,13 +219,11 @@ export class WorkspaceComponent implements OnInit {
       pf: "1",
       pe: "1",
       ch: "0", zn: "1",
-      s: 1,
-      value: "3",
-      text: "&#xe902;"
+      s: 1
     },
     4: {
       line: 0,
-      x: 3,
+      x: 4,
       y: 0,
       b: 0,
       t: 0,
@@ -132,13 +231,11 @@ export class WorkspaceComponent implements OnInit {
       pf: "2",
       pe: "2",
       ch: "1", zn: "0",
-      s: 1,
-      value: "4",
-      text: "&#xe903;"
+      s: 1
     },
     5: {
       line: 0,
-      x: 3,
+      x: 4,
       y: 2,
       b: 1,
       t: 1,
@@ -146,13 +243,11 @@ export class WorkspaceComponent implements OnInit {
       pf: "2",
       pe: "2",
       ch: "0", zn: "1",
-      s: 2,
-      value: "5",
-      text: "&#xe904;"
+      s: 2
     },
     6: {
       line: 0,
-      x: 4,
+      x: 5,
       y: 2,
       b: 0,
       t: 0,
@@ -160,13 +255,11 @@ export class WorkspaceComponent implements OnInit {
       pf: "3",
       pe: "5",
       ch: "1", zn: "0",
-      s: 1,
-      value: "6",
-      text: "&#xe905;"
+      s: 1
     },
     7: {
       line: 0,
-      x: 4,
+      x: 5,
       y: 4,
       b: 0,
       t: 0,
@@ -174,9 +267,7 @@ export class WorkspaceComponent implements OnInit {
       pf: "3",
       pe: "5",
       ch: "0", zn: "1",
-      s: 1,
-      value: "7",
-      text: "&#xe906;"
+      s: 1
     },
     8: {
       line: 1,
@@ -188,9 +279,7 @@ export class WorkspaceComponent implements OnInit {
       pf: 0,
       pe: 0,
       ch: "0", zn: "1",
-      s: 3,
-      value: "8",
-      text: "&#xe907;"
+      s: 3
     },
     9: {
       line: 1,
@@ -202,9 +291,7 @@ export class WorkspaceComponent implements OnInit {
       pf: 4,
       pe: "8",
       ch: "1", zn: "0",
-      s: 1,
-      value: "9",
-      text: "&#xe908;"
+      s: 1
     },
     10: {
       line: 1,
@@ -216,159 +303,9 @@ export class WorkspaceComponent implements OnInit {
       pf: "4",
       pe: "8",
       ch: "0", zn: "1",
-      s: 1,
-      value: "10",
-      text: "&#xe900;&#xe909;"
+      s: 1
     }
   }
-
-  /*ex: any = {
-    0: {
-      x: 0,
-      y: 0,
-      b: 0,
-      t: 0,
-      h: 0,
-      pf: 0,
-      pe: 0,
-      cf: 0,
-      ch: 1, zn: 0,
-      s: 0,
-      value: "",
-      text: ""
-    },
-    1: {
-      x: 1,
-      y: 0,
-      b: 1,
-      t: 5,
-      h: 8,
-      pf: 0,
-      pe: 0,
-      cf: 1,
-      ch: "0", zn: "1",
-      s: 6,
-      value: "",
-      text: ""
-    },
-    2: {
-      x: 2,
-      y: 0,
-      b: 3,
-      t: 1,
-      h: 6,
-      pf: 1,
-      pe: "1",
-      ch: "1", zn: "0",
-      s: 4,
-      value: "",
-      text: ""
-    },
-    3: {
-      x: 2,
-      y: 6,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: "1",
-      pe: "1",
-      ch: "0", zn: "1",
-      s: 1,
-      value: "",
-      text: ""
-    },
-    4: {
-      x: 3,
-      y: 0,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: "2",
-      pe: "2",
-      ch: "1", zn: "0",
-      s: 1,
-      value: "",
-      text: ""
-    },
-    5: {
-      x: 3,
-      y: 2,
-      b: 1,
-      t: 1,
-      h: 4,
-      pf: "2",
-      pe: "2",
-      ch: "0", zn: "1",
-      s: 2,
-      value: "",
-      text: ""
-    },
-    6: {
-      x: 4,
-      y: 2,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: "3",
-      pe: "5",
-      ch: "1", zn: "0",
-      s: 1,
-      value: "",
-      text: ""
-    },
-    7: {
-      x: 4,
-      y: 4,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: "3",
-      pe: "5",
-      ch: "0", zn: "1",
-      s: 1,
-      value: "",
-      text: ""
-    },
-    8: {
-      x: 1,
-      y: 0,
-      b: 1,
-      t: 1,
-      h: 4,
-      pf: 0,
-      pe: 0,
-      ch: "0", zn: "1",
-      s: 1,
-      value: "",
-      text: ""
-    },
-    9: {
-      x: 2,
-      y: 0,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: 4,
-      pe: "8",
-      ch: "1", zn: "0",
-      s: 1,
-      value: "",
-      text: ""
-    },
-    10: {
-      x: 2,
-      y: 6,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: "4",
-      pe: "8",
-      ch: "0", zn: "1",
-      s: 2,
-      value: "",
-      text: ""
-    }
-  }*/
 
   fr: any = {
     0: {
@@ -434,20 +371,23 @@ export class WorkspaceComponent implements OnInit {
       y: 157,
       x: 200,
       fractions: [1, 2, 3],
-      expressions: [1, 2, 3, 4, 5, 6, 7]
+      expressions: [1, 2, 3, 4, 5, 6, 7],
+      digits: [1, 2, 3, 4, 5, 6, 7, 100, 101]
     },
     {
       id: "1",
       y: 337,
       x: 200,
       fractions: [4],
-      expressions: [8, 9, 10]
+      expressions: [8, 9, 10],
+      digits: [8, 9, 10]
     }
   ]
 
   elements: any = {
     fractions: [1, 2, 3, 4],
-    expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 101]
   }
 
   @ViewChild('container') container: ElementRef;
@@ -601,7 +541,7 @@ export class WorkspaceComponent implements OnInit {
         this.y = Math.round((this.setSY(ev.offsetY)) / 10 + 1) * 10 - 3;
         break;
       }
-      case "ex": {
+      case "di": {
         this.y = this.setExpression(id, 'y');
         this.x = this.setExpression(id, 'x') + this.ex[id].s * this.c + 3;
         break;
