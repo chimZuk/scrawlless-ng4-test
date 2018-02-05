@@ -64,7 +64,7 @@
    </g>
 
 
-<text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x] = "x" [attr.y] = "y" font-family = "scwlsWorkspace" font-size = "16">&#xe911;</text>
+<text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x] = "selection.x" [attr.y] = "selection.y" font-family = "scwlsWorkspace" font-size = "16">&#xe911;</text>
             
   </svg>
 
@@ -109,7 +109,7 @@
     <div class="flex-column">
         <div class="flex-row">
             <button mat-raised-button><span class="i-font i-mult"></span></button>
-            <button mat-raised-button><span class="i-font i-divide"></span></button>
+            <button mat-raised-button (click)="write('fr');"><span class="i-font i-divide"></span></button>
         </div>
         <div class="flex-row">
             <button mat-raised-button><span class="i-font i-plus"></span></button>

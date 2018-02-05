@@ -45,15 +45,20 @@ export class WorkspaceComponent implements OnInit {
   vw: any;
   vh: any;
 
-  x: any = 20;
-  y: any = 20;
-
   sheetDrag: any;
   sheetDragEnabled = true;
 
   selected: any = [];
 
   isFullscreen = false;
+
+  selection: any = {
+    line: null,
+    ex: null,
+    di: null,
+    x: 20,
+    y: 20
+  }
 
   mode: string = "";
 
@@ -95,14 +100,14 @@ export class WorkspaceComponent implements OnInit {
       line: 0,
       x: 3,
       pe: 1,
-      s: 5,
+      s: 8,
       value: "",
       text: "",
       type: "fraction"
     },
     4: {
       line: 0,
-      x: 8,
+      x: 11,
       pe: 1,
       s: 1,
       value: "+",
@@ -111,7 +116,7 @@ export class WorkspaceComponent implements OnInit {
     },
     5: {
       line: 0,
-      x: 9,
+      x: 12,
       pe: 1,
       s: 1,
       value: "8",
@@ -120,9 +125,9 @@ export class WorkspaceComponent implements OnInit {
     },
     6: {
       line: 0,
-      x: 10,
+      x: 13,
       pe: 1,
-      s: 1,
+      s: 2,
       value: "",
       text: "",
       type: "fraction"
@@ -149,7 +154,7 @@ export class WorkspaceComponent implements OnInit {
       line: 0,
       x: 2,
       pe: 2,
-      s: 3,
+      s: 5,
       value: "",
       text: "",
       type: "fraction"
@@ -185,7 +190,7 @@ export class WorkspaceComponent implements OnInit {
       line: 0,
       x: 2,
       pe: 5,
-      s: 1,
+      s: 2,
       value: "",
       text: "",
       type: "fraction"
@@ -262,8 +267,8 @@ export class WorkspaceComponent implements OnInit {
       pe: 0,
       pd: 0,
       ch: "0", zn: "1",
-      s: 11,
-      cs: 11
+      s: 16,
+      cs: 15
     },
     2: {
       line: 0,
@@ -276,8 +281,8 @@ export class WorkspaceComponent implements OnInit {
       pe: 1,
       pd: 3,
       ch: "1", zn: "0",
-      s: 5,
-      cs: 5
+      s: 8,
+      cs: 7
     },
     3: {
       line: 0,
@@ -290,7 +295,7 @@ export class WorkspaceComponent implements OnInit {
       pe: 1,
       pd: 3,
       ch: "0", zn: "1",
-      s: 5,
+      s: 8,
       cs: 1
     },
     4: {
@@ -304,7 +309,7 @@ export class WorkspaceComponent implements OnInit {
       pe: 2,
       pd: 9,
       ch: "1", zn: "0",
-      s: 3,
+      s: 5,
       cs: 1
     },
     5: {
@@ -318,8 +323,8 @@ export class WorkspaceComponent implements OnInit {
       pe: 2,
       pd: 9,
       ch: "0", zn: "1",
-      s: 3,
-      cs: 3
+      s: 5,
+      cs: 4
     },
     6: {
       line: 0,
@@ -332,7 +337,7 @@ export class WorkspaceComponent implements OnInit {
       pe: 5,
       pd: 13,
       ch: "1", zn: "0",
-      s: 1,
+      s: 2,
       cs: 1
     },
     7: {
@@ -346,12 +351,12 @@ export class WorkspaceComponent implements OnInit {
       pe: 5,
       pd: 13,
       ch: "0", zn: "1",
-      s: 1,
+      s: 2,
       cs: 1
     },
     8: {
       line: 0,
-      x: 10,
+      x: 13,
       y: 4,
       b: 0,
       t: 0,
@@ -360,12 +365,12 @@ export class WorkspaceComponent implements OnInit {
       pe: 1,
       pd: 6,
       ch: "1", zn: "0",
-      s: 1,
+      s: 2,
       cs: 1
     },
     9: {
       line: 0,
-      x: 10,
+      x: 13,
       y: 6,
       b: 0,
       t: 0,
@@ -374,7 +379,7 @@ export class WorkspaceComponent implements OnInit {
       pe: 1,
       pd: 6,
       ch: "0", zn: "1",
-      s: 1,
+      s: 2,
       cs: 1
     }
   }
@@ -444,64 +449,11 @@ export class WorkspaceComponent implements OnInit {
     //this.vh = window.innerHeight;
   }
 
-  writeFr(lineID, id) {
-    var cID = id;
-    var eID = id;
-    this.ex[eID].t++;
-    this.ex[eID].b++;
-    while (eID != 0) {
-      this.ex[eID].s++;
-      this.ex[eID].h += 2;
-      if (this.ex[eID].ch == "1") {
-        this.ex[this.ex[eID].pe].t += 2;
-      } else {
-        if (this.ex[eID].zn == "1") {
-          this.ex[this.ex[eID].pe].b += 2;
-        }
-      }
-      eID = this.ex[eID].pe;
-    }
-    var fID = this.ex[id].pf;
-    while (fID != 0) {
-      this.fr[fID].s++;
-      fID = this.fr[fID].pf;
-    }
-
-    for (var i = 0; i < this.lines[lineID].fractions.length; i++) {
-      var id = this.lines[lineID].fractions[i];
-      var fr = this.fr[id];
-      if (this.ex[fr.pe].ch == "1") {
-        this.fr[id].y = this.fr[fr.pf].y - (this.ex[fr.pe].b + 1);
-      } else {
-        if (this.ex[fr.pe].zn == "1") {
-          this.fr[id].y = this.fr[fr.pf].y + (this.ex[fr.pe].t + 1);
-        }
-      }
-
-    }
-
-    var newFr = {
-      x: this.ex[cID].x,
-      y: 0,
-      h: 2,
-      pf: this.ex[cID].pf,
-      pe: cID,
-      ch: 0,
-      zn: 0,
-      s: 1,
-      isActive: 1
-    }
-
-    if (this.ex[cID].zn == "1") {
-      newFr.y = this.fr[this.ex[cID].pf].y + 2;
-    } else {
-      if (this.ex[cID].ch == "1") {
-        newFr.y = this.fr[this.ex[cID].pf].y - 2;
-      }
-    }
-    this.lines[lineID].fractions.push(this.elements.fractions.length + 1);
-    this.elements.fractions.push(this.elements.fractions.length);
-    this.fr[this.elements.fractions.length] = newFr;
+  writeFr() {
+    console.log(this.selection);
+    var exp = this.selection.ex;
+    this.ex[exp].t++;
+    this.ex[exp].b++;
   }
 
   writeEx(id) {
@@ -509,10 +461,10 @@ export class WorkspaceComponent implements OnInit {
   }
 
 
-  write(lineID, exID, t) {
+  write(t) {
     switch (t) {
       case "fr": {
-        this.writeFr(lineID, exID);
+        this.writeFr();
         break;
       }
       default: {
@@ -562,22 +514,6 @@ export class WorkspaceComponent implements OnInit {
     }
   }
 
-  setExpression(exID, type) {
-    switch (type) {
-      case "x": {
-        return this.lines[this.ex[exID].line].x + this.ex[exID].x + this.ex[this.ex[exID].pe].x * this.c;
-      }
-      case "y": {
-        return (this.lines[this.ex[exID].line].y + this.fr[this.ex[exID].pf].y * this.hc + this.ex[exID].t * this.hc) * this.ex[exID].zn
-          +
-          (this.lines[this.ex[exID].line].y + this.fr[this.ex[exID].pf].y * this.hc - (this.ex[exID].b + 2) * this.hc) * this.ex[exID].ch;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-
   setMargin(exp) {
     //return this.ex[exp].t + this.ex[exp].b / 2 >> 0;
     return 0;
@@ -605,19 +541,19 @@ export class WorkspaceComponent implements OnInit {
   setCursor(ev, element, id) {
     switch (element) {
       case "canvas": {
-        this.x = this.setSX(ev.offsetX) - 1.2;
-        this.y = Math.round((this.setSY(ev.offsetY)) / 10 + 1) * 10 - 3;
+        this.selection.x = this.setSX(ev.offsetX) - 1.2;
+        this.selection.y = Math.round((this.setSY(ev.offsetY)) / 10 + 1) * 10 - 3;
+        this.selection.line = null;
+        this.selection.ex = null;
+        this.selection.di = null;
         break;
       }
       case "ex": {
-        this.y = this.lines[this.ex[id].line].y + 17.2
-          //+ 
-          //(this.ex[this.ex[id].pe].y) * this.hc 
-          //+ 
-          //(this.ex[this.ex[id].pe].t - this.ex[id].h) * this.ex[id].ch * this.hc
-          +
-          (this.ex[id].y + this.ex[id].t) * this.hc;
-        this.x = this.lines[this.ex[id].line].x + this.ex[this.ex[id].pe].x * this.c + this.di[this.ex[id].pd].x * this.c + this.ex[id].cs * this.c + 7;
+        this.selection.y = this.lines[this.ex[id].line].y + 17.2 + (this.ex[id].y + this.ex[id].t) * this.hc;
+        this.selection.x = this.lines[this.ex[id].line].x + this.ex[this.ex[id].pe].x * this.c + this.di[this.ex[id].pd].x * this.c + this.ex[id].cs * this.c + 7;
+        this.selection.line = this.ex[id].line;
+        this.selection.ex = id;
+        this.selection.di = null;
         break;
       }
       default: {
