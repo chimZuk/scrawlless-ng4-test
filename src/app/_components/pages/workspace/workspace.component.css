@@ -101,7 +101,8 @@ text, line {
   cursor: pointer; }
 
 .element:hover .expression, .number:hover .expression {
-  stroke: #ed7e28; }
+  stroke: #ed7e28;
+  stroke-width: 2; }
 
 .expression:hover {
   cursor: text; }

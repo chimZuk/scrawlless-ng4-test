@@ -70,103 +70,170 @@ export class WorkspaceComponent implements OnInit {
       pe: 0,
       s: 0,
       value: "",
-      text: ""
+      text: "",
+      type: null
     },
     1: {
       line: 0,
-      x: 1,
+      x: 0,
       pe: 1,
-      s: 1,
-      value: "1",
-      text: "&#xe900;"
+      s: 2,
+      value: "-1",
+      text: "&#xe90b;&#xe900;",
+      type: "digit"
     },
     2: {
-      line: 0,
-      x: 1,
-      pe: "2",
-      s: 1,
-      value: "2",
-      text: "&#xe901;"
-    },
-    3: {
-      line: 0,
-      x: 1,
-      pe: "3",
-      s: 1,
-      value: "3",
-      text: "&#xe902;"
-    },
-    4: {
-      line: 0,
-      x: 1,
-      pe: "4",
-      s: 1,
-      value: "4",
-      text: "&#xe903;"
-    },
-    5: {
-      line: 0,
-      x: 1,
-      pe: "5",
-      s: 1,
-      value: "5",
-      text: "&#xe904;"
-    },
-    6: {
-      line: 0,
-      x: 1,
-      pe: "6",
-      s: 1,
-      value: "6",
-      text: "&#xe905;"
-    },
-    7: {
-      line: 0,
-      x: 1,
-      pe: "7",
-      s: 1,
-      value: "7",
-      text: "&#xe906;"
-    },
-    8: {
-      line: 1,
-      x: 1,
-      pe: 0,
-      s: 1,
-      value: "8",
-      text: "&#xe907;"
-    },
-    9: {
-      line: 1,
-      x: 1,
-      pe: "9",
-      s: 1,
-      value: "9",
-      text: "&#xe908;"
-    },
-    10: {
-      line: 1,
-      x: 1,
-      pe: "10",
-      s: 2,
-      value: "10",
-      text: "&#xe900;&#xe909;"
-    },
-    100: {
-      line: 0,
-      x: 2,
-      pe: 2,
-      s: 1,
-      value: "-",
-      text: "&#xe90b;"
-    },
-    101: {
       line: 0,
       x: 2,
       pe: 1,
       s: 1,
       value: "+",
-      text: "&#xe90a;"
+      text: "&#xe90a;",
+      type: "operator"
+    },
+    3: {
+      line: 0,
+      x: 3,
+      pe: 1,
+      s: 5,
+      value: "",
+      text: "",
+      type: "fraction"
+    },
+    4: {
+      line: 0,
+      x: 8,
+      pe: 1,
+      s: 1,
+      value: "+",
+      text: "&#xe90a;",
+      type: "operator"
+    },
+    5: {
+      line: 0,
+      x: 9,
+      pe: 1,
+      s: 1,
+      value: "8",
+      text: "&#xe907;",
+      type: "digit"
+    },
+    6: {
+      line: 0,
+      x: 10,
+      pe: 1,
+      s: 1,
+      value: "",
+      text: "",
+      type: "fraction"
+    },
+    7: {
+      line: 0,
+      x: 0,
+      pe: 2,
+      s: 1,
+      value: "2",
+      text: "&#xe901;",
+      type: "digit"
+    },
+    8: {
+      line: 0,
+      x: 1,
+      pe: 2,
+      s: 1,
+      value: "-",
+      text: "&#xe90b;",
+      type: "operator"
+    },
+    9: {
+      line: 0,
+      x: 2,
+      pe: 2,
+      s: 3,
+      value: "",
+      text: "",
+      type: "fraction"
+    },
+    10: {
+      line: 0,
+      x: 0,
+      pe: 4,
+      s: 1,
+      value: "4",
+      text: "&#xe903;",
+      type: "digit"
+    },
+    11: {
+      line: 0,
+      x: 0,
+      pe: 5,
+      s: 1,
+      value: "5",
+      text: "&#xe904;",
+      type: "digit"
+    },
+    12: {
+      line: 0,
+      x: 1,
+      pe: 5,
+      s: 1,
+      value: "*",
+      text: "&#xe90c;",
+      type: "operator"
+    },
+    13: {
+      line: 0,
+      x: 2,
+      pe: 5,
+      s: 1,
+      value: "",
+      text: "",
+      type: "fraction"
+    },
+    14: {
+      line: 0,
+      x: 0,
+      pe: 6,
+      s: 1,
+      value: "6",
+      text: "&#xe905;",
+      type: "digit"
+    },
+    15: {
+      line: 0,
+      x: 0,
+      pe: 7,
+      s: 1,
+      value: "7",
+      text: "&#xe906;",
+      type: "digit"
+    },
+    16: {
+      line: 0,
+      x: 0,
+      pe: 3,
+      s: 1,
+      value: "3",
+      text: "&#xe902;",
+      type: "digit"
+    },
+    17: {
+      line: 0,
+      x: 0,
+      pe: 8,
+      s: 1,
+      value: "8",
+      text: "&#xe907;",
+      type: "digit"
+    },
+    18: {
+      line: 0,
+      x: 0,
+      pe: 9,
+      s: 1,
+      value: "9",
+      text: "&#xe908;",
+      type: "digit"
     }
   }
 
@@ -176,26 +243,27 @@ export class WorkspaceComponent implements OnInit {
       x: 0,
       y: 0,
       b: 0,
-      t: 0,
+      t: -1,
       h: 0,
       pf: 0,
       pe: 0,
-      cf: 0,
+      pd: 0,
       ch: 1, zn: 0,
       s: 0
     },
     1: {
       line: 0,
-      x: 1,
+      x: 0,
       y: 0,
       b: 1,
       t: 5,
       h: 8,
       pf: 0,
       pe: 0,
-      cf: 1,
+      pd: 0,
       ch: "0", zn: "1",
-      s: 6
+      s: 11,
+      cs: 11
     },
     2: {
       line: 0,
@@ -204,10 +272,12 @@ export class WorkspaceComponent implements OnInit {
       b: 3,
       t: 1,
       h: 6,
-      pf: 1,
-      pe: "1",
+      pf: 0,
+      pe: 1,
+      pd: 3,
       ch: "1", zn: "0",
-      s: 4
+      s: 5,
+      cs: 5
     },
     3: {
       line: 0,
@@ -216,151 +286,133 @@ export class WorkspaceComponent implements OnInit {
       b: 0,
       t: 0,
       h: 2,
-      pf: "1",
-      pe: "1",
+      pf: 0,
+      pe: 1,
+      pd: 3,
       ch: "0", zn: "1",
-      s: 1
+      s: 5,
+      cs: 1
     },
     4: {
       line: 0,
-      x: 4,
+      x: 5,
       y: 0,
       b: 0,
       t: 0,
       h: 2,
-      pf: "2",
-      pe: "2",
+      pf: 0,
+      pe: 2,
+      pd: 9,
       ch: "1", zn: "0",
-      s: 1
+      s: 3,
+      cs: 1
     },
     5: {
       line: 0,
-      x: 4,
-      y: 2,
-      b: 1,
-      t: 1,
-      h: 4,
-      pf: "2",
-      pe: "2",
-      ch: "0", zn: "1",
-      s: 2
-    },
-    6: {
-      line: 0,
       x: 5,
       y: 2,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: "3",
-      pe: "5",
-      ch: "1", zn: "0",
-      s: 1
-    },
-    7: {
-      line: 0,
-      x: 5,
-      y: 4,
-      b: 0,
-      t: 0,
-      h: 2,
-      pf: "3",
-      pe: "5",
-      ch: "0", zn: "1",
-      s: 1
-    },
-    8: {
-      line: 1,
-      x: 1,
-      y: 0,
       b: 1,
       t: 1,
       h: 4,
       pf: 0,
-      pe: 0,
+      pe: 2,
+      pd: 9,
       ch: "0", zn: "1",
-      s: 3
+      s: 3,
+      cs: 3
     },
-    9: {
-      line: 1,
-      x: 2,
-      y: 0,
+    6: {
+      line: 0,
+      x: 7,
+      y: 2,
       b: 0,
       t: 0,
       h: 2,
-      pf: 4,
-      pe: "8",
+      pf: 0,
+      pe: 5,
+      pd: 13,
       ch: "1", zn: "0",
-      s: 1
+      s: 1,
+      cs: 1
     },
-    10: {
-      line: 1,
-      x: 2,
+    7: {
+      line: 0,
+      x: 7,
+      y: 4,
+      b: 0,
+      t: 0,
+      h: 2,
+      pf: 0,
+      pe: 5,
+      pd: 13,
+      ch: "0", zn: "1",
+      s: 1,
+      cs: 1
+    },
+    8: {
+      line: 0,
+      x: 10,
+      y: 4,
+      b: 0,
+      t: 0,
+      h: 2,
+      pf: 0,
+      pe: 1,
+      pd: 6,
+      ch: "1", zn: "0",
+      s: 1,
+      cs: 1
+    },
+    9: {
+      line: 0,
+      x: 10,
       y: 6,
       b: 0,
       t: 0,
       h: 2,
-      pf: "4",
-      pe: "8",
+      pf: 0,
+      pe: 1,
+      pd: 6,
       ch: "0", zn: "1",
-      s: 1
+      s: 1,
+      cs: 1
     }
   }
 
   fr: any = {
     0: {
-      x: 0,
-      y: 0,
-      h: 0,
-      pf: 0,
       pe: "0",
+      pd: "0",
       ch: "0",
       zn: "0",
-      s: 0,
       isActive: 0
     },
     1: {
-      x: 0,
-      y: 6,
-      h: 6,
-      pf: "0",
       pe: "1",
+      pd: "3",
       ch: "2",
       zn: "3",
-      s: 5,
       isActive: 1
     },
     2: {
-      x: 0,
-      y: 2,
-      h: 2,
-      pf: "1",
       pe: "2",
+      pd: "9",
       ch: "4",
       zn: "5",
-      s: 3,
       isActive: 1
     },
     3: {
-      x: 0,
-      y: 4,
-      h: 2,
-      pf: "2",
       pe: "5",
+      pd: "13",
       ch: "6",
       zn: "7",
-      s: 1,
       isActive: 1
     },
     4: {
-      x: 0,
-      y: 2,
-      h: 2,
-      pf: "0",
-      pe: "8",
-      ch: "9",
-      zn: "10",
-      s: 2,
+      pe: "1",
+      pd: "6",
+      ch: "8",
+      zn: "9",
       isActive: 1
     }
   }
@@ -368,26 +420,18 @@ export class WorkspaceComponent implements OnInit {
   lines: any = [
     {
       id: "0",
-      y: 157,
-      x: 200,
-      fractions: [1, 2, 3],
-      expressions: [1, 2, 3, 4, 5, 6, 7],
-      digits: [1, 2, 3, 4, 5, 6, 7, 100, 101]
-    },
-    {
-      id: "1",
-      y: 337,
-      x: 200,
-      fractions: [4],
-      expressions: [8, 9, 10],
-      digits: [8, 9, 10]
+      y: 200,
+      x: 260,
+      fractions: [1, 2, 3, 4],
+      expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
     }
   ]
 
   elements: any = {
     fractions: [1, 2, 3, 4],
-    expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 100, 101]
+    expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
   }
 
   @ViewChild('container') container: ElementRef;
@@ -534,6 +578,30 @@ export class WorkspaceComponent implements OnInit {
     }
   }
 
+  setMargin(exp) {
+    //return this.ex[exp].t + this.ex[exp].b / 2 >> 0;
+    return 0;
+  }
+
+  setAlign(dig) {
+    var di = this.di[dig];
+    switch (di.type) {
+      case "digit": {
+        return ((20 * di.s) - (di.s * 13)) / 2;
+      }
+      case "operator": {
+        return ((20 * di.s) - (di.s * 16)) / 2;
+      }
+      case "fraction": {
+        return 0;
+      }
+      default: {
+        break;
+      }
+    }
+    return 0;
+  }
+
   setCursor(ev, element, id) {
     switch (element) {
       case "canvas": {
@@ -541,9 +609,15 @@ export class WorkspaceComponent implements OnInit {
         this.y = Math.round((this.setSY(ev.offsetY)) / 10 + 1) * 10 - 3;
         break;
       }
-      case "di": {
-        this.y = this.setExpression(id, 'y');
-        this.x = this.setExpression(id, 'x') + this.ex[id].s * this.c + 3;
+      case "ex": {
+        this.y = this.lines[this.ex[id].line].y + 17.2
+          //+ 
+          //(this.ex[this.ex[id].pe].y) * this.hc 
+          //+ 
+          //(this.ex[this.ex[id].pe].t - this.ex[id].h) * this.ex[id].ch * this.hc
+          +
+          (this.ex[id].y + this.ex[id].t) * this.hc;
+        this.x = this.lines[this.ex[id].line].x + this.ex[this.ex[id].pe].x * this.c + this.di[this.ex[id].pd].x * this.c + this.ex[id].cs * this.c + 7;
         break;
       }
       default: {

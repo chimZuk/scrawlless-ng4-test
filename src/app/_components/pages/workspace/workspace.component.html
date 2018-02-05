@@ -25,52 +25,41 @@
             <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="500" cy="150" r="50" stroke="green" stroke-width="1" fill="yellow" class="" (click)="select($event)" />
             <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="400" cy="500" r="80" stroke="green" stroke-width="1" fill="yellow" class="" (click)="select($event)" />
 
-            <!--<g [attr.filter]="'url(' + absUrl + '#f1)'">                
-            <text x = "217" y = "257" font-family = "scwlsWorkspace" font-size = "16">&#xe902;&#xe90b;&#xe903;</text>
-            <line x1="217" y1="240" x2="261" y2="240" stroke = "#000" stroke-linecap = "round" stroke-miterlimit = "10" stroke-width = "2"/>
-            <text x = "260" y = "20" font-family = "scwlsWorkspace" font-size = "16">&#xe904;&#xe90c;&#xe905;&#xe90e;</text>
-            <text x = "280" y = "20" font-family = "scwlsWorkspace" font-size = "16">&#xe906;&#xe90f;&#xe907;&#xe90d;&#xe908;&#xe910;&#xe909;&#xe90e;</text>
-            </g>-->
-
-            <!--<g *ngFor="let exp of content.expressions; let i = index" [attr.filter]="'url(' + absUrl + '#f1)'">
-                    <text class="number" *ngFor="let item of exp.numbers; let i = index" [attr.x] = "item.x + exp.x" [attr.y] = "exp.y" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="item.text"></text>
-                    <text class="operator" *ngFor="let item of exp.operators; let i = index" [attr.x] = "item.x + exp.x" [attr.y] = "exp.y" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="item.text"></text>
-                    <text class="eq" *ngFor="let item of exp.eq; let i = index" [attr.x] = "item.x + exp.x" [attr.y] = "exp.y" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="item.text"></text>
-                </g>-->
-
     <g *ngFor="let line of lines; let i = index" [attr.filter]="'url(' + absUrl + '#f1)'">
         <g class="element" *ngFor="let exp of line.expressions; let j = index">
             <rect
             (click)="setCursor($event, 'ex', exp);"
-            [attr.x] = "setExpression(exp, 'x') - 2" 
-            [attr.y] = "
-            (line.y + fr[ex[exp].pf].y * hc + ex[exp].t * hc)
-            * 
-            ex[exp].zn 
+            [attr.x] = "line.x + ex[ex[exp].pe].x * c + di[ex[exp].pd].x * c" 
+            [attr.y] = 
+            "
+            line.y 
             + 
-            (line.y + fr[ex[exp].pf].y * hc - (ex[exp].b + 2) * hc)
-            * 
-            ex[exp].ch
-            -
-            ex[exp].t * hc - 2 * hc + 3
+            (ex[ex[exp].pe].y) * hc 
+            + 
+            (ex[ex[exp].pe].t - ex[exp].h + 1) * ex[exp].ch * hc
+            + 
+            (ex[ex[exp].pe].t + 1) * ex[exp].zn * hc
             "  
-            [attr.width]="ex[exp].s * c + 20" 
+            [attr.width]="ex[exp].s * c + setMargin(exp) * 10" 
             [attr.height]="ex[exp].h * hc" 
-            class="expression" stroke="transparent" fill="transparent" stroke-width="2"/>
+            class="expression" stroke="transparent" fill="transparent" stroke-width="1"/>
         </g>
         <g class="element" *ngFor="let dig of line.digits; let j = index">
             <text 
-            [attr.x] = "line.x + (ex[di[dig].pe].x - 1) * c + (di[dig].x - 1) * c " 
-            [attr.y] = "line.y + ex[di[dig].pe].y * hc + ex[di[dig].pe].t * hc"
+            [attr.x] = "
+            line.x + ex[di[dig].pe].x * c + di[dig].x * c 
+            +
+            setAlign(dig)
+            " 
+            [attr.y] = "line.y + ex[di[dig].pe].y * hc + ex[di[dig].pe].t * hc + 17.2"
             class="number" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="di[dig].text"></text>
-
         </g>
         <line 
         *ngFor="let fra of line.fractions; let j = index" 
-        [attr.x1]="line.x + ex[fr[fra].pe].x * c - 1" 
-        [attr.y1]="line.y + fr[fra].y * hc - 17" 
-        [attr.x2]="line.x + ex[fr[fra].pe].x * c + (fr[fra].s) * c + 1" 
-        [attr.y2]="line.y + fr[fra].y * hc - 17" 
+        [attr.x1]="line.x + (ex[di[fr[fra].pd].pe].x + di[fr[fra].pd].x) * c - 1" 
+        [attr.y1]="line.y + (ex[fr[fra].pe].y + ex[di[fr[fra].pd].pe].t + 1) * hc" 
+        [attr.x2]="line.x + (ex[di[fr[fra].pd].pe].x + di[fr[fra].pd].x + di[fr[fra].pd].s) * c + 1" 
+        [attr.y2]="line.y + (ex[fr[fra].pe].y + ex[di[fr[fra].pd].pe].t + 1) * hc" 
         class="fr" stroke = "#000" stroke-linecap = "round" stroke-miterlimit = "10" stroke-width = "2"/>
    </g>
 
