@@ -25,14 +25,14 @@
             <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="500" cy="150" r="50" stroke="green" stroke-width="1" fill="yellow" class="" (click)="select($event)" />
             <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="400" cy="500" r="80" stroke="green" stroke-width="1" fill="yellow" class="" (click)="select($event)" />
 
-    <g *ngFor="let line of lines; let i = index" [attr.filter]="'url(' + absUrl + '#f1)'">
-        <g class="element" *ngFor="let exp of line.expressions; let j = index">
+    <g *ngFor="let line of elements.lines; let i = index" [attr.filter]="'url(' + absUrl + '#f1)'">
+        <g class="element" *ngFor="let exp of lines[line].expressions; let j = index">
             <rect
             (click)="setCursor($event, 'ex', exp);"
-            [attr.x] = "line.x + ex[ex[exp].pe].x * c + di[ex[exp].pd].x * c" 
+            [attr.x] = "lines[line].x + ex[ex[exp].pe].x * c + di[ex[exp].pd].x * c" 
             [attr.y] = 
             "
-            line.y 
+            lines[line].y 
             + 
             (ex[ex[exp].pe].y) * hc 
             + 
@@ -44,22 +44,22 @@
             [attr.height]="ex[exp].h * hc" 
             class="expression" stroke="transparent" fill="transparent" stroke-width="1"/>
         </g>
-        <g class="element" *ngFor="let dig of line.digits; let j = index">
+        <g class="element" *ngFor="let dig of lines[line].digits; let j = index">
             <text 
             [attr.x] = "
-            line.x + ex[di[dig].pe].x * c + di[dig].x * c 
+            lines[line].x + ex[di[dig].pe].x * c + di[dig].x * c 
             +
             setAlign(dig)
             " 
-            [attr.y] = "line.y + ex[di[dig].pe].y * hc + ex[di[dig].pe].t * hc + 17.2"
+            [attr.y] = "lines[line].y + ex[di[dig].pe].y * hc + ex[di[dig].pe].t * hc + 17.2"
             class="number" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="di[dig].text"></text>
         </g>
         <line 
-        *ngFor="let fra of line.fractions; let j = index" 
-        [attr.x1]="line.x + (ex[di[fr[fra].pd].pe].x + di[fr[fra].pd].x) * c - 1" 
-        [attr.y1]="line.y + (ex[fr[fra].pe].y + ex[di[fr[fra].pd].pe].t + 1) * hc" 
-        [attr.x2]="line.x + (ex[di[fr[fra].pd].pe].x + di[fr[fra].pd].x + di[fr[fra].pd].s) * c + 1" 
-        [attr.y2]="line.y + (ex[fr[fra].pe].y + ex[di[fr[fra].pd].pe].t + 1) * hc" 
+        *ngFor="let fra of lines[line].fractions; let j = index" 
+        [attr.x1]="lines[line].x + (ex[di[fr[fra].pd].pe].x + di[fr[fra].pd].x) * c - 1" 
+        [attr.y1]="lines[line].y + (ex[fr[fra].pe].y + ex[di[fr[fra].pd].pe].t + 1) * hc" 
+        [attr.x2]="lines[line].x + (ex[di[fr[fra].pd].pe].x + di[fr[fra].pd].x + di[fr[fra].pd].s) * c + 1" 
+        [attr.y2]="lines[line].y + (ex[fr[fra].pe].y + ex[di[fr[fra].pd].pe].t + 1) * hc" 
         class="fr" stroke = "#000" stroke-linecap = "round" stroke-miterlimit = "10" stroke-width = "2"/>
    </g>
 
