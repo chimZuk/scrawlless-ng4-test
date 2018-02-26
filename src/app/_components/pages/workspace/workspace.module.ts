@@ -3,6 +3,8 @@ import { WorkspaceComponent } from './workspace.component';
 
 import { WorkspaceRouter } from './workspace.router'
 
+import { RootComponent } from '../../workspace-elements/root/root.component';
+
 import { SharedModule } from '../../../_modules/shared/shared.module'
 
 @NgModule({
@@ -11,8 +13,11 @@ import { SharedModule } from '../../../_modules/shared/shared.module'
     SharedModule
   ],
   declarations: [
-    WorkspaceComponent
+    WorkspaceComponent,
+    RootComponent
   ],
-  providers: []
+  providers: [
+    RootComponent
+  ]
 })
 export class WorkspaceModule { }

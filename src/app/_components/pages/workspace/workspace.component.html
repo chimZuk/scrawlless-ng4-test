@@ -1,3 +1,6 @@
+<style type="text/css">
+	/deep/.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+</style>
 <svg version="1.1" id="cover" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class="" [attr.width]="0.9 * vw" [attr.height]="0.9 * 1.25 * vw" viewBox="0 0 800 1000">   
 
         <defs>
@@ -21,11 +24,14 @@
             <line x1="800" y1="1000" x2="800" y2="0" stroke="#69b0b7" stroke-width="1" />
             
             <line x1="700.55" y1="0" x2="700.55" y2="1000" stroke="#ed7e28" stroke-width="1.1" />
-
+            
             <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="500" cy="150" r="50" stroke="green" stroke-width="1" fill="yellow" class="" (click)="select($event)" />
             <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="400" cy="500" r="80" stroke="green" stroke-width="1" fill="yellow" class="" (click)="select($event)" />
-
     <g *ngFor="let line of elements.lines; let i = index" [attr.filter]="'url(' + absUrl + '#f1)'">
+            <!--g class="element number" [attr.filter]="'url(' + absUrl + '#f1)'">
+                    <text x = "340" y = "218" font-family = "scwlsWorkspace" font-size = "20">&#xe913;</text>
+                    <text x = "360" y = "218" font-family = "scwlsWorkspace" font-size = "20">&#xe916;</text>
+                    </g>-->
         <g class="element" *ngFor="let exp of lines[line].expressions; let j = index">
             <rect
             (click)="setCursor($event, 'ex', exp);"
@@ -46,6 +52,8 @@
             [attr.height]="ex[exp].h * hc" 
             class="expression" stroke="transparent" fill="transparent" stroke-width="1"/>
         </g>
+        <g [innerHTML]="root(340, 200, 5, 2, 1)" [attr.filter]="'url(' + absUrl + '#f1)'">
+        </g>
         <g class="element" *ngFor="let dig of lines[line].digits; let j = index">
             <text 
             [attr.x] = "
@@ -54,7 +62,7 @@
             setAlign(dig)
             " 
             [attr.y] = "lines[line].y + ex[di[dig].pe].y * hc + ex[di[dig].pe].t * hc + 17.2"
-            class="number" font-family = "scwlsWorkspace" font-size = "16" [innerHTML]="di[dig].text"></text>
+            class="number" font-family = "scwlsWorkspace" [attr.font-size] = "16" [innerHTML]="di[dig].text"></text>
         </g>
         <line 
         *ngFor="let fra of lines[line].fractions; let j = index" 

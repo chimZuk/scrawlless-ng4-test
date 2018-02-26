@@ -2,9 +2,12 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit }
 
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { RootComponent } from '../../workspace-elements/root/root.component';
+
 import { Location } from '@angular/common';
 
 import * as interact from 'interactjs';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'workspace',
@@ -15,7 +18,9 @@ export class WorkspaceComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private rootElement: RootComponent,
+    private sanitizer: DomSanitizer
   ) { }
 
   brows = function () {
@@ -266,6 +271,46 @@ export class WorkspaceComponent implements OnInit {
       value: "9",
       text: "&#xe908;",
       type: "digit"
+    },
+    19: {
+      line: 0,
+      x: 1,
+      pe: 3,
+      s: 2,
+      pos: 2,
+      value: "",
+      text: "",
+      type: "power"
+    },
+    20: {
+      line: 0,
+      x: 0,
+      pe: 10,
+      s: 1,
+      pos: 1,
+      value: "3",
+      text: "&#xe902;",
+      type: "digit"
+    },
+    21: {
+      line: 0,
+      x: 2,
+      pe: 3,
+      s: 1,
+      pos: 2,
+      value: "+",
+      text: "&#xe90a;",
+      type: "digit"
+    },
+    22: {
+      line: 0,
+      x: 3,
+      pe: 3,
+      s: 1,
+      pos: 3,
+      value: "6",
+      text: "&#xe905;",
+      type: "digit"
     }
   }
   //endregion
@@ -295,9 +340,9 @@ export class WorkspaceComponent implements OnInit {
       line: 0,
       x: 0,
       y: 0,
-      b: 1,
+      b: 3,
       t: 5,
-      h: 8,
+      h: 9,
       pe: 0,
       pd: 0,
       fr: 0,
@@ -328,16 +373,16 @@ export class WorkspaceComponent implements OnInit {
       x: 3,
       y: 6,
       b: 0,
-      t: 0,
-      h: 2,
+      t: 1,
+      h: 3,
       pe: 1,
       pd: 3,
       fr: 1,
       ch: 0, zn: 1, osn: 0,
       s: 8,
-      cs: 1,
-      ce: [],
-      cd: [16]
+      cs: 4,
+      ce: [10],
+      cd: [16, 19]
     },
     4: {
       line: 0,
@@ -434,6 +479,22 @@ export class WorkspaceComponent implements OnInit {
       cs: 1,
       ce: [],
       cd: [18]
+    },
+    10: {
+      line: 0,
+      x: 4,
+      y: 6,
+      b: 0,
+      t: 0,
+      h: 2,
+      pe: 3,
+      pd: 19,
+      fr: 0,
+      ch: 0, zn: 0, osn: 0,
+      s: 2,
+      cs: 1,
+      ce: [],
+      cd: []
     }
   }
   //endregion
@@ -489,8 +550,8 @@ export class WorkspaceComponent implements OnInit {
       y: 200,
       x: 260,
       fractions: [1, 2, 3, 4],
-      expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+      expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
     }
   }
 
@@ -498,7 +559,7 @@ export class WorkspaceComponent implements OnInit {
     lines: [0],
     fractions: [1, 2, 3, 4],
     expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
   }
 
   @ViewChild('container') container: ElementRef;
@@ -511,6 +572,11 @@ export class WorkspaceComponent implements OnInit {
     //this.vh = window.innerHeight;
   }
 
+  root(x, y, width, height, powerWidth): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(this.rootElement.getRoot(x, y, width, height, powerWidth));
+  }
+
+  //region
   setChildExpressionY(ch) {
     for (let i = 0; i < ch.length; i++) {
       this.ex[ch[i]].y += 2;
@@ -543,6 +609,7 @@ export class WorkspaceComponent implements OnInit {
       }
     }
   }
+
 
   writeFr() {
     var exp = this.selection.ex;
@@ -930,7 +997,7 @@ export class WorkspaceComponent implements OnInit {
     return n * (cA[3] / cH);
   }
 
-
+//endregion
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
