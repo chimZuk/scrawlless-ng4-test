@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit }
 
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { RootComponent } from '../../workspace-elements/root/root.component';
+import { AlgebraComponent } from '../../workspace-elements/algebra/algebra.component';
 
 import { Location } from '@angular/common';
 
@@ -19,7 +19,7 @@ export class WorkspaceComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private location: Location,
-    private rootElement: RootComponent,
+    private algebra: AlgebraComponent,
     private sanitizer: DomSanitizer
   ) { }
 
@@ -573,8 +573,14 @@ export class WorkspaceComponent implements OnInit {
   }
 
   root(x, y, width, height, powerWidth): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(this.rootElement.getRoot(x, y, width, height, powerWidth));
+    return this.sanitizer.bypassSecurityTrustHtml(this.algebra.getRoot(x, y, width, height, powerWidth));
   }
+
+  power(width, height, powerWidth, base, power): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(this.algebra.getPower(width, height, powerWidth, base, power));
+  }
+
+  expr: SafeHtml;
 
   //region
   setChildExpressionY(ch) {
@@ -1002,6 +1008,8 @@ export class WorkspaceComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });
+
+    this.expr = this.sanitizer.bypassSecurityTrustHtml(this.algebra.getExpression());
 
     this.vw = window.innerWidth;
     this.vh = window.innerHeight;

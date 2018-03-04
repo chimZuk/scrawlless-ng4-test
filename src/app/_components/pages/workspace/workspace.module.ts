@@ -3,7 +3,7 @@ import { WorkspaceComponent } from './workspace.component';
 
 import { WorkspaceRouter } from './workspace.router'
 
-import { RootComponent } from '../../workspace-elements/root/root.component';
+import { AlgebraComponent } from '../../workspace-elements/algebra/algebra.component';
 
 import { SharedModule } from '../../../_modules/shared/shared.module'
 
@@ -14,10 +14,10 @@ import { SharedModule } from '../../../_modules/shared/shared.module'
   ],
   declarations: [
     WorkspaceComponent,
-    RootComponent
+    AlgebraComponent
   ],
   providers: [
-    RootComponent
+    AlgebraComponent
   ]
 })
 export class WorkspaceModule { }
