@@ -74,252 +74,6 @@ export class WorkspaceComponent implements OnInit {
   c: number = 20;
 
 
-  //Digits defenition
-  //---->>>>
-  //#region
-  di: any = {
-    0: {
-      line: 0,
-      x: 0,
-      pos: 0,
-      pe: 0,
-      s: 0,
-      value: "",
-      text: "",
-      type: null
-    },
-    1: {
-      line: 0,
-      x: 0,
-      pe: 1,
-      s: 2,
-      pos: 1,
-      value: "-1",
-      text: "&#xe90b;&#xe900;",
-      type: "digit"
-    },
-    2: {
-      line: 0,
-      x: 2,
-      pe: 1,
-      s: 1,
-      pos: 2,
-      value: "+",
-      text: "&#xe90a;",
-      type: "operator"
-    },
-    3: {
-      line: 0,
-      x: 3,
-      pe: 1,
-      s: 8,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 1
-    },
-    4: {
-      line: 0,
-      x: 11,
-      pe: 1,
-      s: 1,
-      pos: 4,
-      value: "+",
-      text: "&#xe90a;",
-      type: "operator"
-    },
-    5: {
-      line: 0,
-      x: 12,
-      pe: 1,
-      s: 1,
-      pos: 5,
-      value: "8",
-      text: "&#xe907;",
-      type: "digit"
-    },
-    6: {
-      line: 0,
-      x: 13,
-      pe: 1,
-      s: 2,
-      pos: 6,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 4
-    },
-    7: {
-      line: 0,
-      x: 0,
-      pe: 2,
-      s: 1,
-      pos: 1,
-      value: "2",
-      text: "&#xe901;",
-      type: "digit"
-    },
-    8: {
-      line: 0,
-      x: 1,
-      pe: 2,
-      s: 1,
-      pos: 2,
-      value: "-",
-      text: "&#xe90b;",
-      type: "operator"
-    },
-    9: {
-      line: 0,
-      x: 2,
-      pe: 2,
-      s: 5,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 2
-    },
-    10: {
-      line: 0,
-      x: 0,
-      pe: 4,
-      s: 1,
-      pos: 1,
-      value: "4",
-      text: "&#xe903;",
-      type: "digit"
-    },
-    11: {
-      line: 0,
-      x: 0,
-      pe: 5,
-      s: 1,
-      pos: 1,
-      value: "5",
-      text: "&#xe904;",
-      type: "digit"
-    },
-    12: {
-      line: 0,
-      x: 1,
-      pe: 5,
-      s: 1,
-      pos: 2,
-      value: "*",
-      text: "&#xe90c;",
-      type: "operator"
-    },
-    13: {
-      line: 0,
-      x: 2,
-      pe: 5,
-      s: 2,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 3
-    },
-    14: {
-      line: 0,
-      x: 0,
-      pe: 6,
-      s: 1,
-      pos: 1,
-      value: "6",
-      text: "&#xe905;",
-      type: "digit"
-    },
-    15: {
-      line: 0,
-      x: 0,
-      pe: 7,
-      s: 1,
-      pos: 1,
-      value: "7",
-      text: "&#xe906;",
-      type: "digit"
-    },
-    16: {
-      line: 0,
-      x: 0,
-      pe: 3,
-      s: 1,
-      pos: 1,
-      value: "3",
-      text: "&#xe902;",
-      type: "digit"
-    },
-    17: {
-      line: 0,
-      x: 0,
-      pe: 8,
-      s: 1,
-      pos: 1,
-      value: "8",
-      text: "&#xe907;",
-      type: "digit"
-    },
-    18: {
-      line: 0,
-      x: 0,
-      pe: 9,
-      s: 1,
-      pos: 1,
-      value: "9",
-      text: "&#xe908;",
-      type: "digit"
-    },
-    19: {
-      line: 0,
-      x: 1,
-      pe: 3,
-      s: 2,
-      pos: 2,
-      value: "",
-      text: "",
-      type: "power"
-    },
-    20: {
-      line: 0,
-      x: 0,
-      pe: 10,
-      s: 1,
-      pos: 1,
-      value: "3",
-      text: "&#xe902;",
-      type: "digit"
-    },
-    21: {
-      line: 0,
-      x: 2,
-      pe: 3,
-      s: 1,
-      pos: 2,
-      value: "+",
-      text: "&#xe90a;",
-      type: "digit"
-    },
-    22: {
-      line: 0,
-      x: 3,
-      pe: 3,
-      s: 1,
-      pos: 3,
-      value: "6",
-      text: "&#xe905;",
-      type: "digit"
-    }
-  }
-  //endregion
-  //----<<<<
-
-
-  //Expressions defenition
-  //---->>>>
-  //#region
   ex: any = {
     0: {
       line: 0,
@@ -338,11 +92,6 @@ export class WorkspaceComponent implements OnInit {
     },
     1: {
       line: 0,
-      x: 0,
-      y: 0,
-      b: 3,
-      t: 5,
-      h: 9,
       pe: 0,
       pd: 0,
       fr: 0,
@@ -350,15 +99,10 @@ export class WorkspaceComponent implements OnInit {
       s: 16,
       cs: 15,
       ce: [2, 3, 8, 9],
-      cd: [1, 2, 3, 4, 5, 6]
+      cd: [4, 5, 6, 1, 2, 3]
     },
     2: {
       line: 0,
-      x: 3,
-      y: 0,
-      b: 3,
-      t: 1,
-      h: 6,
       pe: 1,
       pd: 3,
       fr: 1,
@@ -370,11 +114,6 @@ export class WorkspaceComponent implements OnInit {
     },
     3: {
       line: 0,
-      x: 3,
-      y: 6,
-      b: 0,
-      t: 1,
-      h: 3,
       pe: 1,
       pd: 3,
       fr: 1,
@@ -382,15 +121,10 @@ export class WorkspaceComponent implements OnInit {
       s: 8,
       cs: 4,
       ce: [10],
-      cd: [16, 19]
+      cd: [16]
     },
     4: {
       line: 0,
-      x: 5,
-      y: 0,
-      b: 0,
-      t: 0,
-      h: 2,
       pe: 2,
       pd: 9,
       fr: 2,
@@ -402,11 +136,6 @@ export class WorkspaceComponent implements OnInit {
     },
     5: {
       line: 0,
-      x: 5,
-      y: 2,
-      b: 1,
-      t: 1,
-      h: 4,
       pe: 2,
       pd: 9,
       fr: 2,
@@ -418,11 +147,6 @@ export class WorkspaceComponent implements OnInit {
     },
     6: {
       line: 0,
-      x: 7,
-      y: 2,
-      b: 0,
-      t: 0,
-      h: 2,
       pe: 5,
       pd: 13,
       fr: 3,
@@ -434,11 +158,6 @@ export class WorkspaceComponent implements OnInit {
     },
     7: {
       line: 0,
-      x: 7,
-      y: 4,
-      b: 0,
-      t: 0,
-      h: 2,
       pe: 5,
       pd: 13,
       fr: 3,
@@ -450,11 +169,6 @@ export class WorkspaceComponent implements OnInit {
     },
     8: {
       line: 0,
-      x: 13,
-      y: 4,
-      b: 0,
-      t: 0,
-      h: 2,
       pe: 1,
       pd: 6,
       fr: 4,
@@ -466,11 +180,6 @@ export class WorkspaceComponent implements OnInit {
     },
     9: {
       line: 0,
-      x: 13,
-      y: 6,
-      b: 0,
-      t: 0,
-      h: 2,
       pe: 1,
       pd: 6,
       fr: 4,
@@ -479,31 +188,187 @@ export class WorkspaceComponent implements OnInit {
       cs: 1,
       ce: [],
       cd: [18]
+    }
+  }
+
+  di: any = {
+    0: {
+      line: 0,
+      pos: 0,
+      pe: 0,
+      s: 0,
+      value: "",
+      text: "",
+      type: null
+    },
+    1: {
+      line: 0,
+      pe: 1,
+      s: 2,
+      pos: 1,
+      value: "-1",
+      text: "&#xe90b;&#xe900;",
+      type: "digit"
+    },
+    2: {
+      line: 0,
+      pe: 1,
+      s: 1,
+      pos: 2,
+      value: "+",
+      text: "&#xe90a;",
+      type: "operator"
+    },
+    3: {
+      line: 0,
+      pe: 1,
+      s: 8,
+      pos: 3,
+      value: "",
+      text: "",
+      type: "fraction",
+      fr: 1
+    },
+    4: {
+      line: 0,
+      pe: 1,
+      s: 1,
+      pos: 4,
+      value: "+",
+      text: "&#xe90a;",
+      type: "operator"
+    },
+    5: {
+      line: 0,
+      pe: 1,
+      s: 1,
+      pos: 5,
+      value: "8",
+      text: "&#xe907;",
+      type: "digit"
+    },
+    6: {
+      line: 0,
+      pe: 1,
+      s: 2,
+      pos: 6,
+      value: "",
+      text: "",
+      type: "fraction",
+      fr: 4
+    },
+    7: {
+      line: 0,
+      pe: 2,
+      s: 1,
+      pos: 1,
+      value: "2",
+      text: "&#xe901;",
+      type: "digit"
+    },
+    8: {
+      line: 0,
+      pe: 2,
+      s: 1,
+      pos: 2,
+      value: "-",
+      text: "&#xe90b;",
+      type: "operator"
+    },
+    9: {
+      line: 0,
+      pe: 2,
+      s: 5,
+      pos: 3,
+      value: "",
+      text: "",
+      type: "fraction",
+      fr: 2
     },
     10: {
       line: 0,
-      x: 4,
-      y: 6,
-      b: 0,
-      t: 0,
-      h: 2,
-      pe: 3,
-      pd: 19,
-      fr: 0,
-      ch: 0, zn: 0, osn: 0,
+      pe: 4,
+      s: 1,
+      pos: 1,
+      value: "4",
+      text: "&#xe903;",
+      type: "digit"
+    },
+    11: {
+      line: 0,
+      pe: 5,
+      s: 1,
+      pos: 1,
+      value: "5",
+      text: "&#xe904;",
+      type: "digit"
+    },
+    12: {
+      line: 0,
+      pe: 5,
+      s: 1,
+      pos: 2,
+      value: "*",
+      text: "&#xe90c;",
+      type: "operator"
+    },
+    13: {
+      line: 0,
+      pe: 5,
       s: 2,
-      cs: 1,
-      ce: [],
-      cd: []
+      pos: 3,
+      value: "",
+      text: "",
+      type: "fraction",
+      fr: 3
+    },
+    14: {
+      line: 0,
+      pe: 6,
+      s: 1,
+      pos: 1,
+      value: "6",
+      text: "&#xe905;",
+      type: "digit"
+    },
+    15: {
+      line: 0,
+      pe: 7,
+      s: 1,
+      pos: 1,
+      value: "7",
+      text: "&#xe906;",
+      type: "digit"
+    },
+    16: {
+      line: 0,
+      pe: 3,
+      s: 1,
+      pos: 1,
+      value: "3",
+      text: "&#xe902;",
+      type: "digit"
+    },
+    17: {
+      line: 0,
+      pe: 8,
+      s: 1,
+      pos: 1,
+      value: "8",
+      text: "&#xe907;",
+      type: "digit"
+    },
+    18: {
+      line: 0,
+      pe: 9,
+      s: 1,
+      pos: 1,
+      value: "9",
+      text: "&#xe908;",
+      type: "digit"
     }
   }
-  //endregion
-  //----<<<<
 
-
-  //Fractions defenition
-  //---->>>>
-  //#region
   fr: any = {
     0: {
       pe: 0,
@@ -541,8 +406,6 @@ export class WorkspaceComponent implements OnInit {
       isActive: 1
     }
   }
-  //endregion
-  //----<<<<
 
 
   lines: any = {
@@ -570,14 +433,6 @@ export class WorkspaceComponent implements OnInit {
   onResize(event) {
     //this.vw = window.innerWidth;
     //this.vh = window.innerHeight;
-  }
-
-  root(x, y, width, height, powerWidth): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(this.algebra.getRoot(x, y, width, height, powerWidth));
-  }
-
-  power(width, height, powerWidth, base, power): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(this.algebra.getPower(width, height, powerWidth, base, power));
   }
 
   expr: SafeHtml;
@@ -616,272 +471,26 @@ export class WorkspaceComponent implements OnInit {
     }
   }
 
-
   writeFr() {
-    var exp = this.selection.ex;
-    var line = this.selection.line;
-    //Add fraction related digit
-    //---->>>>
-    //#region
-    var POS = this.ex[exp].cd.length + 1;
-    var di = {
-      line: line,
-      x: this.ex[exp].cs,
-      pe: exp,
-      s: 1,
-      pos: POS,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: this.elements.fractions.length + 1
+    let newDI = {
+      line: 0,
+      pe: 5,
+      s: 0.6,
+      pos: this.ex[5].cd.length + 1,
+      value: "2",
+      text: "&#xe901;",
+      type: "digit"
     }
-    var newDi = this.elements.digits.length + 1;
-    this.ex[exp].cd.push(newDi);
-    this.elements.digits.push(newDi);
-    this.lines[line].digits.push(newDi);
-    this.di[newDi] = di;
-    //#endregion
-    //----<<<<
-
-    //Modify parent expression height
-    //---->>>>
-    //#region
-    var bottomExpression = false;
-    if (this.ex[exp].zn == 1 && this.ex[this.ex[exp].pe].b - this.ex[exp].h > 0) {
-      bottomExpression = true;
-    }
-    var heightChanged = false;
-    if (this.ex[exp].t == 0) {
-      this.ex[exp].h += 2;
-      this.ex[exp].t++;
-      this.ex[exp].b++;
-      heightChanged = true;
-    }
-    //endregion
-    //----<<<<
-
-    //Add new fraction expressions
-    //---->>>>
-    //#region
-    var ch = {
-      line: line,
-      x: this.ex[exp].x + this.ex[exp].cs,
-      y: 0,
-      b: 0,
-      t: 0,
-      h: 2,
-      pe: exp,
-      pd: newDi,
-      fr: 0,
-      ch: 1, zn: 0, osn: 0,
-      s: 1,
-      cs: 0,
-      ce: [],
-      cd: []
-    }
-    var zn = {
-      line: line,
-      x: this.ex[exp].x + this.ex[exp].cs,
-      y: 0,
-      b: 0,
-      t: 0,
-      h: 2,
-      pe: exp,
-      pd: newDi,
-      fr: 0,
-      ch: 0, zn: 1, osn: 0,
-      s: 1,
-      cs: 0,
-      ce: [],
-      cd: []
-    }
-
-    var topExpression = false;
-    switch (this.ex[exp].ch) {
-      case 1: {
-        var CID = exp;
-        while (CID != 0 && this.ex[CID].zn != 1) {
-          if (this.ex[exp].y > this.ex[CID].y) {
-            topExpression = true;
-          }
-          CID = this.ex[CID].pe;
-        }
-        if (topExpression && heightChanged) {
-          ch.y = this.ex[exp].y - 2;
-          zn.y = this.ex[exp].y;
-          this.ex[exp].y -= 2;
-        } else {
-          ch.y = this.ex[exp].y;
-          zn.y = this.ex[exp].y + 2;
-        }
-        break;
-      }
-      case 0: {
-        ch.y = this.ex[exp].y;
-        zn.y = this.ex[exp].y + 2;
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    var newCH = this.elements.expressions.length + 1;
-    this.elements.expressions.push(newCH);
-    this.lines[line].expressions.push(newCH);
-    this.ex[newCH] = ch;
-    this.ex[exp].ce.push(newCH);
-    var newZN = this.elements.expressions.length + 1;
-    this.elements.expressions.push(newZN);
-    this.lines[line].expressions.push(newZN);
-    this.ex[newZN] = zn;
-    this.ex[exp].ce.push(newZN);
-
-    this.selection.line = this.ex[newCH].line;
-    this.selection.ex = newCH;
-    this.selection.di = null;
-    //#endregion
-    //----<<<<
-
-    //Add fraction line
-    //---->>>>
-    //#region
-    var fr = {
-      pe: exp,
-      pd: newDi,
-      ch: newCH,
-      zn: newZN,
-      isActive: 1
-    }
-    var newFR = this.elements.fractions.length + 1;
-    this.elements.fractions.push(newFR);
-    this.lines[line].fractions.push(newFR);
-    this.fr[newFR] = fr;
-    this.ex[newCH].fr = newFR;
-    this.ex[newZN].fr = newFR;
-    //#endregion
-    //----<<<<
-
-    //Modify parent expression length and content length
-    //---->>>>
-    //#region
-    var lengthChanged = false;
-    this.ex[exp].cs++;
-    if (this.ex[exp].cs == this.ex[exp].s) {
-      this.ex[exp].s++;
-      lengthChanged = true;
-    }
-    //endregion
-    //----<<<<
-
-    //Modify all parent expressions height
-    //---->>>>
-    //#region
-    var CID = exp;
-    if (heightChanged && !topExpression && !bottomExpression) {
-      while (CID != 0) {
-        switch (this.ex[CID].ch) {
-          case 1: {
-            this.ex[this.ex[CID].pe].t += 2;
-            this.ex[this.ex[CID].pe].h += 2;
-            break;
-          }
-          case 0: {
-            if (this.ex[this.ex[CID].pe].b <= this.ex[CID].h - 3) {
-              this.ex[this.ex[CID].pe].b += 2;
-              this.ex[this.ex[CID].pe].h += 2;
-            }
-            break;
-          }
-          default:
-            break;
-        }
-        var childExpressions = [];
-        this.ex[this.ex[CID].pe].ce.forEach(el => {
-          childExpressions.push(el);
-        });
-        var currentExpressionIndex = childExpressions.indexOf(CID);
-        childExpressions.splice(currentExpressionIndex, 1);
-        if (this.ex[CID].zn == 1) {
-          childExpressions = [];
-        }
-        this.setChildExpressionY(childExpressions);
-        CID = this.ex[CID].pe;
-      }
-    } else {
-      if (topExpression) {
-        while (CID != 0) {
-          switch (this.ex[CID].ch) {
-            case 1: {
-              if (this.ex[this.ex[CID].pe].t - (this.ex[CID].h - 1) < 0) {
-                this.ex[this.ex[CID].pe].y -= 2;
-                this.ex[this.ex[CID].pe].t += 2;
-                this.ex[this.ex[CID].pe].h += 2;
-              }
-
-              break;
-            }
-            case 0: {
-              if (this.ex[this.ex[CID].pe].b <= this.ex[CID].h - 3) {
-                this.ex[this.ex[CID].pe].b += 2;
-                this.ex[this.ex[CID].pe].h += 2;
-              }
-              break;
-            }
-            default:
-              break;
-          }
-          CID = this.ex[CID].pe;
-        }
-      }
-    }
-    //endregion
-    //----<<<<
-
-    //Modify all parent expressions length
-    //---->>>>
-    //#region
-    var CID = exp;
-    if (lengthChanged) {
-      while (CID != 0) {
-        if (CID != exp) {
-          this.ex[CID].cs++;
-        }
-
-
-        var childExpressions = [];
-        childExpressions.push(this.fr[this.ex[CID].fr].ch);
-        childExpressions.push(this.fr[this.ex[CID].fr].zn);
-        var currentExpressionIndex = childExpressions.indexOf(exp);
-        if (currentExpressionIndex != -1) {
-          childExpressions.splice(currentExpressionIndex, 1);
-        }
-        this.setChildExpressionS(childExpressions);
-
-
-        var childDigits = [];
-        this.ex[CID].cd.forEach(cd => {
-          childDigits.push(cd);
-        });
-        if (childDigits.length > 0) {
-          this.setChildExpressionX(childDigits, POS);
-        }
-
-        if (this.ex[CID].cs == this.di[this.ex[CID].pd].s) {
-          this.di[this.ex[CID].pd].s++;
-        }
-
-
-        POS = this.di[this.ex[CID].pd].pos;
-        CID = this.ex[CID].pe;
-      }
-    }
-    //endregion
-    //----<<<<
-  }
-
-  writeEx(id) {
-
+    this.di[this.elements.digits.length] = newDI;
+    this.elements.digits.push(this.elements.digits.length);
+    this.ex[5].cd.push(this.elements.digits.length - 1);
+    this.expr = this.sanitizer.bypassSecurityTrustHtml(this.algebra.getExpression({
+      elements: this.elements,
+      lines: this.lines,
+      ex: this.ex,
+      di: this.di,
+      fr: this.fr
+    }));
   }
 
 
@@ -1003,13 +612,19 @@ export class WorkspaceComponent implements OnInit {
     return n * (cA[3] / cH);
   }
 
-//endregion
+  //endregion
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });
 
-    this.expr = this.sanitizer.bypassSecurityTrustHtml(this.algebra.getExpression());
+    this.expr = this.sanitizer.bypassSecurityTrustHtml(this.algebra.getExpression({
+      elements: this.elements,
+      lines: this.lines,
+      ex: this.ex,
+      di: this.di,
+      fr: this.fr
+    }));
 
     this.vw = window.innerWidth;
     this.vh = window.innerHeight;

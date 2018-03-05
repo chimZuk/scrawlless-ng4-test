@@ -8,339 +8,9 @@ import { SafeHtml } from '@angular/platform-browser';
 })
 export class AlgebraComponent {
 
-  ex: any = {
-    0: {
-      line: 0,
-      x: 0,
-      y: 0,
-      b: 0,
-      t: -1,
-      h: 0,
-      pe: 0,
-      pd: 0,
-      fr: 0,
-      ch: 1, zn: 0, osn: 0,
-      s: 0,
-      ce: [1],
-      cd: []
-    },
-    1: {
-      line: 0,
-      pe: 0,
-      pd: 0,
-      fr: 0,
-      ch: 0, zn: 0, osn: 1,
-      s: 16,
-      cs: 15,
-      ce: [2, 3, 8, 9],
-      cd: [1, 2, 3, 4, 5, 6]
-    },
-    2: {
-      line: 0,
-      pe: 1,
-      pd: 3,
-      fr: 1,
-      ch: 1, zn: 0, osn: 0,
-      s: 8,
-      cs: 7,
-      ce: [4, 5],
-      cd: [7, 8, 9]
-    },
-    3: {
-      line: 0,
-      pe: 1,
-      pd: 3,
-      fr: 1,
-      ch: 0, zn: 1, osn: 0,
-      s: 8,
-      cs: 4,
-      ce: [10],
-      cd: [16]
-    },
-    4: {
-      line: 0,
-      pe: 2,
-      pd: 9,
-      fr: 2,
-      ch: 1, zn: 0, osn: 0,
-      s: 5,
-      cs: 1,
-      ce: [],
-      cd: [10]
-    },
-    5: {
-      line: 0,
-      pe: 2,
-      pd: 9,
-      fr: 2,
-      ch: 0, zn: 1, osn: 0,
-      s: 5,
-      cs: 4,
-      ce: [6, 7],
-      cd: [11, 12, 13]
-    },
-    6: {
-      line: 0,
-      pe: 5,
-      pd: 13,
-      fr: 3,
-      ch: 1, zn: 0, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [14]
-    },
-    7: {
-      line: 0,
-      pe: 5,
-      pd: 13,
-      fr: 3,
-      ch: 0, zn: 1, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [17]
-    },
-    8: {
-      line: 0,
-      pe: 1,
-      pd: 6,
-      fr: 4,
-      ch: 1, zn: 0, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [17]
-    },
-    9: {
-      line: 0,
-      pe: 1,
-      pd: 6,
-      fr: 4,
-      ch: 0, zn: 1, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [18]
-    }
-  }
-
-  di: any = {
-    0: {
-      line: 0,
-      pos: 0,
-      pe: 0,
-      s: 0,
-      value: "",
-      text: "",
-      type: null
-    },
-    1: {
-      line: 0,
-      pe: 1,
-      s: 2,
-      pos: 1,
-      value: "-1",
-      text: "&#xe90b;&#xe900;",
-      type: "digit"
-    },
-    2: {
-      line: 0,
-      pe: 1,
-      s: 1,
-      pos: 2,
-      value: "+",
-      text: "&#xe90a;",
-      type: "operator"
-    },
-    3: {
-      line: 0,
-      pe: 1,
-      s: 8,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 1
-    },
-    4: {
-      line: 0,
-      x: 11,
-      pe: 1,
-      s: 1,
-      pos: 4,
-      value: "+",
-      text: "&#xe90a;",
-      type: "operator"
-    },
-    5: {
-      line: 0,
-      pe: 1,
-      s: 1,
-      pos: 5,
-      value: "8",
-      text: "&#xe907;",
-      type: "digit"
-    },
-    6: {
-      line: 0,
-      pe: 1,
-      s: 2,
-      pos: 6,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 4
-    },
-    7: {
-      line: 0,
-      pe: 2,
-      s: 1,
-      pos: 1,
-      value: "2",
-      text: "&#xe901;",
-      type: "digit"
-    },
-    8: {
-      line: 0,
-      pe: 2,
-      s: 1,
-      pos: 2,
-      value: "-",
-      text: "&#xe90b;",
-      type: "operator"
-    },
-    9: {
-      line: 0,
-      pe: 2,
-      s: 5,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 2
-    },
-    10: {
-      line: 0,
-      pe: 4,
-      s: 1,
-      pos: 1,
-      value: "4",
-      text: "&#xe903;",
-      type: "digit"
-    },
-    11: {
-      line: 0,
-      pe: 5,
-      s: 1,
-      pos: 1,
-      value: "5",
-      text: "&#xe904;",
-      type: "digit"
-    },
-    12: {
-      line: 0,
-      pe: 5,
-      s: 1,
-      pos: 2,
-      value: "*",
-      text: "&#xe90c;",
-      type: "operator"
-    },
-    13: {
-      line: 0,
-      pe: 5,
-      s: 2,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 3
-    },
-    14: {
-      line: 0,
-      pe: 6,
-      s: 1,
-      pos: 1,
-      value: "6",
-      text: "&#xe905;",
-      type: "digit"
-    },
-    15: {
-      line: 0,
-      pe: 7,
-      s: 1,
-      pos: 1,
-      value: "7",
-      text: "&#xe906;",
-      type: "digit"
-    },
-    16: {
-      line: 0,
-      pe: 3,
-      s: 1,
-      pos: 1,
-      value: "3",
-      text: "&#xe902;",
-      type: "digit"
-    },
-    17: {
-      line: 0,
-      pe: 8,
-      s: 1,
-      pos: 1,
-      value: "8",
-      text: "&#xe907;",
-      type: "digit"
-    },
-    18: {
-      line: 0,
-      pe: 9,
-      s: 1,
-      pos: 1,
-      value: "9",
-      text: "&#xe908;",
-      type: "digit"
-    }
-  }
-
-  fr: any = {
-    0: {
-      pe: 0,
-      pd: 0,
-      ch: 0,
-      zn: 1,
-      isActive: 0
-    },
-    1: {
-      pe: 1,
-      pd: 3,
-      ch: 2,
-      zn: 3,
-      isActive: 1
-    },
-    2: {
-      pe: 2,
-      pd: 9,
-      ch: 4,
-      zn: 5,
-      isActive: 1
-    },
-    3: {
-      pe: 5,
-      pd: 13,
-      ch: 6,
-      zn: 7,
-      isActive: 1
-    },
-    4: {
-      pe: 1,
-      pd: 6,
-      ch: 8,
-      zn: 9,
-      isActive: 1
-    }
-  }
+  private ex: any;
+  private di: any;
+  private fr: any;
 
   private makeRoot(x, y, width, height, powerWidth) {
     let yDiff = 4.5 + 10;
@@ -375,29 +45,32 @@ export class AlgebraComponent {
     return BaseSelection + Base + PowerSelection + Power;
   }
 
-  private expression(ex) {
+  private expression(ex, id) {
     let height = 2;
     let width = 0;
     let top = 0;
     let bottom = 0;
-
     let html = "";
 
+    let expr = {};
+
     for (let i = 0; i < ex.cd.length; i++) {
+      expr[this.di[ex.cd[i]].pos] = this.di[ex.cd[i]];
+
       switch (this.di[ex.cd[i]].type) {
         case "fraction":
-          let zn = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].zn]);
-          let ch = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].ch]);
+          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].zn], this.fr[this.di[ex.cd[i]].fr].zn);
+          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].ch], this.fr[this.di[ex.cd[i]].fr].ch);
 
-          let chtml = '<g transform="translate(0,0)">' + ch.html + '</g>';
-          let zhtml = '<g transform="translate(0,' + ch.height * 10 + ')">' + zn.html + '</g>';
-          let line;
 
           if (ch.width >= zn.width) {
-            line = '<line style="stroke-linecap:round;" x1="-2" y1="' + ch.height * 10 + '" x2="' + Number((ch.width) * 20 + 2) + '" y2="' + ch.height * 10 + '" stroke="black" stroke-width="2" />'
+            expr[this.di[ex.cd[i]].pos].chtml = '<g transform="translate(0,0)">' + ch.html + '</g>';
+            expr[this.di[ex.cd[i]].pos].zhtml = '<g transform="translate(' + ((ch.width - zn.width) / 2) * 20 + ',' + ch.height * 10 + ')">' + zn.html + '</g>';
           } else {
-            line = '<line style="stroke-linecap:round;" x1="-2" y1="' + ch.height * 10 + '" x2="' + Number((zn.width) * 20 + 2) + '" y2="' + ch.height * 10 + '" stroke="black" stroke-width="2" />'
+            expr[this.di[ex.cd[i]].pos].chtml = '<g transform="translate(' + ((zn.width - ch.width) / 2) * 20 + ',0)">' + ch.html + '</g>';
+            expr[this.di[ex.cd[i]].pos].zhtml = '<g transform="translate(0,' + ch.height * 10 + ')">' + zn.html + '</g>';
           }
+          
 
           if (top < ch.height - 1) {
             top = ch.height - 1;
@@ -406,26 +79,14 @@ export class AlgebraComponent {
             bottom = zn.height - 1;
           }
           height = 2 + top + bottom;
-          html = html + '<g transform="translate(' + (width) * 20 + ',' + (top - ch.height + 1) * 10 + ')">' + chtml + zhtml + line + '</g>';
-
-
-          if (zn.width >= ch.width) {
-            width += zn.width;
-          } else {
-            width += ch.width;
-          }
 
           break;
         case "digit":
-          html += '<rect x="' + (width * 20) + '" class="st3" y = "0" width="' + this.di[ex.cd[i]].s * 20 + '" height="20"/>';
-          width += this.di[ex.cd[i]].s;
           if (height < 2) {
             height += 2;
           }
           break;
         case "operator":
-          html += '<rect x="' + (width * 20) + '" class="st3" y = "0" width="20" height="20"/>';
-          width += this.di[ex.cd[i]].s;
           if (height < 2) {
             height += 2;
           }
@@ -435,24 +96,49 @@ export class AlgebraComponent {
           break;
       }
     }
+    for (let i = 1; i <= ex.cd.length; i++) {
 
+      switch (expr[i].type) {
+        case "fraction":
+          let line;
+
+          if (expr[i].chi.width >= expr[i].zni.width) {
+            line = '<line style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].chi.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+          } else {
+            line = '<line style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].zni.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+          }
+
+          html = html + '<g transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + line + '</g>';
+
+          if (expr[i].zni.width >= expr[i].chi.width) {
+            width += expr[i].zni.width + 1;
+          } else {
+            width += expr[i].chi.width + 1;
+          }
+          break;
+        case "digit":
+          html += '<text x="' + (width * 20 + expr[i].s * 3) + '" class="element" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
+          width += expr[i].s;
+          break;
+        case "operator":
+          html += '<text x="' + (width * 20 + expr[i].s * 2) + '" class="element" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
+          width += expr[i].s;
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    html = '<rect x="0" class="expression" y = "0" width="' + (width + 1) * 20 + '" height="' + height * 10 + '" (click)="setCursor($event, \'ex\', ' + id + ');"/>' + html;
     return { height: height, width: width, top: top, bottom: bottom, html: html }
   }
 
-
-  getRoot(x, y, width, height, powerWidth) {
-    console.log(this.makeRoot(x, y, width, height, powerWidth))
-    return this.makeRoot(x, y, width, height, powerWidth);
-  }
-
-
-  getPower(width, height, powerWidth, base, power) {
-    console.log(this.makePower(width, height, powerWidth, base, power))
-    return this.makePower(width, height, powerWidth, base, power);
-  }
-
-  getExpression() {
-    let zhtml = '<g transform="translate(0,200)">' + this.expression(this.ex[1]).html + '</g>';
+  getExpression(data) {
+    this.ex = data.ex;
+    this.fr = data.fr;
+    this.di = data.di;
+    let zhtml = '<g transform="translate('+ data.lines[0].x + ','+ data.lines[0].y + ')">' + this.expression(this.ex[1], 1).html + '</g>';
     return zhtml;
   }
 
