@@ -6,7 +6,7 @@ import { AuthGuard } from './_guards/auth.guard';
 export const router: Routes = [
     {
         path: '',
-        redirectTo: '/dashboard',
+        redirectTo: '/homework/1',
         pathMatch: 'full'
     },
     {

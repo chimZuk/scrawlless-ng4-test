@@ -1,16 +1,35 @@
-import { Component, OnInit } from '@angular/core';
-import { SafeHtml } from '@angular/platform-browser';
+import { Component, OnInit, Input } from '@angular/core';
+import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
-  selector: 'algebra',
+  selector: '[algebra]',
   templateUrl: './algebra.component.html',
-  styleUrls: ['./algebra.component.css']
+  styleUrls: ['./algebra.component.css'],
+  providers: [ ]
 })
 export class AlgebraComponent {
 
-  private ex: any;
-  private di: any;
-  private fr: any;
+  line: any;
+
+  constructor() { }
+
+  ex: any;
+  di: any;
+  fr: any;
+
+  expressionHTML: any;
+
+
+  ngOnInit() {
+  
+  }
+
+
+
+
+
+
 
   private makeRoot(x, y, width, height, powerWidth) {
     let yDiff = 4.5 + 10;
@@ -64,13 +83,19 @@ export class AlgebraComponent {
 
 
           if (ch.width >= zn.width) {
-            expr[this.di[ex.cd[i]].pos].chtml = '<g transform="translate(0,0)">' + ch.html + '</g>';
-            expr[this.di[ex.cd[i]].pos].zhtml = '<g transform="translate(' + ((ch.width - zn.width) / 2) * 20 + ',' + ch.height * 10 + ')">' + zn.html + '</g>';
+            let transformX = ((ch.width - zn.width) / 2) * 20;
+            let transformY = ch.height * 10;
+
+            expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + 0 + '" data-transformY="' + 0 + '" transform="translate(0,0)">' + ch.html + '</g>';
+            expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + transformX + '" data-transformY="' + transformY + '" transform="translate(' + transformX + ',' + transformY + ')">' + zn.html + '</g>';
           } else {
-            expr[this.di[ex.cd[i]].pos].chtml = '<g transform="translate(' + ((zn.width - ch.width) / 2) * 20 + ',0)">' + ch.html + '</g>';
-            expr[this.di[ex.cd[i]].pos].zhtml = '<g transform="translate(0,' + ch.height * 10 + ')">' + zn.html + '</g>';
+            let transformX = ((zn.width - ch.width) / 2) * 20
+            let transformY = ch.height * 10;
+
+            expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + transformX + '" data-transformY="' + 0 + '" transform="translate(' + ((zn.width - ch.width) / 2) * 20 + ',0)">' + ch.html + '</g>';
+            expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(0,' + ch.height * 10 + ')">' + zn.html + '</g>';
           }
-          
+
 
           if (top < ch.height - 1) {
             top = ch.height - 1;
@@ -103,12 +128,12 @@ export class AlgebraComponent {
           let line;
 
           if (expr[i].chi.width >= expr[i].zni.width) {
-            line = '<line style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].chi.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].chi.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
           } else {
-            line = '<line style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].zni.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].zni.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
           }
 
-          html = html + '<g transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + line + '</g>';
+          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + line + '</g>';
 
           if (expr[i].zni.width >= expr[i].chi.width) {
             width += expr[i].zni.width + 1;
@@ -117,11 +142,11 @@ export class AlgebraComponent {
           }
           break;
         case "digit":
-          html += '<text x="' + (width * 20 + expr[i].s * 3) + '" class="element" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
+          html += '<text data-type="di" x="' + (width * 20 + expr[i].s * 3) + '" class="element" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
           width += expr[i].s;
           break;
         case "operator":
-          html += '<text x="' + (width * 20 + expr[i].s * 2) + '" class="element" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
+          html += '<text data-type="di" x="' + (width * 20 + expr[i].s * 2) + '" class="element" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
           width += expr[i].s;
           break;
 
@@ -130,21 +155,38 @@ export class AlgebraComponent {
       }
     }
 
-    html = '<rect x="0" class="expression" y = "0" width="' + (width + 1) * 20 + '" height="' + height * 10 + '" (click)="setCursor($event, \'ex\', ' + id + ');"/>' + html;
+    html = '<rect data-type="ex" data-expressionid="' + id + '" data-lineid="' + this.line.id + '" data-top="' + top + '" data-cs="' + width + '" x="0" class="expression" y = "0" width="' + (width + 1) * 20 + '" height="' + height * 10 + '"/>' + html;
     return { height: height, width: width, top: top, bottom: bottom, html: html }
   }
 
-  getExpression(data) {
-    this.ex = data.ex;
-    this.fr = data.fr;
-    this.di = data.di;
-    let zhtml = '<g transform="translate('+ data.lines[0].x + ','+ data.lines[0].y + ')">' + this.expression(this.ex[1], 1).html + '</g>';
+  getExpression(line) {
+    this.line = line;
+    this.ex = this.line.ex;
+    this.di = this.line.di;
+    this.fr = this.line.fr;
+    let zhtml = '<g data-transformX="' + this.line.x + '" data-transformY="' + this.line.y + '" transform="translate(' + this.line.x + ',' + this.line.y + ')">' + this.expression(this.ex[1], 1).html + '</g>';
+    //console.log(zhtml);
     return zhtml;
   }
 
-  constructor() { }
+  elX(ex) {
+    let x = 0;
+    let p = ex.parentNode;
+    while (p.getAttribute("transform") != null) {
+      x += Number(p.getAttribute("data-transformx"));
+      p = p.parentNode;
+    }
+    return x;
+  }
 
-  ngOnInit() {
+  elY(ex) {
+    let y = 0;
+    let p = ex.parentNode;
+    while (p.getAttribute("transform") != null) {
+      y += Number(p.getAttribute("data-transformy"));
+      p = p.parentNode;
+    }
+    return y;
   }
 
 }

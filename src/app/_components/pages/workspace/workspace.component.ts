@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -9,19 +9,25 @@ import { Location } from '@angular/common';
 import * as interact from 'interactjs';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
+import { HomeworkDataService } from '../../../_services/homework-data/homework-data.service';
+
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
   styleUrls: ['./workspace.component.css'],
 })
 export class WorkspaceComponent implements OnInit {
-
+  arrayOfKeys: any = [];
   constructor(
     private route: ActivatedRoute,
     private location: Location,
     private algebra: AlgebraComponent,
-    private sanitizer: DomSanitizer
-  ) { }
+    private sanitizer: DomSanitizer,
+    private data: HomeworkDataService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
+    this.arrayOfKeys = Object.keys(this.lines);
+  }
 
   brows = function () {
     var ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
@@ -61,369 +67,16 @@ export class WorkspaceComponent implements OnInit {
     line: null,
     ex: null,
     di: null,
+    ev: null,
     x: 20,
     y: 20
   }
 
   mode: string = "";
 
-  num: any = 12.33333333;
-  op: any = 16;
+  lines = this.data.lines;
 
-  hc: number = 10;
-  c: number = 20;
-
-
-  ex: any = {
-    0: {
-      line: 0,
-      x: 0,
-      y: 0,
-      b: 0,
-      t: -1,
-      h: 0,
-      pe: 0,
-      pd: 0,
-      fr: 0,
-      ch: 1, zn: 0, osn: 0,
-      s: 0,
-      ce: [1],
-      cd: []
-    },
-    1: {
-      line: 0,
-      pe: 0,
-      pd: 0,
-      fr: 0,
-      ch: 0, zn: 0, osn: 1,
-      s: 16,
-      cs: 15,
-      ce: [2, 3, 8, 9],
-      cd: [4, 5, 6, 1, 2, 3]
-    },
-    2: {
-      line: 0,
-      pe: 1,
-      pd: 3,
-      fr: 1,
-      ch: 1, zn: 0, osn: 0,
-      s: 8,
-      cs: 7,
-      ce: [4, 5],
-      cd: [7, 8, 9]
-    },
-    3: {
-      line: 0,
-      pe: 1,
-      pd: 3,
-      fr: 1,
-      ch: 0, zn: 1, osn: 0,
-      s: 8,
-      cs: 4,
-      ce: [10],
-      cd: [16]
-    },
-    4: {
-      line: 0,
-      pe: 2,
-      pd: 9,
-      fr: 2,
-      ch: 1, zn: 0, osn: 0,
-      s: 5,
-      cs: 1,
-      ce: [],
-      cd: [10]
-    },
-    5: {
-      line: 0,
-      pe: 2,
-      pd: 9,
-      fr: 2,
-      ch: 0, zn: 1, osn: 0,
-      s: 5,
-      cs: 4,
-      ce: [6, 7],
-      cd: [11, 12, 13]
-    },
-    6: {
-      line: 0,
-      pe: 5,
-      pd: 13,
-      fr: 3,
-      ch: 1, zn: 0, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [14]
-    },
-    7: {
-      line: 0,
-      pe: 5,
-      pd: 13,
-      fr: 3,
-      ch: 0, zn: 1, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [17]
-    },
-    8: {
-      line: 0,
-      pe: 1,
-      pd: 6,
-      fr: 4,
-      ch: 1, zn: 0, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [17]
-    },
-    9: {
-      line: 0,
-      pe: 1,
-      pd: 6,
-      fr: 4,
-      ch: 0, zn: 1, osn: 0,
-      s: 2,
-      cs: 1,
-      ce: [],
-      cd: [18]
-    }
-  }
-
-  di: any = {
-    0: {
-      line: 0,
-      pos: 0,
-      pe: 0,
-      s: 0,
-      value: "",
-      text: "",
-      type: null
-    },
-    1: {
-      line: 0,
-      pe: 1,
-      s: 2,
-      pos: 1,
-      value: "-1",
-      text: "&#xe90b;&#xe900;",
-      type: "digit"
-    },
-    2: {
-      line: 0,
-      pe: 1,
-      s: 1,
-      pos: 2,
-      value: "+",
-      text: "&#xe90a;",
-      type: "operator"
-    },
-    3: {
-      line: 0,
-      pe: 1,
-      s: 8,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 1
-    },
-    4: {
-      line: 0,
-      pe: 1,
-      s: 1,
-      pos: 4,
-      value: "+",
-      text: "&#xe90a;",
-      type: "operator"
-    },
-    5: {
-      line: 0,
-      pe: 1,
-      s: 1,
-      pos: 5,
-      value: "8",
-      text: "&#xe907;",
-      type: "digit"
-    },
-    6: {
-      line: 0,
-      pe: 1,
-      s: 2,
-      pos: 6,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 4
-    },
-    7: {
-      line: 0,
-      pe: 2,
-      s: 1,
-      pos: 1,
-      value: "2",
-      text: "&#xe901;",
-      type: "digit"
-    },
-    8: {
-      line: 0,
-      pe: 2,
-      s: 1,
-      pos: 2,
-      value: "-",
-      text: "&#xe90b;",
-      type: "operator"
-    },
-    9: {
-      line: 0,
-      pe: 2,
-      s: 5,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 2
-    },
-    10: {
-      line: 0,
-      pe: 4,
-      s: 1,
-      pos: 1,
-      value: "4",
-      text: "&#xe903;",
-      type: "digit"
-    },
-    11: {
-      line: 0,
-      pe: 5,
-      s: 1,
-      pos: 1,
-      value: "5",
-      text: "&#xe904;",
-      type: "digit"
-    },
-    12: {
-      line: 0,
-      pe: 5,
-      s: 1,
-      pos: 2,
-      value: "*",
-      text: "&#xe90c;",
-      type: "operator"
-    },
-    13: {
-      line: 0,
-      pe: 5,
-      s: 2,
-      pos: 3,
-      value: "",
-      text: "",
-      type: "fraction",
-      fr: 3
-    },
-    14: {
-      line: 0,
-      pe: 6,
-      s: 1,
-      pos: 1,
-      value: "6",
-      text: "&#xe905;",
-      type: "digit"
-    },
-    15: {
-      line: 0,
-      pe: 7,
-      s: 1,
-      pos: 1,
-      value: "7",
-      text: "&#xe906;",
-      type: "digit"
-    },
-    16: {
-      line: 0,
-      pe: 3,
-      s: 1,
-      pos: 1,
-      value: "3",
-      text: "&#xe902;",
-      type: "digit"
-    },
-    17: {
-      line: 0,
-      pe: 8,
-      s: 1,
-      pos: 1,
-      value: "8",
-      text: "&#xe907;",
-      type: "digit"
-    },
-    18: {
-      line: 0,
-      pe: 9,
-      s: 1,
-      pos: 1,
-      value: "9",
-      text: "&#xe908;",
-      type: "digit"
-    }
-  }
-
-  fr: any = {
-    0: {
-      pe: 0,
-      pd: 0,
-      ch: 0,
-      zn: 1,
-      isActive: 0
-    },
-    1: {
-      pe: 1,
-      pd: 3,
-      ch: 2,
-      zn: 3,
-      isActive: 1
-    },
-    2: {
-      pe: 2,
-      pd: 9,
-      ch: 4,
-      zn: 5,
-      isActive: 1
-    },
-    3: {
-      pe: 5,
-      pd: 13,
-      ch: 6,
-      zn: 7,
-      isActive: 1
-    },
-    4: {
-      pe: 1,
-      pd: 6,
-      ch: 8,
-      zn: 9,
-      isActive: 1
-    }
-  }
-
-
-  lines: any = {
-    0: {
-      y: 200,
-      x: 260,
-      fractions: [1, 2, 3, 4],
-      expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
-    }
-  }
-
-  elements: any = {
-    lines: [0],
-    fractions: [1, 2, 3, 4],
-    expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
-  }
+  elements = this.data.elements;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('cursor') cursor: ElementRef;
@@ -431,73 +84,82 @@ export class WorkspaceComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    //this.vw = window.innerWidth;
-    //this.vh = window.innerHeight;
-  }
 
-  expr: SafeHtml;
-
-  //region
-  setChildExpressionY(ch) {
-    for (let i = 0; i < ch.length; i++) {
-      this.ex[ch[i]].y += 2;
-      this.setChildExpressionY(this.ex[ch[i]].ce);
-    }
-  }
-
-  setChildExpressionS(ch) {
-    for (let i = 0; i < ch.length; i++) {
-      if (ch != 0) {
-        this.ex[ch[i]].s++;
-      }
-    }
-  }
-
-  setChildExpressionX(ch, POS) {
-    for (let i = 0; i < ch.length; i++) {
-      if (this.di[ch[i]].pos > POS) {
-        if (POS > 0) {
-          this.di[ch[i]].x++;
-        }
-        if (this.di[ch[i]].type == "fraction") {
-          if (POS > 0) {
-            this.ex[this.fr[this.di[ch[i]].fr].ch].x++;
-            this.ex[this.fr[this.di[ch[i]].fr].zn].x++;
-          }
-          this.setChildExpressionX(this.ex[this.fr[this.di[ch[i]].fr].ch].cd, 0);
-          this.setChildExpressionX(this.ex[this.fr[this.di[ch[i]].fr].zn].cd, 0);
-        }
-      }
-    }
   }
 
   writeFr() {
-    let newDI = {
-      line: 0,
-      pe: 5,
-      s: 0.6,
-      pos: this.ex[5].cd.length + 1,
-      value: "2",
-      text: "&#xe901;",
-      type: "digit"
+    console.log("lel")
+  }
+
+  getCharacter(val) {
+    switch (val) {
+      case 1:
+        return "&#xe900;";
+      case 2:
+        return "&#xe901;";
+      case 3:
+        return "&#xe902;";
+      case 4:
+        return "&#xe903;";
+      case 5:
+        return "&#xe904;";
+      case 6:
+        return "&#xe905;";
+      case 7:
+        return "&#xe906;";
+      case 8:
+        return "&#xe907;";
+      case 9:
+        return "&#xe908;";
+      case 0:
+        return "&#xe909;";
+      default:
+        break;
     }
-    this.di[this.elements.digits.length] = newDI;
-    this.elements.digits.push(this.elements.digits.length);
-    this.ex[5].cd.push(this.elements.digits.length - 1);
-    this.expr = this.sanitizer.bypassSecurityTrustHtml(this.algebra.getExpression({
-      elements: this.elements,
-      lines: this.lines,
-      ex: this.ex,
-      di: this.di,
-      fr: this.fr
-    }));
   }
 
 
-  write(t) {
+  writeDi(val) {
+    if (this.selection.line != null) {
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      let newDI = {
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: val,
+        text: this.getCharacter(val),
+        type: "digit"
+      }
+      this.lines[line].ex[ex].cs++;
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+    }
+
+  }
+
+  getExpression(el) {
+    let ex = this.algebra.getExpression(el);
+    if (this.selection.ex != null) {
+      this.onClick({
+        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+      });
+    }
+    return ex;
+  }
+
+
+  write(val, t) {
     switch (t) {
       case "fr": {
         this.writeFr();
+        break;
+      }
+      case "di": {
+        this.writeDi(val);
         break;
       }
       default: {
@@ -509,6 +171,83 @@ export class WorkspaceComponent implements OnInit {
   getArr = function (i) {
     return new Array(i);
   }
+
+  switchMode(mode) {
+    if (this.mode === "" || this.mode != "" && this.mode != mode) {
+      this.mode = mode;
+    } else {
+      this.mode = "";
+    }
+  }
+
+  setCursor(ev, element, id) {
+    switch (element) {
+      case "canvas": {
+        this.selection.x = this.setSX(ev.offsetX) - 1.2;
+        this.selection.y = Math.round((this.setSY(ev.offsetY)) / 10 + 1) * 10 - 3;
+        this.selection.line = null;
+        this.selection.ex = null;
+        this.selection.di = null;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  public onClick(ev) {
+    switch (ev.target.getAttribute("data-type")) {
+      case "ex": {
+        let line = Number(ev.target.getAttribute("data-lineid"));
+        let ex = Number(ev.target.getAttribute("data-expressionid"));
+        let pd = this.lines[line].ex[ex].pd;
+        let top = Number(ev.target.getAttribute("data-top"));
+        let x = this.algebra.elX(ev.target);
+        let y = this.algebra.elY(ev.target);
+        let cs = Number(ev.target.getAttribute("data-cs"));
+
+        this.selection.x = x + cs * 20 + 6;
+        this.selection.y = y + top * 10 + 16.8;
+        this.selection.line = line;
+        this.selection.ex = ex;
+        this.selection.di = pd;
+        this.mode = "math";
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  setSX(n) {
+    var cW = Number(this.container.nativeElement.attributes.width.value);
+    var cA = this.container.nativeElement.attributes.viewBox.value.split(' ');
+    return n * (cA[2] / cW);
+  }
+
+  setSY(n) {
+    var cH = Number(this.container.nativeElement.attributes.height.value);
+    var cA = this.container.nativeElement.attributes.viewBox.value.split(' ');
+    return n * (cA[3] / cH);
+  }
+
+  zoom(scale) {
+    this.container.nativeElement.attributes.width.value *= scale;
+    this.container.nativeElement.attributes.height.value *= scale;
+  }
+
+
+
+
+
+
+
+
+
+
 
   select = function (event) {
     if (this.notSaved(this.selected, event.target)) {
@@ -539,92 +278,10 @@ export class WorkspaceComponent implements OnInit {
     return true;
   }
 
-  switchMode(mode) {
-    if (this.mode === "" || this.mode != "" && this.mode != mode) {
-      this.mode = mode;
-    } else {
-      this.mode = "";
-    }
-  }
-
-  setMargin(exp) {
-    //return this.ex[exp].t + this.ex[exp].b / 2 >> 0;
-    return 0;
-  }
-
-  setAlign(dig) {
-    var di = this.di[dig];
-    switch (di.type) {
-      case "digit": {
-        return ((20 * di.s) - (di.s * 13)) / 2;
-      }
-      case "operator": {
-        return ((20 * di.s) - (di.s * 16)) / 2;
-      }
-      case "fraction": {
-        return 0;
-      }
-      default: {
-        break;
-      }
-    }
-    return 0;
-  }
-
-  setCursor(ev, element, id) {
-    switch (element) {
-      case "canvas": {
-        this.selection.x = this.setSX(ev.offsetX) - 1.2;
-        this.selection.y = Math.round((this.setSY(ev.offsetY)) / 10 + 1) * 10 - 3;
-        this.selection.line = null;
-        this.selection.ex = null;
-        this.selection.di = null;
-        break;
-      }
-      case "ex": {
-        this.selection.y = this.lines[this.ex[id].line].y + 17.2 + (this.ex[id].y + this.ex[id].t) * this.hc;
-        this.selection.x = this.lines[this.ex[id].line].x + this.ex[this.ex[id].pe].x * this.c + this.di[this.ex[id].pd].x * this.c + this.ex[id].cs * this.c + 7;
-        this.selection.line = this.ex[id].line;
-        this.selection.ex = id;
-        this.selection.di = null;
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-
-  zoom(scale) {
-    this.container.nativeElement.attributes.width.value *= scale;
-    this.container.nativeElement.attributes.height.value *= scale;
-  }
-
-  setSX(n) {
-    var cW = Number(this.container.nativeElement.attributes.width.value);
-    var cA = this.container.nativeElement.attributes.viewBox.value.split(' ');
-    return n * (cA[2] / cW);
-  }
-
-  setSY(n) {
-    var cH = Number(this.container.nativeElement.attributes.height.value);
-    var cA = this.container.nativeElement.attributes.viewBox.value.split(' ');
-    return n * (cA[3] / cH);
-  }
-
-  //endregion
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });
-
-    this.expr = this.sanitizer.bypassSecurityTrustHtml(this.algebra.getExpression({
-      elements: this.elements,
-      lines: this.lines,
-      ex: this.ex,
-      di: this.di,
-      fr: this.fr
-    }));
 
     this.vw = window.innerWidth;
     this.vh = window.innerHeight;
