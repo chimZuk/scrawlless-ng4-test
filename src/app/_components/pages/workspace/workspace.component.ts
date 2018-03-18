@@ -124,21 +124,41 @@ export class WorkspaceComponent implements OnInit {
       let line = this.selection.line;
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
-      let newDI = {
-        line: line,
-        pe: ex,
-        s: 1,
-        pos: this.lines[line].ex[ex].cd.length + 1,
-        value: val,
-        text: this.getCharacter(val),
-        type: "digit"
+      let lastDI = {
+        pos: 0,
+        id: null,
+        di: null
       }
-      this.lines[line].ex[ex].cs++;
-      this.lines[line].di[diLength] = newDI;
-      this.lines[line].ex[ex].cd.push(diLength);
-      this.elements.digits.push(diLength);
-    }
+      let newDI = {
+      }
+      for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+        if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
+          lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
+          lastDI.di = this.lines[line].di[this.lines[line].ex[ex].cd[i]];
+          lastDI.id = this.lines[line].ex[ex].cd[i];
+        }
+      }
 
+      if (lastDI.di.type == "digit") {
+        lastDI.di.s += 0.73;
+        lastDI.di.val += val;
+        lastDI.di.text += this.getCharacter(val);
+        this.lines[line].di[lastDI.id] = lastDI.di;
+      } else {
+        newDI = {
+          line: line,
+          pe: ex,
+          s: 1,
+          pos: this.lines[line].ex[ex].cd.length + 1,
+          value: val,
+          text: this.getCharacter(val),
+          type: "digit"
+        }
+        this.lines[line].di[diLength] = newDI;
+        this.lines[line].ex[ex].cd.push(diLength);
+        this.elements.digits.push(diLength);
+      }
+    }
   }
 
   getExpression(el) {

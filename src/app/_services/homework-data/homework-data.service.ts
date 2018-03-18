@@ -118,7 +118,7 @@ export class HomeworkDataService {
           fr: 3,
           ch: 0, zn: 1, osn: 0,
           ce: [],
-          cd: [17]
+          cd: [55]
         },
         8: {
           line: 0,
@@ -191,6 +191,15 @@ export class HomeworkDataService {
           pe: 1,
           s: 1,
           pos: 5,
+          value: "8",
+          text: "&#xe907;",
+          type: "digit"
+        },
+        55: {
+          line: 0,
+          pe: 7,
+          s: 1,
+          pos: 1,
           value: "8",
           text: "&#xe907;",
           type: "digit"
@@ -323,7 +332,7 @@ export class HomeworkDataService {
     lines: [0],
     fractions: [1, 2, 3, 4],
     expressions: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+    digits: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
   }
 
 }
