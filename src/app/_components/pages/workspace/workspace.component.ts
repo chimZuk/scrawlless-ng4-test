@@ -88,7 +88,190 @@ export class WorkspaceComponent implements OnInit {
   }
 
   writeFr() {
-    console.log("lel")
+    if (this.selection.line != null) {
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      let lastDI = {
+        pos: 0,
+        id: null,
+        di: null
+      }
+
+      for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+        if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
+          lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
+          lastDI.di = this.lines[line].di[this.lines[line].ex[ex].cd[i]];
+          lastDI.id = this.lines[line].ex[ex].cd[i];
+        }
+      }
+
+      var newDI = {
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: "",
+        text: "",
+        type: "fraction",
+        fr: this.elements.fractions.length + 1
+      }
+
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+
+      var newFR = {
+        pe: ex,
+        pd: this.elements.digits[this.elements.digits.length],
+        ch: this.elements.expressions.length + 1,
+        zn: this.elements.expressions.length + 2,
+        isActive: 1
+      }
+
+      var newCh = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        fr: this.elements.fractions.length + 1,
+        ch: 1, zn: 0, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      var newZn = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        fr: this.elements.fractions.length + 1,
+        ch: 0, zn: 1, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      this.lines[line].fr[this.elements.fractions.length + 1] = newFR;
+      this.elements.fractions.push(this.elements.fractions.length + 1)
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+
+    } else {
+      this.createLine();
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      var newDI = {
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: "",
+        text: "",
+        type: "fraction",
+        fr: this.elements.fractions.length + 1
+      }
+
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+
+      var newFR = {
+        pe: ex,
+        pd: this.elements.digits[this.elements.digits.length],
+        ch: this.elements.expressions.length + 1,
+        zn: this.elements.expressions.length + 2,
+        isActive: 1
+      }
+
+      var newCh = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        fr: this.elements.fractions.length + 1,
+        ch: 1, zn: 0, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      var newZn = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        fr: this.elements.fractions.length + 1,
+        ch: 0, zn: 1, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      this.lines[line].fr[this.elements.fractions.length + 1] = newFR;
+      this.elements.fractions.push(this.elements.fractions.length + 1)
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+    }
+  }
+
+  writeOp(val) {
+    if (this.selection.line != null) {
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      let lastDI = {
+        pos: 0,
+        id: null,
+        di: null
+      }
+      let newDI = {
+      }
+      for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+        if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
+          lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
+          lastDI.di = this.lines[line].di[this.lines[line].ex[ex].cd[i]];
+          lastDI.id = this.lines[line].ex[ex].cd[i];
+        }
+      }
+
+      newDI = {
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: val,
+        text: this.getCharacter(val),
+        type: "operator"
+      }
+
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+    } else {
+      this.createLine();
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      var newDI = {
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: val,
+        text: this.getCharacter(val),
+        type: "operator"
+      }
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+    }
   }
 
   getCharacter(val) {
@@ -113,6 +296,16 @@ export class WorkspaceComponent implements OnInit {
         return "&#xe908;";
       case 0:
         return "&#xe909;";
+      case "+":
+        return "&#xe90a;";
+      case "-":
+        return "&#xe90b;";
+      case "*":
+        return "&#xe90c;";
+      case "/":
+        return "&#xe90d;";
+      case "=":
+        return "&#xe90e;";
       default:
         break;
     }
@@ -138,13 +331,7 @@ export class WorkspaceComponent implements OnInit {
           lastDI.id = this.lines[line].ex[ex].cd[i];
         }
       }
-
-      if (lastDI.di.type == "digit") {
-        lastDI.di.s += 0.73;
-        lastDI.di.val += val;
-        lastDI.di.text += this.getCharacter(val);
-        this.lines[line].di[lastDI.id] = lastDI.di;
-      } else {
+      if (lastDI.di == null || lastDI.di.type == "operator") {
         newDI = {
           line: line,
           pe: ex,
@@ -157,8 +344,73 @@ export class WorkspaceComponent implements OnInit {
         this.lines[line].di[diLength] = newDI;
         this.lines[line].ex[ex].cd.push(diLength);
         this.elements.digits.push(diLength);
+      } else {
+        if (lastDI.di.type == "digit") {
+          lastDI.di.s += 0.73;
+          lastDI.di.val += val;
+          lastDI.di.text += this.getCharacter(val);
+          this.lines[line].di[lastDI.id] = lastDI.di;
+        }
       }
+    } else {
+      this.createLine();
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      var newDI = {
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: val,
+        text: this.getCharacter(val),
+        type: "digit"
+      }
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
     }
+  }
+
+  createLine() {
+    var newLine = {
+      id: this.elements.lines.length,
+      y: (this.selection.y / 10 >> 0) * 10 - 10,
+      x: (this.selection.x / 20 >> 0) * 20,
+      fr: {},
+      ex: {
+        0: {
+          line: this.elements.lines.length,
+          pe: 0,
+          pd: 0,
+          fr: 0,
+          ch: 1, zn: 0, osn: 0,
+          ce: [],
+          cd: []
+        }
+      },
+      di: {}
+    }
+
+    var newEx = {
+      line: this.elements.lines.length,
+      pe: 0,
+      pd: 0,
+      fr: 0,
+      ch: 0, zn: 0, osn: 1,
+      ce: [],
+      cd: []
+    }
+
+    this.selection.line = this.elements.lines.length;
+    this.selection.ex = this.elements.expressions.length + 1;
+
+    newLine.ex[this.elements.expressions.length + 1] = newEx;
+    newLine.ex[0].ce.push(this.elements.expressions.length + 1);
+    this.elements.expressions.push(this.elements.expressions.length + 1);
+
+    this.lines[this.elements.lines.length] = newLine;
+    this.elements.lines.push(this.elements.lines.length);
   }
 
   getExpression(el) {
@@ -180,6 +432,10 @@ export class WorkspaceComponent implements OnInit {
       }
       case "di": {
         this.writeDi(val);
+        break;
+      }
+      case "op": {
+        this.writeOp(val);
         break;
       }
       default: {
@@ -218,28 +474,31 @@ export class WorkspaceComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   public onClick(ev) {
-    switch (ev.target.getAttribute("data-type")) {
-      case "ex": {
-        let line = Number(ev.target.getAttribute("data-lineid"));
-        let ex = Number(ev.target.getAttribute("data-expressionid"));
-        let pd = this.lines[line].ex[ex].pd;
-        let top = Number(ev.target.getAttribute("data-top"));
-        let x = this.algebra.elX(ev.target);
-        let y = this.algebra.elY(ev.target);
-        let cs = Number(ev.target.getAttribute("data-cs"));
+    if (ev.target != undefined) {
+      switch (ev.target.getAttribute("data-type")) {
+        case "ex": {
+          let line = Number(ev.target.getAttribute("data-lineid"));
+          let ex = Number(ev.target.getAttribute("data-expressionid"));
+          let pd = this.lines[line].ex[ex].pd;
+          let top = Number(ev.target.getAttribute("data-top"));
+          let x = this.algebra.elX(ev.target);
+          let y = this.algebra.elY(ev.target);
+          let cs = Number(ev.target.getAttribute("data-cs"));
 
-        this.selection.x = x + cs * 20 + 6;
-        this.selection.y = y + top * 10 + 16.8;
-        this.selection.line = line;
-        this.selection.ex = ex;
-        this.selection.di = pd;
-        this.mode = "math";
-        break;
-      }
-      default: {
-        break;
+          this.selection.x = x + cs * 20 + 6;
+          this.selection.y = y + top * 10 + 16.8;
+          this.selection.line = line;
+          this.selection.ex = ex;
+          this.selection.di = pd;
+          this.mode = "math";
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
+
   }
 
   setSX(n) {
@@ -336,6 +595,22 @@ export class WorkspaceComponent implements OnInit {
           }
         }
       });
+
+
+    interact('.drag-handler')
+      .draggable({
+        autoScroll: true,
+        onstart: function (event) {
+
+        },
+        onmove: expressionDrag,
+        onend: function (event) {
+        }
+      });
+
+    function expressionDrag(event) {
+
+    }
 
     function dragMoveListener(event) {
       var target = event.target,

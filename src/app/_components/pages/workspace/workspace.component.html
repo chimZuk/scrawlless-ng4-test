@@ -23,7 +23,6 @@
     <text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="selection.x" [attr.y]="selection.y" font-family="scwlsWorkspace"
         font-size="16">&#xe911;</text>
 
-
     <svg:g *ngFor="let line of elements.lines; let i = index">
         <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
     </g>
@@ -110,7 +109,7 @@
 <mat-card #operators id="operators" class="ui keyboard" *ngIf="mode === 'math'">
     <div class="flex-column">
         <div class="flex-row">
-            <button mat-raised-button>
+            <button mat-raised-button (click)="write('*', 'op');">
                 <span class="i-font i-mult"></span>
             </button>
             <button mat-raised-button (click)="write(null, 'fr');">
@@ -118,10 +117,10 @@
             </button>
         </div>
         <div class="flex-row">
-            <button mat-raised-button>
+            <button mat-raised-button (click)="write('+', 'op');">
                 <span class="i-font i-plus"></span>
             </button>
-            <button mat-raised-button>
+            <button mat-raised-button (click)="write('-', 'op');">
                 <span class="i-font i-minus"></span>
             </button>
         </div>

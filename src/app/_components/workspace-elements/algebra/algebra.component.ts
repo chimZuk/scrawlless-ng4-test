@@ -6,7 +6,7 @@ import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
   selector: '[algebra]',
   templateUrl: './algebra.component.html',
   styleUrls: ['./algebra.component.css'],
-  providers: [ ]
+  providers: []
 })
 export class AlgebraComponent {
 
@@ -22,7 +22,7 @@ export class AlgebraComponent {
 
 
   ngOnInit() {
-  
+
   }
 
 
@@ -87,7 +87,7 @@ export class AlgebraComponent {
             let transformY = ch.height * 10;
 
             expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + 0 + '" data-transformY="' + 0 + '" transform="translate(0,0)">' + ch.html + '</g>';
-            expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + transformX + '" data-transformY="' + transformY + '" transform="translate(' + transformX + ',' + transformY + ')">' + zn.html + '</g>';
+            expr[this.di[ex.cd[i]].pos].zhtml = '<g onclick="console.log(`keke`)" data-transformX="' + transformX + '" data-transformY="' + transformY + '" transform="translate(' + transformX + ',' + transformY + ')">' + zn.html + '</g>';
           } else {
             let transformX = ((zn.width - ch.width) / 2) * 20
             let transformY = ch.height * 10;
@@ -164,8 +164,19 @@ export class AlgebraComponent {
     this.ex = this.line.ex;
     this.di = this.line.di;
     this.fr = this.line.fr;
-    let zhtml = '<g data-transformX="' + this.line.x + '" data-transformY="' + this.line.y + '" transform="translate(' + this.line.x + ',' + this.line.y + ')">' + this.expression(this.ex[1], 1).html + '</g>';
-    //console.log(zhtml);
+    let dragHandler = `<g transform="translate(-20, -20)" class="drag-handler" data-lineID="` + this.line.id + `"><path class="handler" d="M20,12.5c0,2,0,7.5,0,7.5s-5.4,0-7.5,0C8.4,20,5,16.6,5,12.5S8.4,5,12.5,5S20,8.4,20,12.5z"/>
+    <line class="arrow" x1="12.5" y1="7.5" x2="12.5" y2="17.5"/>
+    <line class="arrow" x1="7.5" y1="12.5" x2="17.5" y2="12.5"/>
+    <line class="arrow" x1="12.5" y1="7.5" x2="11.2" y2="10"/>
+    <line class="arrow" x1="13.7" y1="10" x2="12.5" y2="7.5"/>
+    <line class="arrow" x1="7.5" y1="12.5" x2="10" y2="11.2"/>
+    <line class="arrow" x1="10.1" y1="13.7" x2="7.5" y2="12.5"/>
+    <line class="arrow" x1="12.5" y1="17.5" x2="11.2" y2="15"/>
+    <line class="arrow" x1="13.7" y1="15" x2="12.5" y2="17.5"/>
+    <line class="arrow" x1="17.5" y1="12.5" x2="15" y2="11.2"/>
+    <line class="arrow" x1="15" y1="13.7" x2="17.5" y2="12.5"/></g>`;
+
+    let zhtml = '<g class="line-element" data-transformX="' + this.line.x + '" data-transformY="' + this.line.y + '" transform="translate(' + this.line.x + ',' + this.line.y + ')">' + dragHandler + this.expression(this.ex[this.ex[0].ce[0]], this.ex[0].ce[0]).html + '</g>';
     return zhtml;
   }
 

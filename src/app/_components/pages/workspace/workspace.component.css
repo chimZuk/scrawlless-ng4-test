@@ -214,4 +214,19 @@ circle {
   user-select: none;
   cursor: pointer; }
 
+/deep/ .handler {
+  fill: #FFFFFF;
+  stroke: #F15A24;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10; }
+
+/deep/ .arrow {
+  fill: none;
+  stroke: #000000;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 10; }
+
 /*# sourceMappingURL=workspace.component.css.map */
