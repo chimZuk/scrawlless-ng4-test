@@ -603,12 +603,22 @@ export class WorkspaceComponent implements OnInit {
         onstart: function (event) {
 
         },
-        onmove: expressionDrag,
+        onmove: expressionDrag.bind(this),
         onend: function (event) {
         }
       });
 
     function expressionDrag(event) {
+      var target = event.target,
+        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+      var cW = Number(container.attributes.width.value);
+      var cH = Number(container.attributes.height.value);
+      var cA = container.attributes.viewBox.value.split(' ');
+
+      this.lines[target.getAttribute('data-lineid')].x += Number(x) * (cA[2] / cW);
+      this.lines[target.getAttribute('data-lineid')].y += Number(y) * (cA[3] / cH);
 
     }
 
