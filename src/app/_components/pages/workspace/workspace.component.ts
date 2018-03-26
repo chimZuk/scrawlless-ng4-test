@@ -600,12 +600,9 @@ export class WorkspaceComponent implements OnInit {
     interact('.drag-handler')
       .draggable({
         autoScroll: true,
-        onstart: function (event) {
-
-        },
+        onstart: function (event) {},
         onmove: expressionDrag.bind(this),
-        onend: function (event) {
-        }
+        onend: function (event) {}
       });
 
     function expressionDrag(event) {

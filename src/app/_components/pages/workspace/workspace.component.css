@@ -227,6 +227,7 @@ circle {
   stroke: #000000;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-miterlimit: 10; }
+  stroke-miterlimit: 10;
+  cursor: move; }
 
 /*# sourceMappingURL=workspace.component.css.map */
