@@ -25,13 +25,13 @@
 
     <svg:g *ngFor="let line of elements.lines; let i = index">
         <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
-    </g>
+        </g>
 
-    <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="500" cy="150" r="50" stroke="green" stroke-width="1" fill="yellow" class=""
-        (click)="select($event)" />
-    <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="400" cy="500" r="80" stroke="green" stroke-width="1" fill="yellow" class=""
-        (click)="select($event)" />
-    <!--<g [attr.filter]="'url(' + absUrl + '#f1)'" [innerHTML] = "expr"></g>-->
+        <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="500" cy="150" r="50" stroke="green" stroke-width="1" fill="yellow" class=""
+            (click)="select($event)" />
+        <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="400" cy="500" r="80" stroke="green" stroke-width="1" fill="yellow" class=""
+            (click)="select($event)" />
+        <!--<g [attr.filter]="'url(' + absUrl + '#f1)'" [innerHTML] = "expr"></g>-->
 </svg>
 
 
@@ -54,6 +54,12 @@
 <mat-card class="ui squareSingle zOut draggable touch">
     <button mat-fab color="accent" (click)="zoom(0.85)">
         <mat-icon>zoom_out</mat-icon>
+    </button>
+</mat-card>
+
+<mat-card class="ui squareSingle exitToApp draggable touch">
+    <button mat-fab color="accent" (click)="exit()" md-fab>
+        <mat-icon>exit_to_app</mat-icon>
     </button>
 </mat-card>
 

@@ -11,6 +11,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { HomeworkDataService } from '../../../_services/homework-data/homework-data.service';
 
+import { HomeworkService } from '../../../_services/homework/homework.service';
+
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
@@ -25,9 +27,39 @@ export class WorkspaceComponent implements OnInit {
     private algebra: AlgebraComponent,
     private sanitizer: DomSanitizer,
     private data: HomeworkDataService,
+    private homeData: HomeworkService,
     private ref: ChangeDetectorRef
   ) {
     this.arrayOfKeys = Object.keys(this.lines);
+  }
+
+  exit() {
+    this.saveListClick();
+    this.location.back();
+  }
+
+  saveListClick() {
+    let token = JSON.parse(localStorage.getItem('currentUser')).token;
+    let data = {
+      token: token,
+      homeworkId: String(this.id),
+      info: {
+        homeworkType: "HW",
+        date: "1/12/2019",
+        subjectId: String(1),
+        data: {
+          elements: this.elements,
+          lines: this.lines,
+          description: this.description
+        },
+        dataFromTeacher: {},
+        columnsInfo: {}
+      }
+    }
+    console.log(data);
+    this.homeData.saveHomework(data)
+      .subscribe(result => {
+      });
   }
 
   brows = function () {
@@ -57,6 +89,8 @@ export class WorkspaceComponent implements OnInit {
   vw: any;
   vh: any;
 
+  description: string = "";
+
   sheetDrag: any;
   sheetDragEnabled = true;
 
@@ -75,9 +109,9 @@ export class WorkspaceComponent implements OnInit {
 
   mode: string = "";
 
-  lines = this.data.lines;
+  lines: any = this.data.lines;
 
-  elements = this.data.elements;
+  elements: any = this.data.elements;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('cursor') cursor: ElementRef;
@@ -156,7 +190,7 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
-      
+
       this.selection.ex = this.elements.expressions.length;
       this.selection.line = line;
       this.onClick({
@@ -223,7 +257,7 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
-      
+
       this.selection.ex = this.elements.expressions.length;
       this.selection.line = line;
       this.onClick({
@@ -578,89 +612,101 @@ export class WorkspaceComponent implements OnInit {
       this.id = +params['id'];
     });
 
-    this.vw = window.innerWidth;
-    this.vh = window.innerHeight;
+    this.homeData.homeworkRead({
+      token: JSON.parse(localStorage.getItem('currentUser')).token,
+      homeworkId: String(this.id)
+    })
+      .subscribe(result => {
+        console.log(result);
+        this.elements = result.data.elements;
+        this.lines = result.data.lines;
+        this.description = result.data.description;
+        this.vw = window.innerWidth;
+        this.vh = window.innerHeight;
 
-    var container = this.container.nativeElement;
-    var selected = this.selected;
+        var container = this.container.nativeElement;
+        var selected = this.selected;
 
-    var notSaved = this.notSaved;
+        var notSaved = this.notSaved;
 
-    var select = this.select;
+        var select = this.select;
 
-    var browser = this.brows();
-    interact('.svgDraggable')
-      .draggable({
-        autoScroll: true,
-        onstart: function (event) {
+        var browser = this.brows();
 
-        },
-        onmove: dragMoveListener,
-        onend: function (event) {
-        }
-      }).on("tap", function (event) {
-        if (browser.name === "Safari") {
-          if (!notSaved(selected, event.target)) {
-            event.target.attributes.class.value = "";
-            event.target.setAttribute('stroke-width', "1");
-            event.target.attributes.r.value = String(Number(event.target.attributes.r.value) - 1);
-            selected.splice(selected.indexOf(event.target), 1);
-            if (selected.length == 0) {
-              container.attributes.class.value = "";
+        this.ref.markForCheck();
+        interact('.svgDraggable')
+          .draggable({
+            autoScroll: true,
+            onstart: function (event) {
+
+            },
+            onmove: dragMoveListener,
+            onend: function (event) {
             }
-          }
-        }
-      });
+          }).on("tap", function (event) {
+            if (browser.name === "Safari") {
+              if (!notSaved(selected, event.target)) {
+                event.target.attributes.class.value = "";
+                event.target.setAttribute('stroke-width', "1");
+                event.target.attributes.r.value = String(Number(event.target.attributes.r.value) - 1);
+                selected.splice(selected.indexOf(event.target), 1);
+                if (selected.length == 0) {
+                  container.attributes.class.value = "";
+                }
+              }
+            }
+          });
 
 
-    interact('.drag-handler')
-      .draggable({
-        autoScroll: true,
-        onstart: function (event) { },
-        onmove: expressionDrag.bind(this),
-        onend: function (event) {
-          var target = event.target;
-          this.lines[target.getAttribute('data-lineid')].x = Math.ceil((this.lines[target.getAttribute('data-lineid')].x - 10) / 20) * 20;
-          this.lines[target.getAttribute('data-lineid')].y = Math.ceil((this.lines[target.getAttribute('data-lineid')].y - 5) / 10) * 10;
-          this.ref.markForCheck();
+        interact('.drag-handler')
+          .draggable({
+            autoScroll: true,
+            onstart: function (event) { },
+            onmove: expressionDrag.bind(this),
+            onend: function (event) {
+              var target = event.target;
+              this.lines[target.getAttribute('data-lineid')].x = Math.ceil((this.lines[target.getAttribute('data-lineid')].x - 10) / 20) * 20;
+              this.lines[target.getAttribute('data-lineid')].y = Math.ceil((this.lines[target.getAttribute('data-lineid')].y - 5) / 10) * 10;
+              this.ref.markForCheck();
+              this.onClick({
+                target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+              });
+              this.ref.markForCheck();
+            }.bind(this)
+          });
+
+        function expressionDrag(event) {
+          var target = event.target,
+            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+          var cW = Number(container.attributes.width.value);
+          var cH = Number(container.attributes.height.value);
+          var cA = container.attributes.viewBox.value.split(' ');
+
+          this.lines[target.getAttribute('data-lineid')].x += Number(x) * (cA[2] / cW);
+          this.lines[target.getAttribute('data-lineid')].y += Number(y) * (cA[3] / cH);
           this.onClick({
             target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
           });
           this.ref.markForCheck();
-        }.bind(this)
+        }
+
+        function dragMoveListener(event) {
+          var target = event.target,
+            x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+            y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+          var cW = Number(container.attributes.width.value);
+          var cH = Number(container.attributes.height.value);
+          var cA = container.attributes.viewBox.value.split(' ');
+
+          for (var i = 0; i < selected.length; i++) {
+            selected[i].attributes.cx.value = String(Number(selected[i].attributes.cx.value) + Number(x) * (cA[2] / cW));
+            selected[i].attributes.cy.value = String(Number(selected[i].attributes.cy.value) + Number(y) * (cA[3] / cH))
+          }
+        }
       });
-
-    function expressionDrag(event) {
-      var target = event.target,
-        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-      var cW = Number(container.attributes.width.value);
-      var cH = Number(container.attributes.height.value);
-      var cA = container.attributes.viewBox.value.split(' ');
-
-      this.lines[target.getAttribute('data-lineid')].x += Number(x) * (cA[2] / cW);
-      this.lines[target.getAttribute('data-lineid')].y += Number(y) * (cA[3] / cH);
-      this.onClick({
-        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
-      });
-      this.ref.markForCheck();
-    }
-
-    function dragMoveListener(event) {
-      var target = event.target,
-        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-      var cW = Number(container.attributes.width.value);
-      var cH = Number(container.attributes.height.value);
-      var cA = container.attributes.viewBox.value.split(' ');
-
-      for (var i = 0; i < selected.length; i++) {
-        selected[i].attributes.cx.value = String(Number(selected[i].attributes.cx.value) + Number(x) * (cA[2] / cW));
-        selected[i].attributes.cy.value = String(Number(selected[i].attributes.cy.value) + Number(y) * (cA[3] / cH))
-      }
-    }
   }
 
   SX: any;

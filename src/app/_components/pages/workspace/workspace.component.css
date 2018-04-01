@@ -150,6 +150,10 @@
   top: 11vw;
   right: 2vw; }
 
+.exitToApp {
+  top: 21vw;
+  right: 2vw; }
+
 .keyboard {
   display: flex; }
 
