@@ -82,6 +82,8 @@ export class WorkspaceComponent implements OnInit {
 
   absUrl = window.location.href;
 
+  loading = true;
+
   private id;
   sub: any;
   pageName: any;
@@ -624,6 +626,10 @@ export class WorkspaceComponent implements OnInit {
         this.vw = window.innerWidth;
         this.vh = window.innerHeight;
 
+        this.loading = false;
+
+        this.ref.markForCheck();
+
         var container = this.container.nativeElement;
         var selected = this.selected;
 
@@ -632,8 +638,7 @@ export class WorkspaceComponent implements OnInit {
         var select = this.select;
 
         var browser = this.brows();
-
-        this.ref.markForCheck();
+        console.log(this.loading);
         interact('.svgDraggable')
           .draggable({
             autoScroll: true,

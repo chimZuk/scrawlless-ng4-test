@@ -1,149 +1,155 @@
-<svg version="1.1" id="cover" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class="" [attr.width]="0.9 * vw"
-    [attr.height]="0.9 * 1.25 * vw" viewBox="0 0 800 1000">
-    <defs>
-        <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#69b0b7" stroke-width="0.5" />
-        </pattern>
-    </defs>
-    <defs>
-        <filter id="f1" x="-50%" y="-50%" width="200%" height="200%">
-            <feOffset result="offOut" in="SourceAlpha" dx="-0.175" dy="-0.175" />
-            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="0.35" />
-            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-        </filter>
-    </defs>
-    <rect width="100%" height="100%" fill="#fff" />
-    <svg:rect #list (click)="setCursor($event, 'canvas', 0);" id="list" width="100%" height="100%" [attr.fill]="'url(' + absUrl + '#smallGrid)'"
-    />
-    <line x1="0" y1="0" x2="800" y2="0" stroke="#69b0b7" stroke-width="1" />
-    <line x1="0" y1="0" x2="0" y2="1000" stroke="#69b0b7" stroke-width="1" />
-    <line x1="800" y1="1000" x2="0" y2="1000" stroke="#69b0b7" stroke-width="1" />
-    <line x1="800" y1="1000" x2="800" y2="0" stroke="#69b0b7" stroke-width="1" />
-    <line x1="700.55" y1="0" x2="700.55" y2="1000" stroke="#ed7e28" stroke-width="1.1" />
-    <text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="selection.x" [attr.y]="selection.y" font-family="scwlsWorkspace"
-        font-size="16">&#xe911;</text>
+<div *ngIf="!loading">
+    <svg version="1.1" id="cover" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class="" [attr.width]="0.9 * vw"
+        [attr.height]="0.9 * 1.25 * vw" viewBox="0 0 800 1000">
+        <defs>
+            <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#69b0b7" stroke-width="0.5" />
+            </pattern>
+        </defs>
+        <defs>
+            <filter id="f1" x="-50%" y="-50%" width="200%" height="200%">
+                <feOffset result="offOut" in="SourceAlpha" dx="-0.175" dy="-0.175" />
+                <feGaussianBlur result="blurOut" in="offOut" stdDeviation="0.35" />
+                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+        </defs>
+        <rect width="100%" height="100%" fill="#fff" />
+        <svg:rect #list (click)="setCursor($event, 'canvas', 0);" id="list" width="100%" height="100%" [attr.fill]="'url(' + absUrl + '#smallGrid)'"
+        />
+        <line x1="0" y1="0" x2="800" y2="0" stroke="#69b0b7" stroke-width="1" />
+        <line x1="0" y1="0" x2="0" y2="1000" stroke="#69b0b7" stroke-width="1" />
+        <line x1="800" y1="1000" x2="0" y2="1000" stroke="#69b0b7" stroke-width="1" />
+        <line x1="800" y1="1000" x2="800" y2="0" stroke="#69b0b7" stroke-width="1" />
+        <line x1="700.55" y1="0" x2="700.55" y2="1000" stroke="#ed7e28" stroke-width="1.1" />
+        <text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="selection.x" [attr.y]="selection.y" font-family="scwlsWorkspace"
+            font-size="16">&#xe911;</text>
 
-    <svg:g *ngFor="let line of elements.lines; let i = index">
-        <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
-        </g>
+        <svg:g *ngFor="let line of elements.lines; let i = index">
+            <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
+            </g>
 
-        <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="500" cy="150" r="50" stroke="green" stroke-width="1" fill="yellow" class=""
-            (click)="select($event)" />
-        <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="400" cy="500" r="80" stroke="green" stroke-width="1" fill="yellow" class=""
-            (click)="select($event)" />
-        <!--<g [attr.filter]="'url(' + absUrl + '#f1)'" [innerHTML] = "expr"></g>-->
-</svg>
-
-
+            <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="500" cy="150" r="50" stroke="green" stroke-width="1" fill="yellow" class=""
+                (click)="select($event)" />
+            <circle [attr.filter]="'url(' + absUrl + '#f1)'" cx="400" cy="500" r="80" stroke="green" stroke-width="1" fill="yellow" class=""
+                (click)="select($event)" />
+            <!--<g [attr.filter]="'url(' + absUrl + '#f1)'" [innerHTML] = "expr"></g>-->
+    </svg>
 
 
-<mat-card id="fullscreen" class="ui squareSingle draggable touch" *ngIf="this.brows().name !='Safari'">
-    <button mat-fab color="accent" class="fullscreen" *ngIf="!isFullscreen" (click)="isFullscreen = true;" onclick="editor_fullscreen()">
-        <mat-icon>fullscreen</mat-icon>
-    </button>
-    <button mat-fab color="accent" class="exitFullscreen" *ngIf="isFullscreen" (click)="isFullscreen = false;" onclick="editor_exitFullscreen()">
-        <mat-icon>fullscreen_exit</mat-icon>
-    </button>
-</mat-card>
 
-<mat-card class="ui squareSingle zIn draggable touch">
-    <button mat-fab color="accent" (click)="zoom('1.15')">
-        <mat-icon>zoom_in</mat-icon>
-    </button>
-</mat-card>
-<mat-card class="ui squareSingle zOut draggable touch">
-    <button mat-fab color="accent" (click)="zoom(0.85)">
-        <mat-icon>zoom_out</mat-icon>
-    </button>
-</mat-card>
 
-<mat-card class="ui squareSingle exitToApp draggable touch">
-    <button mat-fab color="accent" (click)="exit()" md-fab>
-        <mat-icon>exit_to_app</mat-icon>
-    </button>
-</mat-card>
+    <mat-card id="fullscreen" class="ui squareSingle draggable touch" *ngIf="this.brows().name !='Safari'">
+        <button mat-fab color="accent" class="fullscreen" *ngIf="!isFullscreen" (click)="isFullscreen = true;" onclick="editor_fullscreen()">
+            <mat-icon>fullscreen</mat-icon>
+        </button>
+        <button mat-fab color="accent" class="exitFullscreen" *ngIf="isFullscreen" (click)="isFullscreen = false;" onclick="editor_exitFullscreen()">
+            <mat-icon>fullscreen_exit</mat-icon>
+        </button>
+    </mat-card>
 
-<mat-card #numbers id="numbers" class="ui keyboard" *ngIf="mode === 'math'">
-    <div class="flex-column">
-        <div class="flex-row">
-            <button mat-raised-button (click)="write(7, 'di');">
-                <span class="i-font i-seven"></span>
-            </button>
-            <button mat-raised-button (click)="write(8, 'di');">
-                <span class="i-font i-eight"></span>
-            </button>
-            <button mat-raised-button (click)="write(9, 'di');">
-                <span class="i-font i-nine"></span>
-            </button>
+    <mat-card class="ui squareSingle zIn draggable touch">
+        <button mat-fab color="accent" (click)="zoom('1.15')">
+            <mat-icon>zoom_in</mat-icon>
+        </button>
+    </mat-card>
+    <mat-card class="ui squareSingle zOut draggable touch">
+        <button mat-fab color="accent" (click)="zoom(0.85)">
+            <mat-icon>zoom_out</mat-icon>
+        </button>
+    </mat-card>
+
+    <mat-card class="ui squareSingle exitToApp draggable touch">
+        <button mat-fab color="accent" (click)="exit()" md-fab>
+            <mat-icon>exit_to_app</mat-icon>
+        </button>
+    </mat-card>
+
+    <mat-card #numbers id="numbers" class="ui keyboard" *ngIf="mode === 'math'">
+        <div class="flex-column">
+            <div class="flex-row">
+                <button mat-raised-button (click)="write(7, 'di');">
+                    <span class="i-font i-seven"></span>
+                </button>
+                <button mat-raised-button (click)="write(8, 'di');">
+                    <span class="i-font i-eight"></span>
+                </button>
+                <button mat-raised-button (click)="write(9, 'di');">
+                    <span class="i-font i-nine"></span>
+                </button>
+            </div>
+            <div class="flex-row">
+                <button mat-raised-button (click)="write(4, 'di');">
+                    <span class="i-font i-four"></span>
+                </button>
+                <button mat-raised-button (click)="write(5, 'di');">
+                    <span class="i-font i-five"></span>
+                </button>
+                <button mat-raised-button (click)="write(6, 'di');">
+                    <span class="i-font i-six"></span>
+                </button>
+            </div>
+            <div class="flex-row">
+                <button mat-raised-button (click)="write(1, 'di');">
+                    <span class="i-font i-one"></span>
+                </button>
+                <button mat-raised-button (click)="write(2, 'di');">
+                    <span class="i-font i-two"></span>
+                </button>
+                <button mat-raised-button (click)="write(3, 'di');">
+                    <span class="i-font i-three"></span>
+                </button>
+            </div>
+            <div class="flex-row">
+                <button mat-raised-button (click)="write(1, 'di');">
+                    <span class="i-font i-dot"></span>
+                </button>
+                <button mat-raised-button (click)="write(0, 'di');">
+                    <span class="i-font i-zero"></span>
+                </button>
+                <button mat-raised-button (click)="write(1, 'di');">
+                    <span class="i-font i-comma"></span>
+                </button>
+            </div>
         </div>
-        <div class="flex-row">
-            <button mat-raised-button (click)="write(4, 'di');">
-                <span class="i-font i-four"></span>
-            </button>
-            <button mat-raised-button (click)="write(5, 'di');">
-                <span class="i-font i-five"></span>
-            </button>
-            <button mat-raised-button (click)="write(6, 'di');">
-                <span class="i-font i-six"></span>
-            </button>
-        </div>
-        <div class="flex-row">
-            <button mat-raised-button (click)="write(1, 'di');">
-                <span class="i-font i-one"></span>
-            </button>
-            <button mat-raised-button (click)="write(2, 'di');">
-                <span class="i-font i-two"></span>
-            </button>
-            <button mat-raised-button (click)="write(3, 'di');">
-                <span class="i-font i-three"></span>
-            </button>
-        </div>
-        <div class="flex-row">
-            <button mat-raised-button (click)="write(1, 'di');">
-                <span class="i-font i-dot"></span>
-            </button>
-            <button mat-raised-button (click)="write(0, 'di');">
-                <span class="i-font i-zero"></span>
-            </button>
-            <button mat-raised-button (click)="write(1, 'di');">
-                <span class="i-font i-comma"></span>
-            </button>
-        </div>
-    </div>
-</mat-card>
+    </mat-card>
 
-<mat-card #operators id="operators" class="ui keyboard" *ngIf="mode === 'math'">
-    <div class="flex-column">
-        <div class="flex-row">
-            <button mat-raised-button (click)="write('*', 'op');">
-                <span class="i-font i-mult"></span>
-            </button>
-            <button mat-raised-button (click)="write(null, 'fr');">
-                <span class="i-font i-divide"></span>
-            </button>
+    <mat-card #operators id="operators" class="ui keyboard" *ngIf="mode === 'math'">
+        <div class="flex-column">
+            <div class="flex-row">
+                <button mat-raised-button (click)="write('*', 'op');">
+                    <span class="i-font i-mult"></span>
+                </button>
+                <button mat-raised-button (click)="write(null, 'fr');">
+                    <span class="i-font i-divide"></span>
+                </button>
+            </div>
+            <div class="flex-row">
+                <button mat-raised-button (click)="write('+', 'op');">
+                    <span class="i-font i-plus"></span>
+                </button>
+                <button mat-raised-button (click)="write('-', 'op');">
+                    <span class="i-font i-minus"></span>
+                </button>
+            </div>
         </div>
-        <div class="flex-row">
-            <button mat-raised-button (click)="write('+', 'op');">
-                <span class="i-font i-plus"></span>
-            </button>
-            <button mat-raised-button (click)="write('-', 'op');">
-                <span class="i-font i-minus"></span>
-            </button>
-        </div>
-    </div>
-    <button mat-raised-button (click)="write('=', 'op');">
-        <span class="i-font i-equal"></span>
-    </button>
-</mat-card>
+        <button mat-raised-button (click)="write('=', 'op');">
+            <span class="i-font i-equal"></span>
+        </button>
+    </mat-card>
 
-<mat-card class="ui tools">
-    <button mat-raised-button color="accent" [class.selectedTool]="mode == 'remove'" (click)="switchMode('remove')">
-        <mat-icon>remove_circle_outline</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" [class.selectedTool]="mode == 'math'" (click)="switchMode('math')">
-        <mat-icon>title</mat-icon>
-    </button>
-    <button mat-raised-button color="accent" [class.selectedTool]="mode == 'geo'" (click)="switchMode('geo')">
-        <mat-icon>mode_edit</mat-icon>
-    </button>
-</mat-card>
+    <mat-card class="ui tools">
+        <button mat-raised-button color="accent" [class.selectedTool]="mode == 'remove'" (click)="switchMode('remove')">
+            <mat-icon>remove_circle_outline</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" [class.selectedTool]="mode == 'math'" (click)="switchMode('math')">
+            <mat-icon>title</mat-icon>
+        </button>
+        <button mat-raised-button color="accent" [class.selectedTool]="mode == 'geo'" (click)="switchMode('geo')">
+            <mat-icon>mode_edit</mat-icon>
+        </button>
+    </mat-card>
+</div>
+
+<div style="width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center;" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+</div>

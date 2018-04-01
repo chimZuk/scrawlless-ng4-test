@@ -137,4 +137,7 @@
   right: 0;
   background-color: #427a8d; }
 
+/deep/ .mat-spinner circle {
+  stroke: #ed7e28 !important; }
+
 /*# sourceMappingURL=app.css.map */
