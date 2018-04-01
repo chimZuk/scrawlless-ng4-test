@@ -11,9 +11,6 @@ import { HomeworkDataService } from '../../../_services/homework-data/homework-d
 import { SafeHTML } from "../../../_pipes/safehtml.pipe";
 
 
-import { AdditionDialogComponent } from './../../dialogs/workspace-dialogs/addition-dialog/addition-dialog.component';
-
-
 @NgModule({
   imports: [
     WorkspaceRouter,
@@ -22,8 +19,7 @@ import { AdditionDialogComponent } from './../../dialogs/workspace-dialogs/addit
   declarations: [
     WorkspaceComponent,
     AlgebraComponent,
-    SafeHTML,
-    AdditionDialogComponent
+    SafeHTML
   ],
   providers: [
     AlgebraComponent,
