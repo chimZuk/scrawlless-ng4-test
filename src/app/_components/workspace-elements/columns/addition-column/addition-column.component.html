@@ -1,0 +1,72 @@
+<md-menu #numMenu="mdMenu" (close)="denyEnter()">
+    <md-card [ngClass]="{'non-centered-left-menu': nonCenteredLeftMenu, 'non-centered-right-menu': nonCenteredRightMenu, 'centered-menu': true, 'rem-menu': remMenu, 'answer-buttons': true}">
+        <button md-raised-button *ngFor="let item of inputButtons; let i = index" [ngClass]="{'cancel': item.class == 'cancel', 'done': item.class == 'done'}" (click)="resultInput(item)">
+            {{ item.value }}
+            <i *ngIf="i == 9" class="material-icons">delete_forever</i>
+            <i *ngIf="i == 11" class="material-icons">not_interested</i>
+        </button>
+    </md-card>
+</md-menu>
+
+<div [ngClass]="{'terms': true}">
+
+    <div class="operator">{{ operator }}</div>
+
+    <div class="term">
+
+    </div>
+
+    <div [ngClass]="{'term': true, 'remember': true, 'remember-dotted': !autoNull}">
+        <div *ngFor="let item of splittedTermList.remember; let i = index" [ngClass]="{'but': true, 'decade-margin': autoNull && i > splittedTermList.beforeDot && (i + 1 - (splittedTermList.beforeDot)) % 3 == 0}">
+            <div>
+                <button md-button *ngIf="splittedTermList.numbersArray.length > 2" [ngClass]="{'selected': splittedTermList.selected[i + 1].isSelected && splittedTermList.remember[i].isFresh == false, 'fresh-primary': splittedTermList.remember[i].isFresh}" (click)="inputButtonClick('rem', i, $event)"
+                    [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                <button md-button *ngIf="splittedTermList.numbersArray.length < 3" [ngClass]="{'selected': splittedTermList.selected[i + 1].isSelected && splittedTermList.remember[i].isFresh == false, 'fresh-primary': splittedTermList.remember[i].isFresh}" (click)="rememberAction(i)">{{ item.value }}</button>
+            </div>
+            <div *ngIf="(item.isDotted && autoNull) || (item.isDotted && !autoNull && i != 0)">
+                <button md-button [ngClass]="{'additional-dot-element': true}">{{ item.value }}</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="term" *ngFor="let term of splittedTermList.numbersArray; let i = index">
+        <button md-button *ngIf="!isAutoNull" [ngClass]="{'primary': true}" (click)="addNull(i)"><i class="material-icons">add_circle</i></button>
+        <div *ngFor="let item of term.termsArray; let j = index" [ngClass]="{'but': true, 'decade-margin': autoNull && j > term.beforeDot && (j - (term.beforeDot)) % 3 == 0}">
+            <div>
+                <button md-button [ngClass]="{'selected': splittedTermList.selected[j].isSelected}">{{ item.value }}</button>
+            </div>
+            <div>
+                <button md-button *ngIf="item.isDotted && j != 0" [ngClass]="{'dot-element': true}">
+                    <p *ngIf="item.isPermanentDotted">.</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="line"></div>
+
+    <div [ngClass]="{'term': true, 'result': true, 'result-dotted': !autoNull}">
+        <div *ngFor="let item of splittedTermList.result; let i = index" [ngClass]="{'but': true, 'decade-margin': autoNull && i > splittedTermList.beforeDot && (i - (splittedTermList.beforeDot)) % 3 == 0}">
+            <div>
+                <button md-button [ngClass]="{'fresh': item.isFresh}" (click)="inputButtonClick('res', i, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+            </div>
+            <div>
+                <button md-button *ngIf="item.isDotted && i != 0" [ngClass]="{'dot-element': true, 'fresh-primary': item.isFreshDot}" (click)="putDot(i)">
+                    <p *ngIf="item.isPermanentDotted">.</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="line"></div>
+</div>
+
+<div class="actions">
+    <div class="field undo-actions">
+        <button md-raised-button md-dialog-close><md-icon>block</md-icon></button>
+        <button md-raised-button (click)="resetTerms();"><md-icon>refresh</md-icon></button>
+    </div>
+    <div class="field exit-actions">
+        <button md-raised-button md-dialog-close class="primary" (click)="saveResult()"><md-icon>check_circle</md-icon></button>
+    </div>
+</div>

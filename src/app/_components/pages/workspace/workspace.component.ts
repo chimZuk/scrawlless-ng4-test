@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -14,6 +14,7 @@ import { HomeworkDataService } from '../../../_services/homework-data/homework-d
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./workspace.component.css'],
 })
 export class WorkspaceComponent implements OnInit {
@@ -24,7 +25,7 @@ export class WorkspaceComponent implements OnInit {
     private algebra: AlgebraComponent,
     private sanitizer: DomSanitizer,
     private data: HomeworkDataService,
-    private changeDetectorRef: ChangeDetectorRef
+    private ref: ChangeDetectorRef
   ) {
     this.arrayOfKeys = Object.keys(this.lines);
   }
@@ -155,10 +156,18 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
+      
+      this.selection.ex = this.elements.expressions.length;
+      this.selection.line = line;
+      this.onClick({
+        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+      });
 
       this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
+
+
 
     } else {
       this.createLine();
@@ -214,6 +223,12 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
+      
+      this.selection.ex = this.elements.expressions.length;
+      this.selection.line = line;
+      this.onClick({
+        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+      });
 
       this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
@@ -442,6 +457,7 @@ export class WorkspaceComponent implements OnInit {
         break;
       }
     }
+    this.ref.markForCheck();
   }
 
   getArr = function (i) {
@@ -600,9 +616,18 @@ export class WorkspaceComponent implements OnInit {
     interact('.drag-handler')
       .draggable({
         autoScroll: true,
-        onstart: function (event) {},
+        onstart: function (event) { },
         onmove: expressionDrag.bind(this),
-        onend: function (event) {}
+        onend: function (event) {
+          var target = event.target;
+          this.lines[target.getAttribute('data-lineid')].x = Math.ceil((this.lines[target.getAttribute('data-lineid')].x - 10) / 20) * 20;
+          this.lines[target.getAttribute('data-lineid')].y = Math.ceil((this.lines[target.getAttribute('data-lineid')].y - 5) / 10) * 10;
+          this.ref.markForCheck();
+          this.onClick({
+            target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+          });
+          this.ref.markForCheck();
+        }.bind(this)
       });
 
     function expressionDrag(event) {
@@ -616,7 +641,10 @@ export class WorkspaceComponent implements OnInit {
 
       this.lines[target.getAttribute('data-lineid')].x += Number(x) * (cA[2] / cW);
       this.lines[target.getAttribute('data-lineid')].y += Number(y) * (cA[3] / cH);
-
+      this.onClick({
+        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+      });
+      this.ref.markForCheck();
     }
 
     function dragMoveListener(event) {

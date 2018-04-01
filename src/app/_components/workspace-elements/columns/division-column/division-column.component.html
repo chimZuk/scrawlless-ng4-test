@@ -1,0 +1,273 @@
+<md-menu #numMenu="mdMenu" (close)="denyEnter()">
+    <md-card [ngClass]="{'non-centered-left-menu': nonCenteredLeftMenu, 'non-centered-right-menu': nonCenteredRightMenu, 'rem-menu': remMenu, 'answer-buttons': true}">
+        <button md-raised-button *ngFor="let item of inputButtons; let i = index" [ngClass]="{'cancel': item.class == 'cancel', 'done': item.class == 'done'}" (click)="resultInput(item)">
+            {{ item.value }}
+            <i *ngIf="i == 9" class="material-icons">delete_forever</i>
+            <i *ngIf="i == 11" class="material-icons">not_interested</i>
+        </button>
+    </md-card>
+</md-menu>
+
+
+<div class="dialog">
+    <div class="column">
+
+        <div class="terms">
+            <div class="minus-div">
+                <div [ngClass]="{'term': true}">
+                    <div [ngClass]="{'but': true}">
+                        <div class="horizontal-button-line minus"></div>
+                    </div>
+                </div>
+            </div>
+            <div>
+
+                <div class="term">
+                    <div *ngFor="let item of splittedTermList.numbersArray[0].termsArray; let j = index" [ngClass]="{'but': true}">
+                        <div>
+                            <button md-button>{{ item.value }}</button>
+                        </div>
+                        <div>
+
+                            <p class="result-p" *ngIf="item.isDotted && item.isPermanentDotted">.</p>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div [ngClass]="{'term': true}">
+                    <div *ngFor="let item of splittedTermList.intermediate.result[0].multiplication; let j = index" [ngClass]="{'but': true}">
+                        <div>
+                            <button md-button [ngClass]="{'fresh': item.isFresh}" (click)="inputButtonClick('mul', true, 0, j, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                        </div>
+                    </div>
+                </div>
+                <div [ngClass]="{'term': true}">
+                    <div *ngFor="let item of splittedTermList.intermediate.result[0].subtraction; let j = index" [ngClass]="{'but': true}">
+                        <div class="horizontal-button-line"></div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="vertical-line"></div>
+
+            <div>
+                <div class="term">
+                    <div *ngFor="let item of splittedTermList.numbersArray[1].termsArray; let j = index" [ngClass]="{'but': true}">
+                        <div>
+                            <button md-button>{{ item.value }}</button>
+                        </div>
+                        <div>
+                            <button md-button *ngIf="item.isDotted && j != 0" [ngClass]="{'dot-element': true}">
+                    <p *ngIf="item.isPermanentDotted">.</p>
+                </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="horizontal-line"></div>
+
+                <div [ngClass]="{'term': true}">
+                    <div *ngFor="let item of splittedTermList.result; let i = index" [ngClass]="{'but': true}">
+                        <div>
+                            <button md-button [ngClass]="{'fresh': item.isFresh}" (click)="inputButtonClick('res', true, 0, i, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                        </div>
+                        <div>
+                            <button md-button *ngIf="item.isDotted" [ngClass]="{'dot-element': true, 'fresh-primary': item.isFreshDot}" (click)="putDot(i)">
+                    <p *ngIf="item.isPermanentDotted">.</p>
+                </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="terms terms-result">
+            <div>
+                <div class="combo">
+                    <div [ngClass]="{'term': true, 'term-margin': true}">
+                        <div *ngFor="let item of splittedTermList.intermediate.result[0].subtraction; let j = index" [ngClass]="{'but': true}">
+                            <div>
+                                <button md-button [ngClass]="{'fresh': item.isFresh}" (click)="inputButtonClick('sub', true, 0, j, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngFor="let i of getDivMas(); let x = index" class="combo">
+
+                    <div [ngClass]="{'term': true}">
+                        <div *ngFor="let item of getArr(splittedTermList.intermediate.result[i].empty - 1); let j = index" [ngClass]="{'but': true}">
+                            <div class="horizontal-button-line inv"></div>
+                        </div>
+                        <div [ngClass]="{'but': true}">
+                            <div class="horizontal-button-line inv-minus inv"></div>
+                        </div>
+                        <div *ngIf="i != 1" [ngClass]="{'but': true}">
+                            <div class="horizontal-button-line minus"></div>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'term': true}">
+                        <div *ngFor="let item of getArr(splittedTermList.intermediate.result[i].empty); let j = index" [ngClass]="{'but': true}">
+                            <div class="horizontal-button-line inv"></div>
+                        </div>
+                        <div *ngFor="let item of splittedTermList.intermediate.result[i].multiplication; let j = index" [ngClass]="{'but': true}">
+                            <div>
+                                <button md-button [ngClass]="{'fresh': item.isFresh}" (click)="inputButtonClick('mul', true, i, j, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'but': true, 'inv': true}">
+                            <div>
+                                <button md-button></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'term': true}">
+                        <div *ngFor="let item of getArr(splittedTermList.intermediate.result[i].empty); let j = index" [ngClass]="{'but': true}">
+                            <div class="horizontal-button-line inv"></div>
+                        </div>
+                        <div *ngFor="let item of splittedTermList.intermediate.result[i].subtraction; let j = index" [ngClass]="{'but': true}">
+                            <div *ngIf="((splittedTermList.intermediate.result[i].subtraction[j] && splittedTermList.intermediate.result[i].subtraction[j].isFresh) || (splittedTermList.intermediate.result[i].subtraction[j] && splittedTermList.intermediate.result[i].subtraction[j].value != '')) || (splittedTermList.intermediate.result[i].multiplication[j] && !splittedTermList.intermediate.result[i].multiplication[j].isFresh)"
+                                class="horizontal-button-line"></div>
+                        </div>
+                    </div>
+
+                    <div [ngClass]="{'term': true, 'term-margin': true}">
+                        <div *ngFor="let item of getArr(splittedTermList.intermediate.result[i].empty); let j = index" [ngClass]="{'but': true, 'inv': true}">
+                            <div>
+                                <button md-button></button>
+                            </div>
+                        </div>
+                        <div *ngFor="let item of splittedTermList.intermediate.result[i].subtraction; let j = index" [ngClass]="{'but': true}">
+                            <div>
+                                <button md-button [ngClass]="{'fresh': item.isFresh}" (click)="inputButtonClick('sub', true, i, j, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                            </div>
+                        </div>
+                        <div [ngClass]="{'but': true, 'inv': true}">
+                            <div>
+                                <button md-button></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="actions">
+        <button md-raised-button md-dialog-close class="primary" (click)="saveResult()"><md-icon>check_circle</md-icon></button>
+        <button md-raised-button (click)="resetTerms();"><md-icon>refresh</md-icon></button>
+        <button md-raised-button md-dialog-close><md-icon>block</md-icon></button>
+    </div>
+
+</div>
+
+
+
+
+
+<!--
+  
+  
+  
+  
+  <div>
+    <md-menu #numMenu="mdMenu" (close)="denyEnter()">
+        <md-card [ngClass]="{'non-centered-left-menu': nonCenteredLeftMenu, 'non-centered-right-menu': nonCenteredRightMenu, 'rem-menu': remMenu, 'answer-buttons': true}">
+            <button md-raised-button *ngFor="let item of inputButtons; let i = index" [ngClass]="{'cancel': item.class == 'cancel', 'done': item.class == 'done'}" (click)="resultInput(item)">
+            {{ item.value }}
+            <i *ngIf="i == 9" class="material-icons">delete_forever</i>
+            <i *ngIf="i == 11" class="material-icons">not_interested</i>
+        </button>
+        </md-card>
+    </md-menu>
+
+    <div [ngClass]="{'terms': true}">
+
+        <div class="operator">{{ operator }}</div>
+
+        <div [ngClass]="{'term': true, 'remember': true}">
+            <div *ngFor="let item of splittedTermList.intermediate.remember[tempLine]; let i = index" [ngClass]="{'but': true}">
+                <div>
+                    <button md-button [ngClass]="{'selected': (splittedTermList.intermediate.selected[tempLine][i + 1].isSelected && item.isFresh == false) || item.isSelected, 'fresh-primary': item.isFresh}" (click)="inputButtonClick('rem', true, tempLine, i, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                </div>
+                <div *ngIf="item.isDotted">
+                    <button md-button [ngClass]="{'additional-dot-element': true}"></button>
+                </div>
+            </div>
+        </div>
+        <div *ngFor="let term of splittedTermList.numbersArray; let i = index" class="term">
+            <div *ngFor="let item of term.termsArray; let j = index" [ngClass]="{'but': true}">
+                <div>
+                    <button md-button [ngClass]="{'selected': (splittedTermList.intermediate.selected[tempLine][j].isSelected && i == 0) || (tempElement < splittedTermList.intermediate.selected[tempLine].length - 1 && splittedTermList.intermediate.selected[tempLine][tempElement].isSelected && j == tempLine && tempElement != splittedTermList.numbersArray[0].termsArray.length && i != 0)}">{{ item.value }}</button>
+                </div>
+                <div>
+                    <button md-button *ngIf="item.isDotted && j != 0" [ngClass]="{'dot-element': true}">
+                    <p *ngIf="item.isPermanentDotted">.</p>
+                </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="line"></div>
+
+        <div [ngClass]="{'term': true, 'remember': true, 'remember-intermediate': true}">
+            <div *ngFor="let item of splittedTermList.remember; let i = index" [ngClass]="{'but': true}">
+                <div>
+                    <button md-button [ngClass]="{'selected': (splittedTermList.selected[i + 1].isSelected && item.isFresh == false) || item.isSelected, 'fresh-primary': item.isFresh}" (click)="inputButtonClick('rem', false, i, 0, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                </div>
+                <div *ngIf="item.isDotted">
+                    <button md-button [ngClass]="{'additional-dot-element': true}"></button>
+                </div>
+            </div>
+        </div>
+
+        <div *ngFor="let term of splittedTermList.intermediate.result; let i = index" [ngClass]="{'term': true, 'result': true}">
+            <div *ngFor="let item of getArr(i); let j = index" [ngClass]="{'but': true}">
+                <div>
+                    <button md-button></button>
+                </div>
+                <div>
+                    <button md-button *ngIf="splittedTermList.beforeDot && j != 0" [ngClass]="{'dot-element': true}"></button>
+                </div>
+            </div>
+            <div *ngFor="let item of term; let j = index" [ngClass]="{'but': true}">
+                <div>
+                    <button md-button [ngClass]="{'selected': splittedTermList.selected[j + i].isSelected && item.isFresh == false, 'fresh': item.isFresh}" (click)="inputButtonClick('res', true, i, j, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                </div>
+                <div>
+                    <button md-button *ngIf="item.isDotted && ((j != 0) || (i != 0))" [ngClass]="{'dot-element': true, 'fresh-primary': item.isFreshDot}"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="line"></div>
+
+        <div [ngClass]="{'term': true, 'result': true}">
+            <div *ngFor="let item of splittedTermList.result; let i = index" [ngClass]="{'but': true}">
+                <div>
+                    <button md-button [ngClass]="{'fresh': item.isFresh}" (click)="inputButtonClick('res', false, i, 0, $event)" [md-menu-trigger-for]="numMenu">{{ item.value }}</button>
+                </div>
+                <div>
+                    <button md-button *ngIf="item.isDotted && i != 0" [ngClass]="{'dot-element': true, 'fresh-primary': item.isFreshDot}" (click)="putDot(i)">
+                    <p *ngIf="item.isPermanentDotted">.</p>
+                </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="line"></div>
+    </div>
+
+    
+</div>-->
