@@ -12,7 +12,7 @@ export class LanguageService {
 
   setLanguage() {
     this.getLanguage = navigator.language;
-    (navigator.language == "ru") ? this.lang = 0 : this.lang = 1;
+    (navigator.language == "ru" || navigator.language == "ru-RU") ? this.lang = 0 : this.lang = 1;
   }
 
   language: any[] = [
