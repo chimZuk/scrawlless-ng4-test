@@ -75,7 +75,7 @@ export class AlgebraComponent {
 
     for (let i = 0; i < ex.cd.length; i++) {
       expr[this.di[ex.cd[i]].pos] = this.di[ex.cd[i]];
-
+      //console.log(ex.cd);
       switch (this.di[ex.cd[i]].type) {
         case "fraction":
           let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].zn], this.fr[this.di[ex.cd[i]].fr].zn);
@@ -122,7 +122,6 @@ export class AlgebraComponent {
       }
     }
     for (let i = 1; i <= ex.cd.length; i++) {
-
       switch (expr[i].type) {
         case "fraction":
           let line;
@@ -142,11 +141,11 @@ export class AlgebraComponent {
           }
           break;
         case "digit":
-          html += '<text data-type="di" x="' + (width * 20 + expr[i].s * 3) + '" class="element" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
+          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * 3) + '" class="element" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
           width += expr[i].s;
           break;
         case "operator":
-          html += '<text data-type="di" x="' + (width * 20 + expr[i].s * 2) + '" class="element" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
+          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * 2) + '" class="element" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "16">' + expr[i].text + '</text>';
           width += expr[i].s;
           break;
 

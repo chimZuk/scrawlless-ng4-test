@@ -2,29 +2,28 @@ import { Component, ViewChildren, Output, Input, EventEmitter } from '@angular/c
 import { MatMenu, MatMenuTrigger, MatButton } from '@angular/material';
 
 @Component({
-  selector: 'sum-column',
-  templateUrl: './sum-column.component.html',
-  styleUrls: ['./sum-column.component.css'],
-  host: {
-    '(document:keydown)': 'handleKeyboardEvents($event)'
-  }
+  selector: 'mul-column',
+  templateUrl: './mul-column.component.html',
+  styleUrls: ['./mul-column.component.css']
 })
-
-export class SumColumnComponent {
+export class MulColumnComponent {
 
   data: any;
   operation: string;
-  operator: string;
+  operator: string = '×';
 
   splittedTermList: any;
-  autoNull: boolean;
 
   res: string = '';
 
-  tempElement: number;
+  selected: any[];
+
+  tempElement: number = 0;
+  tempLine: number = 0;
   tempTrigger: string;
 
   key: any;
+  isIntermediate: boolean = false;
   isEnterAllowed: boolean = false;
 
   nonCenteredLeftMenu: boolean;
@@ -32,6 +31,10 @@ export class SumColumnComponent {
   remMenu: boolean;
 
   inputButtons: any[] = [];
+
+  getArr = function (i) {
+    return new Array(i);
+  }
 
 
   constructor() {
@@ -55,27 +58,12 @@ export class SumColumnComponent {
     });
   }
 
-  ngOnInit() { 
-    console.log("lol");
-  }
+  ngOnInit() { }
 
-
-  @Input()
-  set isAutoNull(data: boolean) {
-    this.autoNull = data;
-  }
-  get isAutoNull() { return this.autoNull; }
 
   @Input()
   set setOperation(data: string) {
     this.operation = data;
-    if (this.operation == 'sub') {
-      this.operator = '-';
-    } else {
-      if (this.operation == 'sum') {
-        this.operator = '+';
-      }
-    }
   }
   get setOperation() { return this.operation; }
 
@@ -94,6 +82,11 @@ export class SumColumnComponent {
       beforeDot: 0,
       afterDot: 0,
       numbersArray: [],
+      intermediate: {
+        result: [],
+        remember: [],
+        selected: []
+      },
       remember: [],
       result: [],
       selected: []
@@ -106,9 +99,7 @@ export class SumColumnComponent {
         isDot: 0,
         beforeDot: 0,
         afterDot: 0,
-        termsArray: [],
-        remember: [],
-        result: []
+        termsArray: []
       });
 
       for (var j = 0; j < tempMas[i].length; j++) {
@@ -146,54 +137,40 @@ export class SumColumnComponent {
     this.splittedTermList.beforeDot = this.splittedTermList.numbersArray[this.largestBeforeDot()].beforeDot;
     this.splittedTermList.afterDot = this.splittedTermList.numbersArray[0].termsArray.length - this.splittedTermList.numbersArray[0].beforeDot;
 
-    if (this.isAutoNull) {
-      this.autoNullAdd();
-    } else {
-      this.resetField();
-    }
-    
+    this.resetField();
   }
 
-  rememberAction(id) {
-    switch (this.operation) {
-      case 'sum': {
-        switch (this.splittedTermList.remember[id].value) {
-          case '':
-            this.splittedTermList.remember[id].value = 1;
-            this.splittedTermList.remember[id].isFresh = false;
-            break;
-          case 1:
-            this.splittedTermList.remember[id].value = '';
-            this.splittedTermList.remember[id].isFresh = true;
-            break;
-          default:
-            break;
-        }
-        break;
+  rememberAction() {
+    if (this.isIntermediate) {
+      switch (this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].value) {
+        case '':
+          this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].value = 1;
+          this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isFresh = false;
+          break;
+        case 1:
+          this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].value = '';
+          this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isFresh = true;
+          break;
+        default:
+          break;
       }
-      case 'sub': {
-        switch (this.splittedTermList.remember[id].value) {
-          case '':
-            this.splittedTermList.remember[id].value = -1;
-            this.splittedTermList.remember[id].isFresh = false;
-            break;
-          case -1:
-            this.splittedTermList.remember[id].value = '';
-            this.splittedTermList.remember[id].isFresh = true;
-            break;
-          default:
-            break;
-        }
-        break;
+    } else {
+      switch (this.splittedTermList.remember[this.tempElement].value) {
+        case '':
+          this.splittedTermList.remember[this.tempElement].value = 1;
+          this.splittedTermList.remember[this.tempElement].isFresh = false;
+          break;
+        case 1:
+          this.splittedTermList.remember[this.tempElement].value = '';
+          this.splittedTermList.remember[this.tempElement].isFresh = true;
+          break;
+        default:
+          break;
       }
-      default:
-        break;
     }
-    this.saveResult();
   }
 
   putDot(id) {
-    if (!this.autoNull) {
       if (this.splittedTermList.result[id].isPermanentDotted) {
         for (var i = 0; i < this.splittedTermList.result.length; i++) {
           this.splittedTermList.result[i].isPermanentDotted = false;
@@ -206,11 +183,10 @@ export class SumColumnComponent {
         }
         this.splittedTermList.result[id].isPermanentDotted = true;
       }
-    }
-    this.saveResult();
+      this.saveResult();
   }
 
-  inputButtonClick(type, id, ev) {
+  inputButtonClick(type, isInter, i, j, ev) {
     this.tempTrigger = type;
 
     this.nonCenteredRightMenu = false;
@@ -224,24 +200,38 @@ export class SumColumnComponent {
     }
 
     this.isEnterAllowed = true;
-    this.tempElement = id;
+    this.isIntermediate = isInter;
 
     switch (type) {
       case 'res': {
         this.remMenu = false;
-        this.splittedTermList.selected[this.tempElement].isSelected = true;
+        if (isInter) {
+          this.tempLine = i;
+          this.tempElement = j;
+          this.splittedTermList.intermediate.selected[this.tempLine][this.tempElement].isSelected = true;
+        } else {
+          this.tempElement = i;
+          this.splittedTermList.selected[this.tempElement].isSelected = true;
+        }
         break;
       }
       case 'rem': {
-        this.remMenu = true;
-        this.rememberAction(id);
-        this.splittedTermList.remember[id].isSelected = true;
+        if (isInter) {
+          this.tempElement = j;
+          this.remMenu = true;
+          this.rememberAction();
+          this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isSelected = true;
+        } else {
+          this.tempElement = i;
+          this.remMenu = true;
+          this.rememberAction();
+          this.splittedTermList.remember[this.tempElement].isSelected = true;
+        }
         break;
       }
       default:
         break;
     }
-    this.saveResult();
   }
 
   resultInput(id) {
@@ -251,14 +241,25 @@ export class SumColumnComponent {
       case 'regular': {
         switch (type) {
           case 'res': {
-            this.splittedTermList.result[this.tempElement].value = id.value;
-            this.splittedTermList.result[this.tempElement].isFresh = false;
+            if (this.isIntermediate) {
+              this.splittedTermList.intermediate.result[this.tempLine][this.tempElement].value = id.value;
+              this.splittedTermList.intermediate.result[this.tempLine][this.tempElement].isFresh = false;
+            } else {
+              this.splittedTermList.result[this.tempElement].value = id.value;
+              this.splittedTermList.result[this.tempElement].isFresh = false;
+            }
             break;
           }
           case 'rem': {
-            this.splittedTermList.remember[this.tempElement].value = id.value;
-            this.splittedTermList.remember[this.tempElement].isFresh = false;
-            this.splittedTermList.remember[this.tempElement].isSelected = false;
+            if (this.isIntermediate) {
+              this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].value = id.value;
+              this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isFresh = false;
+              this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isSelected = false;
+            } else {
+              this.splittedTermList.remember[this.tempElement].value = id.value;
+              this.splittedTermList.remember[this.tempElement].isFresh = false;
+              this.splittedTermList.remember[this.tempElement].isSelected = false;
+            }
             break;
           }
           default:
@@ -274,9 +275,15 @@ export class SumColumnComponent {
             break;
           }
           case 'rem': {
-            this.splittedTermList.remember[this.tempElement].value = '';
-            this.splittedTermList.remember[this.tempElement].isFresh = true;
-            this.splittedTermList.remember[this.tempElement].isSelected = false;
+            if (this.isIntermediate) {
+              this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].value = '';
+              this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isFresh = true;
+              this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isSelected = false;
+            } else {
+              this.splittedTermList.remember[this.tempElement].value = '';
+              this.splittedTermList.remember[this.tempElement].isFresh = true;
+              this.splittedTermList.remember[this.tempElement].isSelected = false;
+            }
             break;
           }
           default:
@@ -293,10 +300,11 @@ export class SumColumnComponent {
             break;
           }
           case 'rem': {
-            if (!this.splittedTermList.result[this.tempElement].value) {
-              this.splittedTermList.result[this.tempElement].isFresh = true;
+            if (this.isIntermediate) {
+              this.splittedTermList.intermediate.remember[this.tempLine][this.tempElement].isSelected = false;
+            } else {
+              this.splittedTermList.remember[this.tempElement].isSelected = false;
             }
-            this.splittedTermList.remember[this.tempElement].isSelected = false;
             break;
           }
           default:
@@ -313,82 +321,71 @@ export class SumColumnComponent {
 
   denyEnter() {
     this.isEnterAllowed = false;
-    this.splittedTermList.selected[this.tempElement].isSelected = false;
     try {
+      this.splittedTermList.selected[this.tempElement].isSelected = false;
+      this.splittedTermList.intermediate.selected[this.tempLine][this.tempElement].isSelected = false;
       this.splittedTermList.remember[this.tempElement].isSelected = false;
     } catch (error) { }
-  }
 
-
-  autoNullAdd() {
-    var max: number = Number(this.splittedTermList.beforeDot);
-    for (var i = 0; i < this.splittedTermList.numbersArray.length; i++) {
-      var term = this.splittedTermList.numbersArray[i].beforeDot;
-      var dif: number = max - term;
-      if (dif == 0) {
-
-      } else {
-        if (dif == max && term == 0) {
-          this.splittedTermList.numbersArray[i].beforeDot = max;
-          this.splittedTermList.numbersArray[i].termsArray[0].isDotted = true;
-          this.splittedTermList.numbersArray[i].termsArray[0].isPermanentDotted = true;
-          for (var j = dif; j > 0; j--) {
-            this.splittedTermList.numbersArray[i].termsArray.unshift({
-              value: '0',
-              type: 'number',
-              isDotted: false,
-              isPermanentDotted: false,
-              beforeDot: true
-            });
-          }
-        } else {
-          if (dif > 0) {
-            this.splittedTermList.numbersArray[i].beforeDot = max;
-            for (var j = dif; j > 0; j--) {
-              this.splittedTermList.numbersArray[i].termsArray.unshift({
-                value: '0',
-                type: 'number',
-                isDotted: false,
-                isPermanentDotted: false,
-                beforeDot: true
-              });
-            }
-          }
-        }
-      }
-    }
-    this.resetField(); 
   }
 
   resetField() {
-    this.splittedTermList.selected = [];
     var forI: number;
+    var forJ: number;
 
-    if (this.operation != 'sub') {
-      forI = this.splittedTermList.numbersArray[this.largestTerm()].afterDot + 1;
-    } else {
-      forI = this.splittedTermList.numbersArray[this.largestTerm()].afterDot;
-    }
-
+    forI = this.splittedTermList.numbersArray[1].termsArray.length;
+    forJ = this.splittedTermList.numbersArray[0].termsArray.length + 1;
     for (var i = 0; i < forI; i++) {
-      if (i + 1 != forI && (!this.splittedTermList.isDot || !this.autoNull)) {
-        this.splittedTermList.remember.unshift({
-          value: '',
-          type: 'number',
-          isFresh: true,
-          isDotted: false,
-          beforeDot: false
-        });
-      } else {
-        if (this.splittedTermList.isDot) {
-          this.splittedTermList.remember.unshift({
+      var remember: any[] = [];
+      var result: any[] = [];
+      for (var j = 0; j < forJ; j++) {
+        if (j + 1 != forJ) {
+          remember.unshift({
             value: '',
             type: 'number',
             isFresh: true,
+            isSelected: false,
             isDotted: false,
             beforeDot: false
           });
         }
+        result.unshift({
+          value: '',
+          type: 'number',
+          isFresh: true,
+          isDotted: false,
+          isPermanentDotted: false,
+          isFreshDot: false,
+          beforeDot: false
+        });
+      }
+      this.splittedTermList.intermediate.remember.unshift(remember);
+      this.splittedTermList.intermediate.result.unshift(result);
+    }
+
+    forI = this.splittedTermList.numbersArray[1].termsArray.length;
+    forJ = this.splittedTermList.numbersArray[0].termsArray.length + this.splittedTermList.numbersArray[1].termsArray.length + 1;
+    for (var i = 0; i < forI; i++) {
+      var selected: any[] = [];
+      for (var j = 0; j < forJ; j++) {
+        selected.push({
+          isSelected: false
+        });
+      }
+      this.splittedTermList.intermediate.selected.push(selected);
+    }
+
+    forI = this.splittedTermList.numbersArray[0].termsArray.length + this.splittedTermList.numbersArray[1].termsArray.length + 1;
+    for (var i = 0; i < forI; i++) {
+      if (i + 1 != forI) {
+        this.splittedTermList.remember.unshift({
+          value: '',
+          type: 'number',
+          isFresh: true,
+          isSelected: false,
+          isDotted: false,
+          beforeDot: false
+        });
       }
       this.splittedTermList.result.unshift({
         value: '',
@@ -399,45 +396,37 @@ export class SumColumnComponent {
         isFreshDot: false,
         beforeDot: false
       });
-    }
-
-    if (this.splittedTermList.isDot && this.autoNull) {
-      this.splittedTermList.remember[0].isDotted = true;
-      this.splittedTermList.result[0].isDotted = true;
-      this.splittedTermList.result[0].isPermanentDotted = true;
-    }
-
-    forI = this.splittedTermList.numbersArray[this.largestTerm()].beforeDot;
-    for (var i = 0; i < forI; i++) {
-      if (i + 1 != forI) {
-        this.splittedTermList.remember.unshift({
-          value: '',
-          type: 'number',
-          isFresh: true,
-          isDotted: false,
-          beforeDot: true
-        });
-      }
-      this.splittedTermList.result.unshift({
-        value: '',
-        type: 'number',
-        isFresh: true,
-        isDotted: false,
-        isPermanentDotted: false,
-        isFreshDot: false,
-        beforeDot: true
+      this.splittedTermList.selected.unshift({
+        isSelected: false
       });
     }
 
-    if (!this.isAutoNull) {
+
+    if (this.splittedTermList.beforeDot) {
+      forI = this.splittedTermList.numbersArray[1].termsArray.length;
+      forJ = this.splittedTermList.numbersArray[0].termsArray.length;
+      for (var i = 0; i < forI; i++) {
+        for (var j = 0; j < forJ; j++) {
+          this.splittedTermList.intermediate.remember[i][j].isDotted = true;
+        }
+      }
+      for (var j = 0; j < this.splittedTermList.remember.length; j++) {
+        this.splittedTermList.remember[j].isDotted = true;
+        this.splittedTermList.remember[j].beforeDot = false;
+      }
+
       for (var i = 0; i < this.splittedTermList.numbersArray.length; i++) {
         for (var j = 0; j < this.splittedTermList.numbersArray[i].termsArray.length; j++) {
           this.splittedTermList.numbersArray[i].termsArray[j].isDotted = true;
         }
       }
-      for (var i = 0; i < this.splittedTermList.remember.length; i++) {
-        this.splittedTermList.remember[i].isDotted = true;
-        this.splittedTermList.remember[i].beforeDot = false;
+
+      forI = this.splittedTermList.numbersArray[1].termsArray.length;
+      forJ = this.splittedTermList.numbersArray[0].termsArray.length + 1;
+      for (var i = 0; i < forI; i++) {
+        for (var j = 0; j < forJ; j++) {
+          this.splittedTermList.intermediate.result[i][j].isDotted = true;
+        }
       }
       for (var i = 0; i < this.splittedTermList.result.length; i++) {
         this.splittedTermList.result[i].isDotted = true;
@@ -445,72 +434,8 @@ export class SumColumnComponent {
         this.splittedTermList.result[i].beforeDot = false;
       }
     }
-
-    forI = this.splittedTermList.numbersArray[this.largestTerm()].afterDot + this.splittedTermList.numbersArray[this.largestTerm()].beforeDot;
-    if (this.operation == 'sub') {
-      forI--;
-    }
-    for (var i = 0; i < forI * 2; i++) {
-      this.splittedTermList.selected.unshift({
-        isSelected: false
-      });
-    }
     this.res = '';
   }
-
-  addNull(id) {
-    var tempTerm = this.splittedTermList.numbersArray[id];
-    var tempTermLargest = this.splittedTermList.numbersArray[this.largestTerm()];
-    var check = tempTerm.beforeDot + tempTerm.afterDot == tempTermLargest.beforeDot + tempTermLargest.afterDot;
-    if (check) {
-      this.splittedTermList.remember.unshift({
-        value: '',
-        type: 'number',
-        isFresh: true,
-        isDotted: true,
-        beforeDot: false
-      });
-      this.splittedTermList.result.unshift({
-        value: '',
-        type: 'number',
-        isFresh: true,
-        isDotted: true,
-        isPermanentDotted: false,
-        isFreshDot: true,
-        beforeDot: false
-      });
-      this.splittedTermList.selected.push({
-        isSelected: false
-      });
-    }
-
-    if (!this.splittedTermList.numbersArray[id].beforeDot) {
-      this.splittedTermList.numbersArray[id].termsArray[0].isDotted = true;
-      this.splittedTermList.numbersArray[id].termsArray[0].isPermanentDotted = true;
-      this.splittedTermList.numbersArray[id].termsArray.unshift({
-        value: '0',
-        type: 'number',
-        isDotted: true,
-        isPermanentDotted: false,
-        beforeDot: true
-      });
-    } else {
-      this.splittedTermList.numbersArray[id].termsArray.unshift({
-        value: '0',
-        type: 'number',
-        isDotted: true,
-        isPermanentDotted: false,
-        beforeDot: true
-      });
-    }
-    this.splittedTermList.numbersArray[id].beforeDot++
-
-    for (var j = 0; j < this.splittedTermList.result.length; j++) {
-      this.splittedTermList.result[j].isPermanentDotted = false;
-      this.splittedTermList.result[j].isFreshDot = true;
-    }
-  }
-
 
   largestBeforeDot(): number {
     var max: number = this.splittedTermList.numbersArray[0].beforeDot;
@@ -524,23 +449,10 @@ export class SumColumnComponent {
     return maxID;
   }
 
-  largestTerm(): number {
-    var max: number = this.splittedTermList.numbersArray[0].termsArray.length;
-    var maxID: number = 0;
-    for (var i = 0; i < this.splittedTermList.numbersArray.length; i++) {
-      if (this.splittedTermList.numbersArray[i].termsArray.length > max) {
-        max = this.splittedTermList.numbersArray[i].termsArray.length;
-        maxID = i;
-      }
-    }
-    return maxID;
-  }
-
 
   @ViewChildren(MatMenuTrigger) triggers: any;
   handleKeyboardEvents(event: KeyboardEvent) {
     this.key = event.which || event.keyCode;
-
     if (this.isEnterAllowed) {
       if (this.getValue(this.key) != 44) {
         this.resultInput({
@@ -562,22 +474,14 @@ export class SumColumnComponent {
           }
         }
       }
-      switch (this.tempTrigger) {
-        case 'res': {
-          if (this.splittedTermList.numbersArray.length < 3) {
-            this.triggers.toArray()[this.tempElement].closeMenu();
-          } else {
-            this.triggers.toArray()[this.tempElement + this.splittedTermList.remember.length].closeMenu();
-          }
-          break;
-        }
-        case 'rem': {
-          this.triggers.toArray()[this.tempElement].closeMenu();
-          break;
-        }
-        default:
-          break;
+      for (var i = 0; i < this.splittedTermList.intermediate.selected.length; i++) {
+        for (var j = 0; j < this.splittedTermList.intermediate.selected[i].length; j++) {
+          this.splittedTermList.intermediate.selected[i][j].isSelected = false;
+        }       
       }
+      this.triggers.toArray().forEach(element => {
+        element.closeMenu();
+      });
     }
   }
 

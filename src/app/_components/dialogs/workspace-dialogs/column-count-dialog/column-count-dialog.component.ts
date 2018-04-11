@@ -11,14 +11,20 @@ export class ColumnCountDialog {
   constructor(
     public dialogRef: MatDialogRef<ColumnCountDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) { }
+  ) {
+    this.terms = data.terms;
+    this.operator = data.operator;
+  }
+
+  terms: any = [];
+  operator: string = "sum";
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   ngOnInit() {
-    
+
   }
 
 }

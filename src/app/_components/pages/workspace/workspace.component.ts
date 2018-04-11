@@ -24,16 +24,28 @@ export class WorkspaceComponent implements OnInit {
 
   //region New Feature //
 
-  openDialog(): void {
-    let dialogRef = this.dialog.open(ColumnCountDialog, {
-      width: '250px',
-      data: { name: "keke", animal: "" }
-    });
+  terms: any = [];
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-    });
-
+  openDialog(op): void {
+    if (this.terms.length != 0) {
+      let dialogRef = this.dialog.open(ColumnCountDialog, {
+        data: { terms: this.terms, operator: op }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (Number(result)) {
+          for (var i = 0; i < String(Number(result)).length; i++) {
+            this.write(Number(String(Number(result))[i]), "di");
+            this.ref.detectChanges();
+          }
+          this.ref.detectChanges();
+          this.onClick({
+            target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+          });
+        }
+        this.terms = [];
+        this.ref.detectChanges();
+      });
+    }
   }
 
   //endregion New Feature //
@@ -271,6 +283,7 @@ export class WorkspaceComponent implements OnInit {
       }
       if (lastDI.di == null || lastDI.di.type == "operator") {
         newDI = {
+          id: diLength,
           line: line,
           pe: ex,
           s: 1,
@@ -285,7 +298,7 @@ export class WorkspaceComponent implements OnInit {
       } else {
         if (lastDI.di.type == "digit") {
           lastDI.di.s += 0.73;
-          lastDI.di.val += val;
+          lastDI.di.value = Number(String(lastDI.di.value) + String(val));
           lastDI.di.text += this.getCharacter(val);
           this.lines[line].di[lastDI.id] = lastDI.di;
         }
@@ -296,6 +309,7 @@ export class WorkspaceComponent implements OnInit {
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
       var newDI = {
+        id: diLength,
         line: line,
         pe: ex,
         s: 1,
@@ -331,6 +345,7 @@ export class WorkspaceComponent implements OnInit {
       }
 
       newDI = {
+        id: diLength,
         line: line,
         pe: ex,
         s: 1,
@@ -349,6 +364,7 @@ export class WorkspaceComponent implements OnInit {
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
       var newDI = {
+        id: diLength,
         line: line,
         pe: ex,
         s: 1,
@@ -383,6 +399,7 @@ export class WorkspaceComponent implements OnInit {
       }
 
       var newDI = {
+        id: diLength,
         line: line,
         pe: ex,
         s: 1,
@@ -447,6 +464,7 @@ export class WorkspaceComponent implements OnInit {
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
       var newDI = {
+        id: diLength,
         line: line,
         pe: ex,
         s: 1,
@@ -619,13 +637,18 @@ export class WorkspaceComponent implements OnInit {
           let x = this.algebra.elX(ev.target);
           let y = this.algebra.elY(ev.target);
           let cs = Number(ev.target.getAttribute("data-cs"));
-
           this.selection.x = x + cs * 20 + 6;
           this.selection.y = y + top * 10 + 16.8;
           this.selection.line = line;
           this.selection.ex = ex;
           this.selection.di = pd;
           this.mode = "math";
+          break;
+        }
+        case "di": {
+          let line = Number(ev.target.getAttribute("data-lineid"));
+          let di = Number(ev.target.getAttribute("data-digitid"));
+          this.terms.push(this.lines[line].di[di].value)
           break;
         }
         default: {

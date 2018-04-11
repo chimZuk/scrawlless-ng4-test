@@ -5,6 +5,8 @@ import { SharedModule } from '../../../_modules/shared/shared.module'
 
 import { WorkspaceDialogsComponent } from './workspace-dialogs.component';
 import { SumColumnComponent } from './sum-column/sum-column.component';
+import { MulColumnComponent } from './mul-column/mul-column.component';
+import { DivColumnComponent } from './div-column/div-column.component';
 
 @NgModule({
   imports: [
@@ -12,11 +14,15 @@ import { SumColumnComponent } from './sum-column/sum-column.component';
     SharedModule
   ],
   exports: [
-    SumColumnComponent    
+    SumColumnComponent,
+    MulColumnComponent,
+    DivColumnComponent  
   ],
   declarations: [
     WorkspaceDialogsComponent,
-    SumColumnComponent
+    SumColumnComponent,
+    MulColumnComponent,
+    DivColumnComponent
   ]
 })
 export class WorkspaceDialogsModule { }

@@ -64,6 +64,37 @@
         </button>
     </mat-card>
 
+    <mat-card *ngIf="terms.length != 0" class="ui squareSingle termsCard">
+        <div style="display: flex; justify-content: center;">
+            <h1>Посчитать в столбик</h1>
+        </div>
+        <div class="termsList">
+            <h2 *ngFor="let term of terms; let i = index">{{ term }}</h2>
+        </div>
+        <div class="termsActions">
+            <div style="width: 6vw; height: 6vw;">
+                <button mat-fab color="accent" (click)="openDialog('sum')" md-fab>
+                    <span class="i-font i-plus"></span>
+                </button>
+            </div>
+            <div style="width: 6vw; height: 6vw;">
+                <button mat-fab color="accent" (click)="openDialog('sub')" md-fab>
+                    <span class="i-font i-minus"></span>
+                </button>
+            </div>
+            <div style="width: 6vw; height: 6vw;">
+                <button mat-fab color="accent" (click)="openDialog('mul')" md-fab>
+                    <span class="i-font i-mult"></span>
+                </button>
+            </div>
+            <div style="width: 6vw; height: 6vw;">
+                <button mat-fab color="accent" (click)="openDialog('div')" md-fab>
+                    <span class="i-font i-divide"></span>
+                </button>
+            </div>
+        </div>
+    </mat-card>
+
     <mat-card #numbers id="numbers" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
@@ -100,13 +131,13 @@
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-raised-button (click)="openDialog()">
+                <button mat-raised-button style="visibility: hidden;">
                     <span class="i-font i-dot"></span>
                 </button>
                 <button mat-raised-button (click)="write(0, 'di');">
                     <span class="i-font i-zero"></span>
                 </button>
-                <button mat-raised-button (click)="write(1, 'di');">
+                <button mat-raised-button style="visibility: hidden;">
                     <span class="i-font i-comma"></span>
                 </button>
             </div>

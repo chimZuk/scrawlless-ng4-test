@@ -1,1 +1,3 @@
-<sum-column [terms]="[123, 12]" [isAutoNull]="true" [setOperation]="'sum'"></sum-column>
+<sum-column *ngIf="operator == 'sum' || operator == 'sub'" [terms]="terms" [isAutoNull]="true" [setOperation]="operator"></sum-column>
+<mul-column *ngIf="operator == 'mul'" [terms]="terms" [setOperation]="operator"></mul-column>
+<div-column *ngIf="operator == 'div'" [terms]="terms" [setOperation]="operator"></div-column>
