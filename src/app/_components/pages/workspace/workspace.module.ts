@@ -10,6 +10,8 @@ import { HomeworkDataService } from '../../../_services/homework-data/homework-d
 
 import { SafeHTML } from "../../../_pipes/safehtml.pipe";
 
+import { ColumnCountDialogComponent } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.component';
+
 
 @NgModule({
   imports: [
@@ -19,11 +21,15 @@ import { SafeHTML } from "../../../_pipes/safehtml.pipe";
   declarations: [
     WorkspaceComponent,
     AlgebraComponent,
-    SafeHTML
+    SafeHTML,
+    ColumnCountDialogComponent
   ],
   providers: [
     AlgebraComponent,
     HomeworkDataService
+  ],  
+  entryComponents: [
+    ColumnCountDialogComponent
   ]
 })
 export class WorkspaceModule { }

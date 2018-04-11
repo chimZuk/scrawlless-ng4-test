@@ -10,6 +10,10 @@ import { HomeworkService } from '../../../_services/homework/homework.service';
 
 import { AlgebraComponent } from '../../workspace-elements/algebra/algebra.component';
 
+import { MatDialog } from '@angular/material';
+
+import { ColumnCountDialogComponent } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.component';
+
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
@@ -17,6 +21,25 @@ import { AlgebraComponent } from '../../workspace-elements/algebra/algebra.compo
   styleUrls: ['./workspace.component.css'],
 })
 export class WorkspaceComponent implements OnInit {
+
+  //region New Feature //
+
+  animal: string;
+  name: string;
+
+  openDialog(): void {
+    let dialogRef = this.dialog.open(ColumnCountDialogComponent, {
+      width: '250px',
+      data: { name: this.name, animal: this.animal }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+    });
+  }
+
+  //endregion New Feature //
 
 
   constructor(
@@ -26,7 +49,8 @@ export class WorkspaceComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private data: HomeworkDataService,
     private homeData: HomeworkService,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    public dialog: MatDialog
   ) { }
 
   private id;
