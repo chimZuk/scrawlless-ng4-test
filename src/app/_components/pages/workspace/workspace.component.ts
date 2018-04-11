@@ -12,7 +12,7 @@ import { AlgebraComponent } from '../../workspace-elements/algebra/algebra.compo
 
 import { MatDialog } from '@angular/material';
 
-import { ColumnCountDialogComponent } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.component';
+import { ColumnCountDialog } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.component';
 
 @Component({
   selector: 'workspace',
@@ -24,19 +24,16 @@ export class WorkspaceComponent implements OnInit {
 
   //region New Feature //
 
-  animal: string;
-  name: string;
-
   openDialog(): void {
-    let dialogRef = this.dialog.open(ColumnCountDialogComponent, {
+    let dialogRef = this.dialog.open(ColumnCountDialog, {
       width: '250px',
-      data: { name: this.name, animal: this.animal }
+      data: { name: "keke", animal: "" }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
+      console.log(result);
     });
+
   }
 
   //endregion New Feature //
