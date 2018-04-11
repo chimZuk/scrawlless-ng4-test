@@ -31,7 +31,7 @@ import { AppComponent } from './app.component';
   providers: [
     {
       provide: LOCALE_ID,
-      useValue: (navigator.language == "ru" || navigator.language == "ru-RU") ? "ru" : navigator.language,
+      useValue: (navigator.language == "ru" || navigator.language == "ru-RU") ? "ru" : "en-US",
     },
     AuthGuard
   ]
