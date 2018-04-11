@@ -26,25 +26,32 @@ export class WorkspaceComponent implements OnInit {
 
   terms: any = [];
 
+  resetTerms() {
+    this.terms = [];
+    this.ref.detectChanges();
+  }
+
   openDialog(op): void {
     if (this.terms.length != 0) {
-      let dialogRef = this.dialog.open(ColumnCountDialog, {
-        data: { terms: this.terms, operator: op }
-      });
-      dialogRef.afterClosed().subscribe(result => {
-        if (Number(result)) {
-          for (var i = 0; i < String(Number(result)).length; i++) {
-            this.write(Number(String(Number(result))[i]), "di");
+      if ((this.terms.length > 1 && (op == "sub" || op == "sum")) || (this.terms.length == 2)) {
+        let dialogRef = this.dialog.open(ColumnCountDialog, {
+          data: { terms: this.terms, operator: op }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (Number(result)) {
+            for (var i = 0; i < String(Number(result)).length; i++) {
+              this.write(Number(String(Number(result))[i]), "di");
+              this.ref.detectChanges();
+            }
             this.ref.detectChanges();
+            this.onClick({
+              target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+            });
           }
+          this.terms = [];
           this.ref.detectChanges();
-          this.onClick({
-            target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
-          });
-        }
-        this.terms = [];
-        this.ref.detectChanges();
-      });
+        });
+      }
     }
   }
 

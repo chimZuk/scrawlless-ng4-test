@@ -65,6 +65,11 @@
     </mat-card>
 
     <mat-card *ngIf="terms.length != 0" class="ui squareSingle termsCard">
+        <div style="position: absolute; top: -2vw; right: -2vw; width: 4vw; height: 4vw;">
+            <button mat-fab color="primary" md-fab (click)="resetTerms();">
+                <mat-icon style="font-size: 24px !important;">block</mat-icon>
+            </button>
+        </div>
         <div style="display: flex; justify-content: center;">
             <h2>Посчитать</h2>
         </div>

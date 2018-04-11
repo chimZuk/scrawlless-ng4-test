@@ -4,7 +4,10 @@ import { MatMenu, MatMenuTrigger, MatButton } from '@angular/material';
 @Component({
   selector: 'mul-column',
   templateUrl: './mul-column.component.html',
-  styleUrls: ['./mul-column.component.css']
+  styleUrls: ['./mul-column.component.css'],
+  host: {
+    '(document:keydown)': 'handleKeyboardEvents($event)'
+  }
 })
 export class MulColumnComponent {
 
