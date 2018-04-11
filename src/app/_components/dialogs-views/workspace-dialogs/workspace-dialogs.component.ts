@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-workspace-dialogs',
+  selector: 'workspace-dialogs',
   templateUrl: './workspace-dialogs.component.html',
   styleUrls: ['./workspace-dialogs.component.css']
 })

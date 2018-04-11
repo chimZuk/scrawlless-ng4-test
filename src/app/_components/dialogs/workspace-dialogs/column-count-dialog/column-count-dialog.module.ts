@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '../../../../_modules/shared/shared.module'
 
+import { WorkspaceDialogsModule } from './../../../dialogs-views/workspace-dialogs/workspace-dialogs.module'
 import { ColumnCountDialog } from './column-count-dialog.component';
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    WorkspaceDialogsModule
   ],
   declarations: [
     ColumnCountDialog
