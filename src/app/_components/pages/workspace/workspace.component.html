@@ -66,10 +66,10 @@
 
     <mat-card *ngIf="terms.length != 0" class="ui squareSingle termsCard">
         <div style="display: flex; justify-content: center;">
-            <h1>Посчитать в столбик</h1>
+            <h2>Посчитать</h2>
         </div>
         <div class="termsList">
-            <h2 *ngFor="let term of terms; let i = index">{{ term }}</h2>
+            <h3 *ngFor="let term of terms; let i = index">{{ term }}</h3>
         </div>
         <div class="termsActions">
             <div style="width: 6vw; height: 6vw;">
