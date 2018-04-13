@@ -6,12 +6,32 @@
     <meta charset="utf-8">
     <title>Scrawlless</title>
 
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-T5FLV4N');
+    </script>
+    <!-- End Google Tag Manager -->
+    
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T5FLV4N" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+
     <app-root>
         <div class='uil-default-css' style='transform:scale(1);'>
             <div style='top:80px;left:80px;width:40px;height:40px;background:#ee7e28;-webkit-transform:rotate(0deg) translate(0,-80px);transform:rotate(0deg) translate(0,-80px);border-radius:40px;position:absolute;'></div>
@@ -24,43 +44,6 @@
             <div style='top:80px;left:80px;width:40px;height:40px;background:#ee7e28;-webkit-transform:rotate(315deg) translate(0,-80px);transform:rotate(315deg) translate(0,-80px);border-radius:40px;position:absolute;'></div>
         </div>
     </app-root>
-
-    <!-- Global site tag (gtag.js) - Google Analytics
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117507291-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'UA-117507291-1');
-
-
-
-        var setEmail = setInterval(function () {
-            if (localStorage.getItem("currentUser") != null) {
-
-                gtag('config', 'UA-117507291-1', {
-                    'custom_map': { 'useremail1': 'email' }
-                });
-
-                gtag('event', 'login', { 'eventLabel': localStorage.getItem("currentUserEmail"), 'email': localStorage.getItem("currentUserEmail") });
-                console.log(localStorage.getItem("currentUserEmail"))
-                clearInterval(setEmail);
-            }
-        }.bind(this), 5000);
-    </script> -->
-
-    <!-- Google Analytics -->
-    <script>
-        window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
-        ga('create', 'UA-117507291-1', 'auto');
-
-        var dimensionValue = localStorage.getItem("currentUserEmail");
-        ga('set', 'useremail1', dimensionValue);
-        console.log("lelel")
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
-    <!-- End Google Analytics -->
 
     <script>
         function $(o) {

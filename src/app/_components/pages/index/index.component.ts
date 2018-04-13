@@ -101,13 +101,20 @@ export class IndexComponent implements OnInit {
         this.user.email = this.user.email.substr(0).toLowerCase();
         if (email.test(this.user.email) || this.user.email == '') {
           this.invalidEmail = false;
+          (<any>window).gtag('event', 'validemail', {
+            'event_category': 'login',
+            'event_label': this.user.email
+          });
         } else {
           this.invalidEmail = true;
+          (<any>window).gtag('event', 'validemail', {
+            'event_category': 'login',
+            'event_label': this.user.email
+          });
         }
         break;
       case 'pass':
         this.user.password = this.user.password.trim();
-        console.log(pass.test(this.user.password))
         if (pass.test(this.user.password) || this.user.password == '') {
           this.invalidPassword = false;
         } else {
@@ -119,8 +126,16 @@ export class IndexComponent implements OnInit {
         this.user.email = this.user.email.substr(0).toLowerCase();
         if (email.test(this.user.email) || this.user.email == '') {
           this.invalidEmail = false;
+          (<any>window).gtag('event', 'validemail', {
+            'event_category': 'registration',
+            'event_label': this.user.email
+          });
         } else {
           this.invalidEmail = true;
+          (<any>window).gtag('event', 'invalidemail', {
+            'event_category': 'registration',
+            'event_label': this.user.email
+          });
         }
         break;
       case 'lastName':
@@ -146,7 +161,6 @@ export class IndexComponent implements OnInit {
       default:
         break;
     }
-    console.log(pass);
     this.showValidationError(type);
   }
 
@@ -226,7 +240,6 @@ export class IndexComponent implements OnInit {
 
   register() {
     this.loading = true;
-
     if (this.isRegFormValid()) {
       this.authenticationService.register(this.user)
         .subscribe(result => {
