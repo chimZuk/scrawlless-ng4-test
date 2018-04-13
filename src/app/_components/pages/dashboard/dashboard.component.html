@@ -38,7 +38,7 @@
                 <h2 class="user-name">{{user?.firstName + ' ' + user?.lastName}}</h2>
                 <div class="card-buttons">
                     <button mat-mini-fab [matTooltip]="language[lang].profile" (click)="viewProfileDialog(user?.id, 3)"><mat-icon>person</mat-icon></button>
-                    <button mat-mini-fab [matTooltip]="language[lang].logout" routerLink="/" routerLinkActive="active" onclick="remToken()" (click)="logOut()"><mat-icon>directions_run</mat-icon></button>
+                    <button mat-mini-fab [matTooltip]="language[lang].logout" routerLinkActive="active" (click)="logOut()"><mat-icon>directions_run</mat-icon></button>
                 </div>
             </div>
         </div>

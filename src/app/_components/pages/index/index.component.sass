@@ -50,12 +50,17 @@
     @media screen and (max-width: $b-medium)     
     @media screen and (min-width: $b-large)
 
+.intro
+    flex: 2
+    margin-right: 20px
+    @media screen and (max-width: $b-medium)
+        margin: 0 0 20px 0
 
 .auth
     flex: 1
     min-width: 248px
     max-width: 340px
-    min-height: 410.5px
+    min-height: 396.5px
     margin-bottom: 20px
     @media screen and (max-width: $b-small)
         width: 100%
@@ -84,3 +89,72 @@
     display: flex
     align-items: center
     justify-content: center
+
+img
+    height: 100%
+
+.title
+    user-select: none
+    font-size: 40px
+    @media screen and (max-width: $b-small)
+        font-size: 30px
+    @media screen and (max-width: $b-tiny)
+        font-size: 25px
+
+.sub-title
+    user-select: none
+    font-size: 18px
+    @media screen and (max-width: $b-tiny)
+        font-size: 16px
+
+.second>.flex-column
+    padding: 0 20px
+    justify-content: center
+
+.second
+    margin-bottom: 20px
+    justify-content: space-between
+    @media screen and (max-width: $b-medium)
+        flex-direction: column $i
+        align-items: center $i
+
+.second .sub-title
+    margin-top: 10px
+    @media screen and (max-width: $b-medium)
+        margin-bottom: 10px
+
+.absLabel
+    position: absolute
+    top: -32px
+    left: -20px
+    transform: rotate(-20deg)
+    user-select: none
+    background-color: #ed7e28
+    color: white
+    text-shadow: 0px 0px 10px rgba(150, 150, 150, 1)
+
+.demo-column
+    @media screen and (max-width: $b-medium)
+        margin-top: 55px
+
+.devices-img
+    width: 60%
+    @media screen and (max-width: $b-medium)
+        width: 100%
+
+.flex-row
+    display: flex
+    flex-direction: row
+
+.flex-column
+    display: flex
+    flex-direction: column
+
+.flex-space
+    flex: 1
+
+.flex-half
+    flex: 5
+
+.mat-card
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12) $i

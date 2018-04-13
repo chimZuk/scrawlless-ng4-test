@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { Location } from '@angular/common';
 
+import { AuthenticationService } from '../../../_services/authentication/authentication.service';
 import { LanguageService } from '../../../_services/language/language.service';
 import { SocketService } from '../../../_services/socket/socket.service';
 import { UserService } from '../../../_services/user/user.service';
@@ -27,6 +28,7 @@ export class DashboardComponent implements OnInit {
     public snackBar: MatSnackBar,
     private router: Router,
     private location: Location,
+    private authenticationService: AuthenticationService,
     private languageService: LanguageService,
     private socket: SocketService,
     private userService: UserService,
@@ -226,10 +228,10 @@ export class DashboardComponent implements OnInit {
  
     });
   }
- 
+ */
   logOut() {
-    this.connection.unsubscribe();
     this.authenticationService.logout();
-  }*/
+    window.location.reload();
+  }
 
 }

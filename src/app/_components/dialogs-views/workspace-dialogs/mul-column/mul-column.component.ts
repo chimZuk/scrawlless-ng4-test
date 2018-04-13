@@ -35,6 +35,8 @@ export class MulColumnComponent {
 
   inputButtons: any[] = [];
 
+  page: string = 'workspace';
+
   getArr = function (i) {
     return new Array(i);
   }
@@ -69,6 +71,12 @@ export class MulColumnComponent {
     this.operation = data;
   }
   get setOperation() { return this.operation; }
+
+  @Input()
+  set parentPage(data: string) {
+    this.page = data;
+  }
+  get parentPage() { return this.page; }
 
   @Input()
   set terms(data: any) {

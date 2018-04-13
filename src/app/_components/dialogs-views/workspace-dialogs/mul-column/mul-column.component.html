@@ -83,10 +83,10 @@
         </div>
     </div>
 
-    <div class="line"></div>
+    <div *ngIf="page == 'workspace'" class="line"></div>
 </div>
 
-<div class="actions">
+<div *ngIf="page == 'workspace'" class="actions">
     <div class="field undo-actions">
         <button mat-raised-button mat-dialog-close style="width: 50px; height: 50px;"><mat-icon>block</mat-icon></button>
         <button mat-raised-button (click)="resetTerms();" style="width: 50px; height: 50px;"><mat-icon>refresh</mat-icon></button>

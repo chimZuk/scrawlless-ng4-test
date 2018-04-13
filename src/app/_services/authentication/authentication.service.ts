@@ -49,9 +49,11 @@ export class AuthenticationService {
     return this.http.post(this.href + 'api/authenticate', { data })
       .map((response: Response) => {
         let token = response.json().token;
+        console.log(response.json());
         if (token) {
           this.token = token;
           localStorage.setItem('currentUser', JSON.stringify({ token: token }));
+          localStorage.setItem('currentUserEmail', response.json().user.email);
           localStorage.setItem('mode', String(response.json().user.type));
           return true;
         } else {
@@ -66,5 +68,7 @@ export class AuthenticationService {
   logout(): void {
     this.token = null;
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUserEmail');
+    localStorage.removeItem('mode');
   }
 }

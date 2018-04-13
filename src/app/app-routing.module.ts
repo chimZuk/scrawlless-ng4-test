@@ -20,7 +20,8 @@ export const router: Routes = [
     },
     { 
         path: 'homework/:id',
-        loadChildren: './_components/pages/workspace/workspace.module#WorkspaceModule'
+        loadChildren: './_components/pages/workspace/workspace.module#WorkspaceModule',
+        canActivate: [AuthGuard]
     }
 ];
 
