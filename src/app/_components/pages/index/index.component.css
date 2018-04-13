@@ -37,16 +37,16 @@
   width: 55vw;
   height: 30.9375vw;
   flex: 2;
-  margin: 0px 20px 20px 0px; }
+  margin-top: 20px; }
   @media screen and (max-width: 640px) {
     .video-content {
-      margin: 0px 0px 20px 0px;
       width: 80vw;
       height: 45vw; } }
 
 .intro {
-  flex: 2;
-  margin-right: 20px; }
+  margin-right: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px; }
   @media screen and (max-width: 920px) {
     .intro {
       margin: 0 0 20px 0; } }

@@ -5,9 +5,12 @@
             <span class="title">
                 Добро Пожаловать!
             </span>
-            <span class="sub-title">
+            <span class="sub-title" style="margin-top: 10px;">
                 Приветствуем Вас на портале "Scrawlless"!
             </span>
+            <div class="video-content">
+                <iframe class="video" src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
+            </div>
         </mat-card>
         <mat-tab-group class="auth">
             <mat-tab [label]="language[lang].reg">
@@ -48,14 +51,14 @@
         </mat-tab-group>
     </div>
 
-    <mat-card class="second flex-row">
+    <!--<mat-card class="second flex-row">
         <div class="video-content">
             <iframe class="video" src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
         </div>
-    </mat-card>
+    </mat-card>-->
 
     <mat-card class="second flex-row">
-        <div class="flex-column">
+        <div class="flex-column" style="flex: 2;">
             <span class="title">
                 Полное погружение
             </span>
@@ -63,7 +66,7 @@
                 Никаких калькуляторов! Без халявы! Отработка базовых вещей, таких устный счёт, счёт в столбик и другое!
             </span>
         </div>
-        <div class="demo-column">
+        <div class="demo-column" style="flex: 1; display: flex; justify-content: center;">
             <mat-card>
                 <mat-card class="absLabel">
                     Поробуй сам!
