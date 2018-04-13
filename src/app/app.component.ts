@@ -20,19 +20,22 @@ export class AppComponent {
     router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
+        if (event instanceof NavigationEnd) {
+          (<any>window).gtag('config', 'UA-117507291-1', {'page_path': event.urlAfterRedirects});
+        }
         var title: String = String(event.urlAfterRedirects);
         title = title.substring(title.lastIndexOf("/") + 1);
-        switch(title) {
+        switch (title) {
           case "index": this.titleService.setTitle(this.titles[this.lang].index);
-          break;
+            break;
           case "lists": this.titleService.setTitle(this.titles[this.lang].lists);
-          break;
+            break;
           case "marks": this.titleService.setTitle(this.titles[this.lang].marks);
-          break;
+            break;
           case "users": this.titleService.setTitle(this.titles[this.lang].users);
-          break;
+            break;
           case "im": this.titleService.setTitle(this.titles[this.lang].im);
-          break;
+            break;
           case "devices": this.titleService.setTitle(this.titles[this.lang].devices);
           default: break;
         }
