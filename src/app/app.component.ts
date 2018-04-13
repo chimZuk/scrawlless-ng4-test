@@ -20,8 +20,12 @@ export class AppComponent {
     router.events
       .filter(event => event instanceof NavigationEnd)
       .subscribe((event: NavigationEnd) => {
-        if (event instanceof NavigationEnd) {
+        /*if (event instanceof NavigationEnd) {
           (<any>window).gtag('config', 'UA-117507291-1', {'page_path': event.urlAfterRedirects});
+        }*/
+        if (event instanceof NavigationEnd) {
+          (<any>window).ga('set', 'page', event.urlAfterRedirects);
+          (<any>window).ga('send', 'pageview');
         }
         var title: String = String(event.urlAfterRedirects);
         title = title.substring(title.lastIndexOf("/") + 1);
