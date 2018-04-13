@@ -40,11 +40,11 @@
             if (localStorage.getItem("currentUser") != null) {
 
                 gtag('config', 'UA-117507291-1', {
-                    'custom_map': { 'userEmail': 'email' }
+                    'custom_map': { 'useremail1': 'email' }
                 });
 
                 gtag('event', 'login', { 'email': localStorage.getItem("currentUserEmail") });
-
+                console.log(localStorage.getItem("currentUserEmail"))
                 clearInterval(setEmail);
             }
         }.bind(this), 5000);
