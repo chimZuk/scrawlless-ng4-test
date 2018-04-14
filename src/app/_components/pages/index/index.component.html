@@ -43,7 +43,7 @@
                     <p class="form-error" [innerHtml]="validationError"></p>
                     <p class="form-error">{{ loginError }}</p>
                     <button id="loginForm" *ngIf="!loading" class="auth-button" mat-fab [matTooltip]="language[lang].sup" matTooltipPosition="left" (click)="login()">
-                        <mat-icon>forward</mat-icon>
+                        <mat-icon id="loginForm">forward</mat-icon>
                     </button>
                     <mat-spinner *ngIf="loading"></mat-spinner>
                 </mat-card>

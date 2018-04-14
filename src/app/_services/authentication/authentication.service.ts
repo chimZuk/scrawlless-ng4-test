@@ -32,6 +32,7 @@ export class AuthenticationService {
         if (token) {
           this.token = token;
           localStorage.setItem('currentUser', JSON.stringify({ token: token }));
+          localStorage.setItem('currentUserEmail', (<any>window).userEmail);
           localStorage.setItem('mode', String(response.json().type));
           if (localStorage.getItem('mode') == '1') {
             this.mode = 'user';

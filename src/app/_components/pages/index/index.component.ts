@@ -15,7 +15,9 @@ export class IndexComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private languageService: LanguageService
-  ) { }
+  ) {
+    (<any>window).userEmail = null;
+  }
 
 
   //region Variables
@@ -99,18 +101,11 @@ export class IndexComponent implements OnInit {
       case 'logEmail':
         this.user.email = this.user.email.trim();
         this.user.email = this.user.email.substr(0).toLowerCase();
+        (<any>window).userEmail = this.user.email;
         if (email.test(this.user.email) || this.user.email == '') {
           this.invalidEmail = false;
-          (<any>window).gtag('event', 'validemail', {
-            'event_category': 'login',
-            'event_label': this.user.email
-          });
         } else {
           this.invalidEmail = true;
-          (<any>window).gtag('event', 'validemail', {
-            'event_category': 'login',
-            'event_label': this.user.email
-          });
         }
         break;
       case 'pass':
@@ -124,18 +119,11 @@ export class IndexComponent implements OnInit {
       case 'email':
         this.user.email = this.user.email.trim();
         this.user.email = this.user.email.substr(0).toLowerCase();
+        (<any>window).userEmail = this.user.email;
         if (email.test(this.user.email) || this.user.email == '') {
           this.invalidEmail = false;
-          (<any>window).gtag('event', 'validemail', {
-            'event_category': 'registration',
-            'event_label': this.user.email
-          });
         } else {
           this.invalidEmail = true;
-          (<any>window).gtag('event', 'invalidemail', {
-            'event_category': 'registration',
-            'event_label': this.user.email
-          });
         }
         break;
       case 'lastName':
@@ -259,7 +247,7 @@ export class IndexComponent implements OnInit {
     var data = {
       email: this.user.email,
       password: this.user.password
-    }
+    };
     this.loading = true;
     if (this.isLogFormValid()) {
       this.authenticationService.login(data)
