@@ -14,6 +14,9 @@ import { MatDialog } from '@angular/material';
 
 import { ColumnCountDialog } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.component';
 
+import { Stack } from './../../../_classes/data_structures/stack';
+import { HistoryAction } from './../../../_classes/data_classes/history_action';
+
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
@@ -22,40 +25,148 @@ import { ColumnCountDialog } from './../../dialogs/workspace-dialogs/column-coun
 })
 export class WorkspaceComponent implements OnInit {
 
-  //region New Feature //
 
-  terms: any = [];
+  //region New Feature
 
-  resetTerms() {
-    this.terms = [];
+  undoHistory: any = [];
+  redoHistory: any = [];
+
+  addToUndoHistory(hist) {
+    this.undoHistory.push(hist);
+  }
+
+  addToRedoHistory(hist) {
+    this.redoHistory.push(hist);
+  }
+
+  undoLast() {
+    if (this.undoHistory.length == 0) {
+      return;
+    }
+
+    let last = this.undoHistory[this.undoHistory.length - 1];
+
+    switch (last.type) {
+      case "di": {
+        if (last.subType == "lastNotDI") {
+          delete this.lines[last.line].di[last.diID];
+          this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID);
+          this.removeFromArray(this.elements.digits, last.diID);
+          this.selection = last.selection;
+        } else {
+          if (last.subType == "lastDI") {
+            this.lines[last.line].di[last.diID] = last.di;
+            this.selection = last.selection;
+          } else {
+            if (last.subType == "lastDInewLine") {
+              this.removeFromArray(this.elements.expressions, last.lineHist.lineID);
+              delete this.lines[last.lineHistlineID];
+              this.removeFromArray(this.elements.lines, last.lineHist.lineID);
+
+              delete this.lines[last.line].di[last.diID];
+              this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID)
+              this.removeFromArray(this.elements.digits, last.diID);
+              this.selection = last.selection;
+            }
+          }
+        }
+        break;
+      }
+      case "fr": {
+        if (last.subType == "lastDI") {
+          /*this.lines[last.line].fr[last.frHist.frLength] = last.frHist.newFR;
+          this.elements.fractions.push(last.frHist.frLength)
+
+          this.lines[last.frHist.line].ex[last.frHist.exLength] = last.frHist.newCh;
+          this.lines[last.frHist.line].ex[last.frHist.exID].ce.push(last.frHist.exLength);
+          this.elements.expressions.push(last.frHist.exLength);
+
+          this.lines[last.frHist.line].ex[last.frHist.exLength] = last.frHist.newZn;
+          this.lines[last.frHist.line].ex[last.frHist.ex].ce.push(last.frHist.exLength);
+          this.elements.expressions.push(last.frHist.exLength);*/
+
+          delete this.lines[last.line].fr[last.frHist.frLength];
+          this.removeFromArray(this.elements.fractions, last.frHist.frLength);
+
+          delete this.lines[last.frHist.line].ex[last.frHist.exLength];
+          this.removeFromArray(this.lines[last.frHist.line].ex[last.frHist.exID].ce, last.frHist.exLength);
+          this.removeFromArray(this.elements.expressions, last.frHist.exLength);
+
+          delete this.lines[last.frHist.line].ex[last.frHist.exLength];
+          this.removeFromArray(this.lines[last.frHist.line].ex[last.frHist.ex].ce, last.frHist.exLength);
+          this.removeFromArray(this.elements.expressions, last.frHist.exLength);
+        } else {
+          if (last.subType == "lastDInewLine") {
+            this.removeFromArray(this.elements.expressions, last.lineHist.lineID);
+            delete this.lines[last.lineHistlineID];
+            this.removeFromArray(this.elements.lines, last.lineHist.lineID);
+
+            delete this.lines[last.line].di[last.diID];
+            this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID)
+            this.removeFromArray(this.elements.digits, last.diID);
+            this.selection = last.selection;
+          }
+        }
+        break;
+      }
+      default:
+        break;
+    }
+
+
+
+    this.addToRedoHistory(Object.assign({}, last));
+    this.undoHistory.splice(-1, 1);
+
     this.ref.detectChanges();
   }
 
-  openDialog(op): void {
-    if (this.terms.length != 0) {
-      if ((this.terms.length > 1 && (op == "sub" || op == "sum")) || (this.terms.length == 2)) {
-        let dialogRef = this.dialog.open(ColumnCountDialog, {
-          data: { terms: this.terms, operator: op }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (Number(result)) {
-            for (var i = 0; i < String(Number(result)).length; i++) {
-              this.write(Number(String(Number(result))[i]), "di");
-              this.ref.detectChanges();
-            }
-            this.ref.detectChanges();
-            this.onClick({
-              target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
-            });
-          }
-          this.terms = [];
-          this.ref.detectChanges();
-        });
+  redoLast() {
+    if (this.redoHistory.length == 0) {
+      return;
+    }
+
+    let last = this.redoHistory[this.redoHistory.length - 1];
+
+    if (last.subType == "lastNotDI") {
+      this.lines[last.line].di[last.diID] = last.di;
+      this.lines[last.line].ex[last.exID].cd.push(last.diID);
+      this.elements.digits.push(last.diID);
+      this.selection = last.selection;
+    } else {
+      if (last.subType == "lastDI") {
+        this.lines[last.line].di[last.diID] = last.diForRedo;
+        this.selection = last.selection;
+      } else {
+        if (last.subType == "lastDInewLine") {
+          this.elements.expressions.push(last.lineHist.exID);
+          this.lines[last.lineHist.lineID] = last.lineHist.newLine;
+          this.elements.lines.push(last.lineHist.lineID);
+
+          this.lines[last.line].di[last.diID] = last.di;
+          this.lines[last.line].ex[last.exID].cd.push(last.diID);
+          this.elements.digits.push(last.diID);
+          this.selection = last.selection;
+        }
       }
+    }
+
+    this.addToUndoHistory(Object.assign({}, last));
+    this.redoHistory.splice(-1, 1);
+
+    this.ref.detectChanges();
+  }
+
+
+  removeFromArray(array, element) {
+    let index = array.indexOf(element);
+    if (index > -1) {
+      array.splice(index, 1);
     }
   }
 
-  //endregion New Feature //
+
+  //endregion New Feature
 
 
   constructor(
@@ -95,6 +206,8 @@ export class WorkspaceComponent implements OnInit {
 
   lines: any;
   elements: any;
+
+  terms: any = [];
 
   getArr = function (i) {
     return new Array(i);
@@ -208,6 +321,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   write(val, t) {
+    this.redoHistory = [];
     switch (t) {
       case "fr": {
         this.writeFr();
@@ -225,18 +339,21 @@ export class WorkspaceComponent implements OnInit {
         break;
       }
     }
-    this.ref.markForCheck();
+    this.ref.detectChanges();
   }
 
-  createLine() {
+  createLine(): any {
+    let lineLength = this.elements.lines.length;
+    let expressionsLength = this.elements.expressions.length + 1;
+
     var newLine = {
-      id: this.elements.lines.length,
+      id: lineLength,
       y: (this.selection.y / 10 >> 0) * 10 - 10,
       x: (this.selection.x / 20 >> 0) * 20,
       fr: {},
       ex: {
         0: {
-          line: this.elements.lines.length,
+          line: lineLength,
           pe: 0,
           pd: 0,
           fr: 0,
@@ -249,7 +366,7 @@ export class WorkspaceComponent implements OnInit {
     }
 
     var newEx = {
-      line: this.elements.lines.length,
+      line: lineLength,
       pe: 0,
       pd: 0,
       fr: 0,
@@ -258,19 +375,38 @@ export class WorkspaceComponent implements OnInit {
       cd: []
     }
 
-    this.selection.line = this.elements.lines.length;
-    this.selection.ex = this.elements.expressions.length + 1;
+    this.selection.line = lineLength;
+    this.selection.ex = expressionsLength;
 
-    newLine.ex[this.elements.expressions.length + 1] = newEx;
-    newLine.ex[0].ce.push(this.elements.expressions.length + 1);
-    this.elements.expressions.push(this.elements.expressions.length + 1);
+    newLine.ex[expressionsLength] = newEx;
+    newLine.ex[0].ce.push(expressionsLength);
 
-    this.lines[this.elements.lines.length] = newLine;
-    this.elements.lines.push(this.elements.lines.length);
+
+    let hist = {
+      exID: expressionsLength,
+      lineID: lineLength,
+      newLine: newLine
+    };
+
+
+    //Elements Expression array update
+    this.elements.expressions.push(expressionsLength);
+
+    //Lines array update
+    this.lines[lineLength] = newLine;
+    //Elements Lines array update
+    this.elements.lines.push(lineLength);
+
+    return hist;
+
   }
 
-  writeDi(val) {
+  writeDi(val): any {
+    let initSelection = Object.assign({}, this.selection);
     if (this.selection.line != null) {
+
+      //region Write Digit if out of line
+
       let line = this.selection.line;
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
@@ -281,6 +417,8 @@ export class WorkspaceComponent implements OnInit {
       }
       let newDI = {
       }
+
+      //Searching information about last digit
       for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
         if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
           lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
@@ -288,7 +426,11 @@ export class WorkspaceComponent implements OnInit {
           lastDI.id = this.lines[line].ex[ex].cd[i];
         }
       }
+
       if (lastDI.di == null || lastDI.di.type == "operator") {
+
+        //region New Digit addition, if last charachter is not digit
+
         newDI = {
           id: diLength,
           line: line,
@@ -299,19 +441,77 @@ export class WorkspaceComponent implements OnInit {
           text: this.getCharacter(val),
           type: "digit"
         }
+
+
+        let hist = {
+          action: "write",
+          type: "di",
+          subType: "lastNotDI",
+          line: line,
+          diID: diLength,
+          exID: ex,
+          di: Object.assign({}, newDI),
+          lineHist: null,
+          selection: initSelection
+        }
+        this.addToUndoHistory(hist);
+
+
+        //Line Digits array update
         this.lines[line].di[diLength] = newDI;
+        //Line Expressions array update
         this.lines[line].ex[ex].cd.push(diLength);
+
+        //Elements Digits array update
         this.elements.digits.push(diLength);
+
+
+        //endregion New Digit addition, if last charachter is not digit
+
       } else {
         if (lastDI.di.type == "digit") {
+
+          //region New Digit addition, if last charachter is digit
+
+
+          let hist = {
+            action: "write",
+            type: "di",
+            subType: "lastDI",
+            line: line,
+            diID: lastDI.id,
+            exID: null,
+            di: Object.assign({}, this.lines[line].di[lastDI.id]),
+            lineHist: null,
+            selection: initSelection,
+            diForRedo: null
+          }
+
+
+
           lastDI.di.s += 0.73;
           lastDI.di.value = Number(String(lastDI.di.value) + String(val));
           lastDI.di.text += this.getCharacter(val);
+
+          hist.diForRedo = Object.assign({}, this.lines[line].di[lastDI.id]);
+          this.addToUndoHistory(hist);
+
+          //Line Digits array update
           this.lines[line].di[lastDI.id] = lastDI.di;
+
+          //endregion New Digit addition, if last charachter is digit
+
         }
       }
+
+      //endregion Write Digit if out of line
+
     } else {
-      this.createLine();
+
+      //region Write Digit if in the line
+
+      let lineHist = this.createLine();
+
       let line = this.selection.line;
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
@@ -325,13 +525,37 @@ export class WorkspaceComponent implements OnInit {
         text: this.getCharacter(val),
         type: "digit"
       }
+
+      let hist = {
+        action: "write",
+        type: "di",
+        subType: "lastDInewLine",
+        line: line,
+        diID: diLength,
+        exID: ex,
+        di: Object.assign({}, newDI),
+        lineHist: lineHist,
+        selection: initSelection
+      }
+      this.addToUndoHistory(hist);
+
+
+      //Line Digits array update
       this.lines[line].di[diLength] = newDI;
+      //Line Expressions array update
       this.lines[line].ex[ex].cd.push(diLength);
+
+      //Elements Digits array update
       this.elements.digits.push(diLength);
+
+
+      //endregion Write Digit if in the line
+
     }
   }
 
-  writeOp(val) {
+  writeOp(val): any {
+    let initSelection = Object.assign({}, this.selection);
     if (this.selection.line != null) {
       let line = this.selection.line;
       let ex = this.selection.ex;
@@ -362,11 +586,32 @@ export class WorkspaceComponent implements OnInit {
         type: "operator"
       }
 
+
+      let hist = {
+        action: "write",
+        type: "di",
+        subType: "lastNotDI",
+        line: line,
+        diID: diLength,
+        exID: ex,
+        di: Object.assign({}, newDI),
+        lineHist: null,
+        selection: initSelection
+      }
+      this.addToUndoHistory(hist);
+
+
+      //Line Digits array update
       this.lines[line].di[diLength] = newDI;
+      //Line Expressions array update
       this.lines[line].ex[ex].cd.push(diLength);
+
+      //Elements Digits array update
       this.elements.digits.push(diLength);
+
+
     } else {
-      this.createLine();
+      let lineHist = this.createLine();
       let line = this.selection.line;
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
@@ -380,13 +625,35 @@ export class WorkspaceComponent implements OnInit {
         text: this.getCharacter(val),
         type: "operator"
       }
+
+
+      let hist = {
+        action: "write",
+        type: "di",
+        subType: "lastDInewLine",
+        line: line,
+        diID: diLength,
+        exID: ex,
+        di: Object.assign({}, newDI),
+        lineHist: lineHist,
+        selection: initSelection
+      }
+      this.addToUndoHistory(hist);
+
+
+      //Line Digits array update
       this.lines[line].di[diLength] = newDI;
+      //Line Expressions array update
       this.lines[line].ex[ex].cd.push(diLength);
+
+      //Elements Digits array update
       this.elements.digits.push(diLength);
+
+
     }
   }
 
-  writeFr() {
+  writeFr(): any {
     if (this.selection.line != null) {
       let line = this.selection.line;
       let ex = this.selection.ex;
@@ -450,7 +717,7 @@ export class WorkspaceComponent implements OnInit {
       }
 
       this.lines[line].fr[this.elements.fractions.length + 1] = newFR;
-      this.elements.fractions.push(this.elements.fractions.length + 1)
+      this.elements.fractions.push(this.elements.fractions.length + 1);
 
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
@@ -465,6 +732,9 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
+
+
+
     } else {
       this.createLine();
       let line = this.selection.line;
@@ -517,6 +787,10 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].fr[this.elements.fractions.length + 1] = newFR;
       this.elements.fractions.push(this.elements.fractions.length + 1)
 
+
+
+
+
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
@@ -530,6 +804,9 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
+
+
+
     }
   }
 
@@ -668,6 +945,40 @@ export class WorkspaceComponent implements OnInit {
   //endregion Darg Center //
 
 
+  //resetTerms(), openDialog(op)
+  //region Count in Column //
+
+  resetTerms() {
+    this.terms = [];
+    this.ref.detectChanges();
+  }
+
+  openDialog(op): void {
+    if (this.terms.length != 0) {
+      if ((this.terms.length > 1 && (op == "sub" || op == "sum")) || (this.terms.length == 2)) {
+        let dialogRef = this.dialog.open(ColumnCountDialog, {
+          data: { terms: this.terms, operator: op }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (Number(result)) {
+            for (var i = 0; i < String(Number(result)).length; i++) {
+              this.write(Number(String(Number(result))[i]), "di");
+              this.ref.detectChanges();
+            }
+            this.ref.detectChanges();
+            this.onClick({
+              target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+            });
+          }
+          this.terms = [];
+          this.ref.detectChanges();
+        });
+      }
+    }
+  }
+
+  //endregion Count in Column //
+
 
   //region Init Center //
 
@@ -704,7 +1015,7 @@ export class WorkspaceComponent implements OnInit {
         this.vh = window.innerHeight;
 
         this.loading = false;
-        this.ref.markForCheck();
+        this.ref.detectChanges();
 
         setTimeout(function () {
           this.initUI(1);
@@ -754,11 +1065,11 @@ export class WorkspaceComponent implements OnInit {
             var target = event.target;
             this.lines[target.getAttribute('data-lineid')].x = Math.ceil((this.lines[target.getAttribute('data-lineid')].x - 10) / 20) * 20;
             this.lines[target.getAttribute('data-lineid')].y = Math.ceil((this.lines[target.getAttribute('data-lineid')].y - 5) / 10) * 10;
-            this.ref.markForCheck();
+            this.ref.detectChanges();
             this.onClick({
               target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
             });
-            this.ref.markForCheck();
+            this.ref.detectChanges();
           }.bind(this)
         });
     }
@@ -777,7 +1088,7 @@ export class WorkspaceComponent implements OnInit {
       this.onClick({
         target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
       });
-      this.ref.markForCheck();
+      this.ref.detectChanges();
     }
 
     function dragMoveListener(event) {

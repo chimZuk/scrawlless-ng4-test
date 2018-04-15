@@ -24,7 +24,7 @@
         <text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="selection.x" [attr.y]="selection.y" font-family="scwlsWorkspace"
             font-size="16">&#xe911;</text>
 
-        <svg:g *ngFor="let line of elements.lines; let i = index">
+        <svg:g *ngFor="let line of elements.lines; let i = index; trackBy">
             <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
             </g>
 
@@ -102,6 +102,14 @@
 
     <mat-card #numbers id="numbers" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
+            <div class="flex-row">
+                <button mat-raised-button (click)="undoLast();">
+                    <mat-icon>undo</mat-icon>
+                </button>
+                <button mat-raised-button (click)="redoLast();">
+                    <mat-icon>redo</mat-icon>
+                </button>
+            </div>
             <div class="flex-row">
                 <button mat-raised-button (click)="write(7, 'di');">
                     <span class="i-font i-seven"></span>
