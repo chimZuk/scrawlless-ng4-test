@@ -18,8 +18,6 @@ import { ColumnCountDialog } from './../../dialogs/workspace-dialogs/column-coun
 import { Stack } from './../../../_classes/data_structures/stack';
 import { HistoryAction } from './../../../_classes/data_classes/history_action';
 
-import { saveSvgAsPng } from 'save-svg-as-png';
-
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
