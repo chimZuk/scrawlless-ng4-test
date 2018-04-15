@@ -13,7 +13,6 @@ import { SafeHTML } from "../../../_pipes/safehtml.pipe";
 import { ColumnCountDialogModule } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.module';
 
 
-
 @NgModule({
   imports: [
     WorkspaceRouter,

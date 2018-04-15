@@ -7,6 +7,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { HomeworkDataService } from '../../../_services/homework-data/homework-data.service';
 import { HomeworkService } from '../../../_services/homework/homework.service';
+import { UserService } from '../../../_services/user/user.service';
 
 import { AlgebraComponent } from '../../workspace-elements/algebra/algebra.component';
 
@@ -17,6 +18,8 @@ import { ColumnCountDialog } from './../../dialogs/workspace-dialogs/column-coun
 import { Stack } from './../../../_classes/data_structures/stack';
 import { HistoryAction } from './../../../_classes/data_classes/history_action';
 
+import { saveSvgAsPng } from 'save-svg-as-png';
+
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
@@ -24,150 +27,6 @@ import { HistoryAction } from './../../../_classes/data_classes/history_action';
   styleUrls: ['./workspace.component.css'],
 })
 export class WorkspaceComponent implements OnInit {
-
-
-  //region New Feature
-
-  undoHistory: any = [];
-  redoHistory: any = [];
-
-  addToUndoHistory(hist) {
-    this.undoHistory.push(hist);
-  }
-
-  addToRedoHistory(hist) {
-    this.redoHistory.push(hist);
-  }
-
-  undoLast() {
-    if (this.undoHistory.length == 0) {
-      return;
-    }
-
-    let last = this.undoHistory[this.undoHistory.length - 1];
-
-    switch (last.type) {
-      case "di": {
-        if (last.subType == "lastNotDI") {
-          delete this.lines[last.line].di[last.diID];
-          this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID);
-          this.removeFromArray(this.elements.digits, last.diID);
-          this.selection = last.selection;
-        } else {
-          if (last.subType == "lastDI") {
-            this.lines[last.line].di[last.diID] = last.di;
-            this.selection = last.selection;
-          } else {
-            if (last.subType == "lastDInewLine") {
-              this.removeFromArray(this.elements.expressions, last.lineHist.lineID);
-              delete this.lines[last.lineHistlineID];
-              this.removeFromArray(this.elements.lines, last.lineHist.lineID);
-
-              delete this.lines[last.line].di[last.diID];
-              this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID)
-              this.removeFromArray(this.elements.digits, last.diID);
-              this.selection = last.selection;
-            }
-          }
-        }
-        break;
-      }
-      case "fr": {
-        if (last.subType == "lastDI") {
-          /*this.lines[last.line].fr[last.frHist.frLength] = last.frHist.newFR;
-          this.elements.fractions.push(last.frHist.frLength)
-
-          this.lines[last.frHist.line].ex[last.frHist.exLength] = last.frHist.newCh;
-          this.lines[last.frHist.line].ex[last.frHist.exID].ce.push(last.frHist.exLength);
-          this.elements.expressions.push(last.frHist.exLength);
-
-          this.lines[last.frHist.line].ex[last.frHist.exLength] = last.frHist.newZn;
-          this.lines[last.frHist.line].ex[last.frHist.ex].ce.push(last.frHist.exLength);
-          this.elements.expressions.push(last.frHist.exLength);*/
-
-          delete this.lines[last.line].fr[last.frHist.frLength];
-          this.removeFromArray(this.elements.fractions, last.frHist.frLength);
-
-          delete this.lines[last.frHist.line].ex[last.frHist.exLength];
-          this.removeFromArray(this.lines[last.frHist.line].ex[last.frHist.exID].ce, last.frHist.exLength);
-          this.removeFromArray(this.elements.expressions, last.frHist.exLength);
-
-          delete this.lines[last.frHist.line].ex[last.frHist.exLength];
-          this.removeFromArray(this.lines[last.frHist.line].ex[last.frHist.ex].ce, last.frHist.exLength);
-          this.removeFromArray(this.elements.expressions, last.frHist.exLength);
-        } else {
-          if (last.subType == "lastDInewLine") {
-            this.removeFromArray(this.elements.expressions, last.lineHist.lineID);
-            delete this.lines[last.lineHistlineID];
-            this.removeFromArray(this.elements.lines, last.lineHist.lineID);
-
-            delete this.lines[last.line].di[last.diID];
-            this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID)
-            this.removeFromArray(this.elements.digits, last.diID);
-            this.selection = last.selection;
-          }
-        }
-        break;
-      }
-      default:
-        break;
-    }
-
-
-
-    this.addToRedoHistory(Object.assign({}, last));
-    this.undoHistory.splice(-1, 1);
-
-    this.ref.detectChanges();
-  }
-
-  redoLast() {
-    if (this.redoHistory.length == 0) {
-      return;
-    }
-
-    let last = this.redoHistory[this.redoHistory.length - 1];
-
-    if (last.subType == "lastNotDI") {
-      this.lines[last.line].di[last.diID] = last.di;
-      this.lines[last.line].ex[last.exID].cd.push(last.diID);
-      this.elements.digits.push(last.diID);
-      this.selection = last.selection;
-    } else {
-      if (last.subType == "lastDI") {
-        this.lines[last.line].di[last.diID] = last.diForRedo;
-        this.selection = last.selection;
-      } else {
-        if (last.subType == "lastDInewLine") {
-          this.elements.expressions.push(last.lineHist.exID);
-          this.lines[last.lineHist.lineID] = last.lineHist.newLine;
-          this.elements.lines.push(last.lineHist.lineID);
-
-          this.lines[last.line].di[last.diID] = last.di;
-          this.lines[last.line].ex[last.exID].cd.push(last.diID);
-          this.elements.digits.push(last.diID);
-          this.selection = last.selection;
-        }
-      }
-    }
-
-    this.addToUndoHistory(Object.assign({}, last));
-    this.redoHistory.splice(-1, 1);
-
-    this.ref.detectChanges();
-  }
-
-
-  removeFromArray(array, element) {
-    let index = array.indexOf(element);
-    if (index > -1) {
-      array.splice(index, 1);
-    }
-  }
-
-
-  //endregion New Feature
-
 
   constructor(
     private route: ActivatedRoute,
@@ -177,12 +36,15 @@ export class WorkspaceComponent implements OnInit {
     private data: HomeworkDataService,
     private homeData: HomeworkService,
     private ref: ChangeDetectorRef,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private userService: UserService
   ) { }
 
   private id;
   absUrl = window.location.href;
   loading = true;
+
+  user: any;
 
   vw: any;
   vh: any;
@@ -208,6 +70,9 @@ export class WorkspaceComponent implements OnInit {
   elements: any;
 
   terms: any = [];
+
+  undoHistory: any = [];
+  redoHistory: any = [];
 
   getArr = function (i) {
     return new Array(i);
@@ -246,6 +111,57 @@ export class WorkspaceComponent implements OnInit {
   }
 
   //endregion Data Manipulation //
+
+
+  //saveAsSvg()
+  //region Save Image //
+
+  saveAsSvg() {
+    let tempWidth = this.container.nativeElement.attributes.width.value;
+    let tempHeight = this.container.nativeElement.attributes.height.value;
+    this.container.nativeElement.attributes.width.value = 1920;
+    this.container.nativeElement.attributes.height.value = 2715;
+    document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
+    document.getElementById("cover").setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    var svgData = document.getElementById("cover").outerHTML;
+    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+    var svgBlob = new Blob([preface, svgData], { type: "image/svg+xml;charset=utf-8" });
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+
+    var canvas = document.querySelector("canvas"),
+      context = canvas.getContext("2d");
+
+    var image = new Image;
+    image.src = svgUrl;
+
+    let filename = "untitled";
+    if (this.description != "") {
+      filename = "";
+      for (let i = 0; i < this.description.length; i++) {
+        if (this.description[i] != " ") {
+          filename += this.description[i].toLocaleLowerCase();
+        } else {
+          filename += "_";
+        }
+      }
+    }
+
+    image.onload = function () {
+      context.drawImage(image, 0, 0);
+      var a = document.createElement("a");
+      a.download = filename + ".png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    };
+
+    document.getElementById("list").setAttribute("fill", "url(" + window.location.href + "#smallGrid)");
+    this.container.nativeElement.attributes.width.value = tempWidth;
+    this.container.nativeElement.attributes.height.value = tempHeight;
+  }
+
+  //endregion Save Image //
 
 
   //brows(), onResize()
@@ -309,7 +225,7 @@ export class WorkspaceComponent implements OnInit {
         return "&#xe90a;";
       case "-":
         return "&#xe90b;";
-      case "*":
+      case "×":
         return "&#xe90c;";
       case "/":
         return "&#xe90d;";
@@ -392,7 +308,6 @@ export class WorkspaceComponent implements OnInit {
 
     //Elements Expression array update
     this.elements.expressions.push(expressionsLength);
-
     //Lines array update
     this.lines[lineLength] = newLine;
     //Elements Lines array update
@@ -405,21 +320,16 @@ export class WorkspaceComponent implements OnInit {
   writeDi(val): any {
     let initSelection = Object.assign({}, this.selection);
     if (this.selection.line != null) {
-
-      //region Write Digit if out of line
-
       let line = this.selection.line;
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
+      let newDI;
       let lastDI = {
         pos: 0,
         id: null,
         di: null
       }
-      let newDI = {
-      }
 
-      //Searching information about last digit
       for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
         if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
           lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
@@ -429,9 +339,6 @@ export class WorkspaceComponent implements OnInit {
       }
 
       if (lastDI.di == null || lastDI.di.type == "operator") {
-
-        //region New Digit addition, if last charachter is not digit
-
         newDI = {
           id: diLength,
           line: line,
@@ -444,6 +351,7 @@ export class WorkspaceComponent implements OnInit {
         }
 
 
+        //region Addition to History
         let hist = {
           action: "write",
           type: "di",
@@ -456,25 +364,20 @@ export class WorkspaceComponent implements OnInit {
           selection: initSelection
         }
         this.addToUndoHistory(hist);
+        //endregion Addition to History
 
 
         //Line Digits array update
         this.lines[line].di[diLength] = newDI;
         //Line Expressions array update
         this.lines[line].ex[ex].cd.push(diLength);
-
         //Elements Digits array update
         this.elements.digits.push(diLength);
-
-
-        //endregion New Digit addition, if last charachter is not digit
-
       } else {
         if (lastDI.di.type == "digit") {
 
-          //region New Digit addition, if last charachter is digit
 
-
+          //region Addition to History
           let hist = {
             action: "write",
             type: "di",
@@ -487,29 +390,26 @@ export class WorkspaceComponent implements OnInit {
             selection: initSelection,
             diForRedo: null
           }
-
+          //endregion Addition to History
 
 
           lastDI.di.s += 0.73;
           lastDI.di.value = Number(String(lastDI.di.value) + String(val));
           lastDI.di.text += this.getCharacter(val);
 
+
+          //region Addition to History
           hist.diForRedo = Object.assign({}, this.lines[line].di[lastDI.id]);
           this.addToUndoHistory(hist);
+          //endregion Addition to History
+
 
           //Line Digits array update
           this.lines[line].di[lastDI.id] = lastDI.di;
 
-          //endregion New Digit addition, if last charachter is digit
-
         }
       }
-
-      //endregion Write Digit if out of line
-
     } else {
-
-      //region Write Digit if in the line
 
       let lineHist = this.createLine();
 
@@ -527,6 +427,8 @@ export class WorkspaceComponent implements OnInit {
         type: "digit"
       }
 
+
+      //region Addition to History
       let hist = {
         action: "write",
         type: "di",
@@ -539,19 +441,15 @@ export class WorkspaceComponent implements OnInit {
         selection: initSelection
       }
       this.addToUndoHistory(hist);
+      //endregion Addition to History
 
 
       //Line Digits array update
       this.lines[line].di[diLength] = newDI;
       //Line Expressions array update
       this.lines[line].ex[ex].cd.push(diLength);
-
       //Elements Digits array update
       this.elements.digits.push(diLength);
-
-
-      //endregion Write Digit if in the line
-
     }
   }
 
@@ -561,13 +459,13 @@ export class WorkspaceComponent implements OnInit {
       let line = this.selection.line;
       let ex = this.selection.ex;
       let diLength = Object.keys(this.lines[line].di).length;
+      let newDI;
       let lastDI = {
         pos: 0,
         id: null,
         di: null
       }
-      let newDI = {
-      }
+
       for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
         if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
           lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
@@ -588,6 +486,7 @@ export class WorkspaceComponent implements OnInit {
       }
 
 
+      //region Addition to History
       let hist = {
         action: "write",
         type: "di",
@@ -600,13 +499,13 @@ export class WorkspaceComponent implements OnInit {
         selection: initSelection
       }
       this.addToUndoHistory(hist);
+      //endregion Addition to History
 
 
       //Line Digits array update
       this.lines[line].di[diLength] = newDI;
       //Line Expressions array update
       this.lines[line].ex[ex].cd.push(diLength);
-
       //Elements Digits array update
       this.elements.digits.push(diLength);
 
@@ -628,6 +527,7 @@ export class WorkspaceComponent implements OnInit {
       }
 
 
+      //region Addition to History
       let hist = {
         action: "write",
         type: "di",
@@ -640,13 +540,13 @@ export class WorkspaceComponent implements OnInit {
         selection: initSelection
       }
       this.addToUndoHistory(hist);
+      //endregion Addition to History
 
 
       //Line Digits array update
       this.lines[line].di[diLength] = newDI;
       //Line Expressions array update
       this.lines[line].ex[ex].cd.push(diLength);
-
       //Elements Digits array update
       this.elements.digits.push(diLength);
 
@@ -733,9 +633,6 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
-
-
-
     } else {
       this.createLine();
       let line = this.selection.line;
@@ -786,11 +683,7 @@ export class WorkspaceComponent implements OnInit {
       }
 
       this.lines[line].fr[this.elements.fractions.length + 1] = newFR;
-      this.elements.fractions.push(this.elements.fractions.length + 1)
-
-
-
-
+      this.elements.fractions.push(this.elements.fractions.length + 1);
 
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
@@ -805,13 +698,118 @@ export class WorkspaceComponent implements OnInit {
       this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
-
-
-
     }
   }
 
   //endregion Writing Module //
+
+
+  //addToUndoHistory(hist), addToRedoHistory(hist)
+  //undoLast(), redoLast()
+  //removeFromArray(array, element)
+  //region Redo Undo //
+
+  addToUndoHistory(hist) {
+    this.undoHistory.push(hist);
+  }
+
+  addToRedoHistory(hist) {
+    this.redoHistory.push(hist);
+  }
+
+  undoLast() {
+    if (this.undoHistory.length == 0) {
+      return;
+    }
+
+    let last = this.undoHistory[this.undoHistory.length - 1];
+
+    switch (last.type) {
+      case "di": {
+        if (last.subType == "lastNotDI") {
+          delete this.lines[last.line].di[last.diID];
+          this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID);
+          this.removeFromArray(this.elements.digits, last.diID);
+          this.selection = last.selection;
+        } else {
+          if (last.subType == "lastDI") {
+            this.lines[last.line].di[last.diID] = last.di;
+            this.selection = last.selection;
+          } else {
+            if (last.subType == "lastDInewLine") {
+              this.removeFromArray(this.elements.expressions, last.lineHist.lineID);
+              delete this.lines[last.lineHistlineID];
+              this.removeFromArray(this.elements.lines, last.lineHist.lineID);
+
+              delete this.lines[last.line].di[last.diID];
+              this.removeFromArray(this.lines[last.line].ex[last.exID].cd, last.diID)
+              this.removeFromArray(this.elements.digits, last.diID);
+              this.selection = last.selection;
+            }
+          }
+        }
+        break;
+      }
+      case "fr": {
+
+        break;
+      }
+      default:
+        break;
+    }
+
+    this.addToRedoHistory(Object.assign({}, last));
+    this.undoHistory.splice(-1, 1);
+
+    this.ref.detectChanges();
+  }
+
+  redoLast() {
+    if (this.redoHistory.length == 0) {
+      return;
+    }
+
+    let last = this.redoHistory[this.redoHistory.length - 1];
+
+    if (last.subType == "lastNotDI") {
+      this.lines[last.line].di[last.diID] = last.di;
+      this.lines[last.line].ex[last.exID].cd.push(last.diID);
+      this.elements.digits.push(last.diID);
+      this.selection = last.selection;
+    } else {
+      if (last.subType == "lastDI") {
+        this.lines[last.line].di[last.diID] = last.diForRedo;
+        this.selection = last.selection;
+      } else {
+        if (last.subType == "lastDInewLine") {
+          this.elements.expressions.push(last.lineHist.exID);
+          this.lines[last.lineHist.lineID] = last.lineHist.newLine;
+          this.elements.lines.push(last.lineHist.lineID);
+
+          this.lines[last.line].di[last.diID] = last.di;
+          this.lines[last.line].ex[last.exID].cd.push(last.diID);
+          this.elements.digits.push(last.diID);
+          this.selection = last.selection;
+        }
+      }
+    }
+
+    this.addToUndoHistory(Object.assign({}, last));
+    this.redoHistory.splice(-1, 1);
+
+    this.ref.detectChanges();
+  }
+
+
+  removeFromArray(array, element) {
+    let index = array.indexOf(element);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+  }
+
+
+  //endregion Redo Undo //
 
 
   //setCursor(ev, element, id)
@@ -981,50 +979,62 @@ export class WorkspaceComponent implements OnInit {
   //endregion Count in Column //
 
 
+  //ngOnInit(), getUserInfo(), initUI(scale)
   //region Init Center //
 
   ngOnInit() {
+    this.getUserInfo();
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });
-
-    this.homeData.homeworkRead({
-      token: JSON.parse(localStorage.getItem('currentUser')).token,
-      homeworkId: String(this.id)
-    })
-      .subscribe(result => {
-        if (result.data.elements) {
-          this.elements = result.data.elements;
-        } else {
-          this.elements = {
-            lines: [],
-            fractions: [],
-            expressions: [],
-            digits: []
-          }
-        }
-        if (result.data.lines) {
-          this.lines = result.data.lines;
-        } else {
-          this.lines = [];
-        }
-
-        this.scale = 1;
-
-        this.description = result.data.description;
-        this.vw = window.innerWidth;
-        this.vh = window.innerHeight;
-
-        this.loading = false;
-        this.ref.detectChanges();
-
-        setTimeout(function () {
-          this.initUI(1);
-        }.bind(this), 10);
-
-      });
   }
 
+  getUserInfo() {
+    let token = JSON.parse(localStorage.getItem('currentUser')).token;
+    let data = {
+      token: token
+    }
+    this.userService.getUserInfo(data)
+      .subscribe(result => {
+        this.user = result;
+
+        this.homeData.homeworkRead({
+          token: JSON.parse(localStorage.getItem('currentUser')).token,
+          homeworkId: String(this.id)
+        })
+          .subscribe(result => {
+            if (result.data.elements) {
+              this.elements = result.data.elements;
+            } else {
+              this.elements = {
+                lines: [],
+                fractions: [],
+                expressions: [],
+                digits: []
+              }
+            }
+            if (result.data.lines) {
+              this.lines = result.data.lines;
+            } else {
+              this.lines = [];
+            }
+
+            this.scale = 1;
+
+            this.description = result.data.description;
+            this.vw = window.innerWidth;
+            this.vh = window.innerHeight;
+
+            this.loading = false;
+            this.ref.detectChanges();
+
+            setTimeout(function () {
+              this.initUI(1);
+            }.bind(this), 10);
+
+          });
+      });
+  }
 
   initUI(scale) {
     if (this.container) {
@@ -1109,7 +1119,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   //endregion Init Center //
-
 
 
 }

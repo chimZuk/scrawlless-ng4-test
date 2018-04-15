@@ -31,7 +31,6 @@
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-
     <app-root>
         <div class='uil-default-css' style='transform:scale(1);'>
             <div style='top:80px;left:80px;width:40px;height:40px;background:#ee7e28;-webkit-transform:rotate(0deg) translate(0,-80px);transform:rotate(0deg) translate(0,-80px);border-radius:40px;position:absolute;'></div>
@@ -44,6 +43,25 @@
             <div style='top:80px;left:80px;width:40px;height:40px;background:#ee7e28;-webkit-transform:rotate(315deg) translate(0,-80px);transform:rotate(315deg) translate(0,-80px);border-radius:40px;position:absolute;'></div>
         </div>
     </app-root>
+
+    <script>
+        function kek() {
+            document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
+            document.getElementById("cover").setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            var svgData = document.getElementById("cover").outerHTML;            
+            var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+            var svgBlob = new Blob([preface, svgData], { type: "image/svg+xml;charset=utf-8" });
+            var svgUrl = URL.createObjectURL(svgBlob);
+            var downloadLink = document.createElement("a");
+            downloadLink.href = svgUrl;
+            downloadLink.download = 'lol.svg';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            document.getElementById("list").setAttribute("fill", "url(" + window.location.href + "#smallGrid)");
+        }
+
+    </script>
 
     <script>
         function $(o) {
