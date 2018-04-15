@@ -324,6 +324,7 @@ export class WorkspaceComponent implements OnInit {
     this.redoHistory = [];
     switch (t) {
       case "fr": {
+        this.undoHistory = [];
         this.writeFr();
         break;
       }
