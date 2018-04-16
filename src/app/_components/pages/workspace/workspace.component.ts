@@ -15,9 +15,6 @@ import { MatDialog } from '@angular/material';
 
 import { ColumnCountDialog } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.component';
 
-import { Stack } from './../../../_classes/data_structures/stack';
-import { HistoryAction } from './../../../_classes/data_classes/history_action';
-
 @Component({
   selector: 'workspace',
   templateUrl: './workspace.component.html',
@@ -25,6 +22,14 @@ import { HistoryAction } from './../../../_classes/data_classes/history_action';
   styleUrls: ['./workspace.component.css'],
 })
 export class WorkspaceComponent implements OnInit {
+
+
+  //region New Feature //
+
+
+
+  //endregion New Feature //
+
 
   constructor(
     private route: ActivatedRoute,
@@ -34,7 +39,7 @@ export class WorkspaceComponent implements OnInit {
     private data: HomeworkDataService,
     private homeData: HomeworkService,
     private ref: ChangeDetectorRef,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private userService: UserService
   ) { }
 
@@ -66,6 +71,60 @@ export class WorkspaceComponent implements OnInit {
 
   lines: any;
   elements: any;
+
+  geoElements: any = [5, 4, 1, 2, 3];
+  geo: any = {
+    1: {
+      type: "dot",
+      x: 400,
+      y: 200,
+      dx: 400,
+      dy: 200,
+      r: 2,
+      strokeW: 1,
+      selected: 0
+    },
+    2: {
+      type: "dot",
+      x: 390,
+      y: 200,
+      dx: 390,
+      dy: 200,
+      r: 2,
+      strokeW: 1,
+      selected: 0
+    },
+    3: {
+      type: "dot",
+      x: 380,
+      y: 200,
+      dx: 380,
+      dy: 200,
+      r: 2,
+      strokeW: 1,
+      selected: 0
+    },
+    4: {
+      type: "circle",
+      x: 500,
+      y: 160,
+      dx: 500,
+      dy: 160,
+      r: 20,
+      strokeW: 1,
+      selected: 0
+    },
+    5: {
+      type: "circle",
+      x: 200,
+      y: 700,
+      dx: 200,
+      dy: 700,
+      r: 50,
+      strokeW: 1,
+      selected: 0
+    }
+  }
 
   terms: any = [];
 
@@ -120,6 +179,8 @@ export class WorkspaceComponent implements OnInit {
     this.container.nativeElement.attributes.width.value = 1920;
     this.container.nativeElement.attributes.height.value = 2715;
     document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
+    document.getElementById("cell").setAttribute("stroke-width", "2");
+    document.getElementById("field").setAttribute("stroke-width", "4");
     document.getElementById("cover").setAttribute("xmlns", "http://www.w3.org/2000/svg");
     var svgData = document.getElementById("cover").outerHTML;
     var preface = '<?xml version="1.0" standalone="no"?>\r\n';
@@ -154,6 +215,9 @@ export class WorkspaceComponent implements OnInit {
       a.click();
     };
 
+
+    document.getElementById("cell").setAttribute("stroke-width", "0.5");
+    document.getElementById("field").setAttribute("stroke-width", "2");
     document.getElementById("list").setAttribute("fill", "url(" + window.location.href + "#smallGrid)");
     this.container.nativeElement.attributes.width.value = tempWidth;
     this.container.nativeElement.attributes.height.value = tempHeight;
@@ -869,6 +933,8 @@ export class WorkspaceComponent implements OnInit {
   zoom(scale) {
     this.container.nativeElement.attributes.width.value *= scale;
     this.container.nativeElement.attributes.height.value *= scale;
+
+    this.setGrid();
   }
 
   //endregion Workspace Buttons //
@@ -886,19 +952,24 @@ export class WorkspaceComponent implements OnInit {
     return true;
   }
 
-  select = function (event) {
-    if (this.notSaved(this.selected, event.target)) {
-      event.target.attributes.class.value = "svgDraggable touch";
-      event.target.setAttribute('stroke-width', "3");
-      event.target.attributes.r.value = String(Number(event.target.attributes.r.value) + 1);
-      this.selected.push(event.target);
+  select = function (event, id) {
+    let el = this.geo[id];
+    if (this.notSaved(this.selected, id)) {
+      el.selected = 1;
+      el.strokeW = 3;
+      if (el.type == "dot" || el.type == "circle") {
+        el.r += 2;
+      }
+      this.selected.push(id);
       this.container.nativeElement.attributes.class.value = "touch";
     } else {
-      if (!this.notSaved(this.selected, event.target)) {
-        event.target.attributes.class.value = "";
-        event.target.setAttribute('stroke-width', "1");
-        event.target.attributes.r.value = String(Number(event.target.attributes.r.value) - 1);
-        this.selected.splice(this.selected.indexOf(event.target), 1);
+      if (!this.notSaved(this.selected, id)) {
+        el.selected = 0;
+        el.strokeW = 1;
+        if (el.type == "dot" || el.type == "circle") {
+          el.r -= 2;
+        }
+        this.selected.splice(this.selected.indexOf(id), 1);
         if (this.selected.length == 0) {
           this.container.nativeElement.attributes.class.value = "";
         }
@@ -981,10 +1052,10 @@ export class WorkspaceComponent implements OnInit {
   //region Init Center //
 
   ngOnInit() {
-    this.getUserInfo();
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     });
+    this.getUserInfo();
   }
 
   getUserInfo() {
@@ -1043,36 +1114,44 @@ export class WorkspaceComponent implements OnInit {
       var browser = this.brows();
 
       this.zoom(scale);
+
       interact('.svgDraggable')
         .draggable({
           autoScroll: true,
           onstart: function (event) {
-
-          },
-          onmove: dragMoveListener,
+            this.setGrid()
+          }.bind(this),
+          onmove: dragMoveListener.bind(this),
           onend: function (event) {
           }
         }).on("tap", function (event) {
           if (browser.name === "Safari") {
-            if (!notSaved(selected, event.target)) {
-              event.target.attributes.class.value = "";
-              event.target.setAttribute('stroke-width', "1");
-              event.target.attributes.r.value = String(Number(event.target.attributes.r.value) - 1);
-              selected.splice(selected.indexOf(event.target), 1);
+            let id = event.target.getAttribute("data-id");
+            let el = this.geo[id];
+            if (!notSaved(selected, id)) {
+              el.selected = 0;
+              el.strokeW = 1;
+              if (el.type == "dot" || el.type == "circle") {
+                el.r -= 2;
+              }
+              selected.splice(selected.indexOf(id), 1);
               if (selected.length == 0) {
                 container.attributes.class.value = "";
               }
             }
           }
         });
+
       interact('.drag-handler')
         .draggable({
           autoScroll: true,
-          onstart: function (event) { },
+          onstart: function (event) {
+            this.setGrid()
+          }.bind(this),
           onmove: expressionDrag.bind(this),
           onend: function (event) {
             var target = event.target;
-            this.lines[target.getAttribute('data-lineid')].x = Math.ceil((this.lines[target.getAttribute('data-lineid')].x - 10) / 20) * 20;
+            this.lines[target.getAttribute('data-lineid')].x = Math.ceil((this.lines[target.getAttribute('data-lineid')].x - 5) / 10) * 10;
             this.lines[target.getAttribute('data-lineid')].y = Math.ceil((this.lines[target.getAttribute('data-lineid')].y - 5) / 10) * 10;
             this.ref.detectChanges();
             this.onClick({
@@ -1101,19 +1180,57 @@ export class WorkspaceComponent implements OnInit {
     }
 
     function dragMoveListener(event) {
-      var target = event.target,
-        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      let id = event.target.getAttribute("data-id");
+      let el = this.geo[id];
 
       var cW = Number(container.attributes.width.value);
       var cH = Number(container.attributes.height.value);
       var cA = container.attributes.viewBox.value.split(' ');
 
-      for (var i = 0; i < selected.length; i++) {
-        selected[i].attributes.cx.value = String(Number(selected[i].attributes.cx.value) + Number(x) * (cA[2] / cW));
-        selected[i].attributes.cy.value = String(Number(selected[i].attributes.cy.value) + Number(y) * (cA[3] / cH))
+      for (var i = 0; i < this.selected.length; i++) {
+        this.geo[this.selected[i]].dx += Number(event.dx) * (cA[2] / cW);
+        this.geo[this.selected[i]].x = Math.ceil((this.geo[this.selected[i]].dx - 5) / 10) * 10;
+        this.geo[this.selected[i]].dy += Number(event.dy) * (cA[3] / cH);
+        this.geo[this.selected[i]].y = Math.ceil((this.geo[this.selected[i]].dy - 5) / 10) * 10;
       }
+      this.ref.detectChanges();
     }
+  }
+
+  setGrid() {
+    /*var container = this.container.nativeElement;
+    var cW = Number(container.attributes.width.value);
+    var cH = Number(container.attributes.height.value);
+    var cA = container.attributes.viewBox.value.split(' ');
+
+    interact('.svgDraggable').draggable({
+      snap: {
+        targets: [
+          interact.createSnapGrid({
+            x: 10 * (cW / cA[2]),
+            y: 10 / (cA[3] / cH),
+            range: Infinity
+          })
+        ]
+      }
+    });
+
+
+    interact('.drag-handler')
+      .draggable({
+        snap: {
+          targets: [
+            interact.createSnapGrid({
+              x: 10 * (cW / cA[2]),
+              y: 10 / (cA[3] / cH),
+              range: Infinity
+            })
+          ],
+          relativePoints: [{ x: 1, y: 1 }]
+        }
+      });
+    console.log(15 * (cW / cA[2]))
+    console.log(15 * (cH / cA[3]))*/
   }
 
   //endregion Init Center //
