@@ -3,9 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import * as interact from 'interactjs';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
-import { HomeworkDataService } from '../../../_services/homework-data/homework-data.service';
 import { HomeworkService } from '../../../_services/homework/homework.service';
 import { UserService } from '../../../_services/user/user.service';
 
@@ -35,8 +32,6 @@ export class WorkspaceComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private algebra: AlgebraComponent,
-    private sanitizer: DomSanitizer,
-    private data: HomeworkDataService,
     private homeData: HomeworkService,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
@@ -72,57 +67,74 @@ export class WorkspaceComponent implements OnInit {
   lines: any;
   elements: any;
 
-  geoElements: any = [5, 4, 1, 2, 3];
+  geoElements: any = {
+    dots: [1, 2, 3],
+    lines: [1],
+    circles: [5, 4]
+  };
   geo: any = {
-    1: {
-      type: "dot",
-      x: 400,
-      y: 200,
-      dx: 400,
-      dy: 200,
-      r: 2,
-      strokeW: 1,
-      selected: 0
+    dots: {
+      1: {
+        type: "dot",
+        x: 30,
+        y: 100,
+        dx: 30,
+        dy: 100,
+        r: 2,
+        strokeW: 1,
+        selected: 0
+      },
+      2: {
+        type: "dot",
+        x: 390,
+        y: 400,
+        dx: 390,
+        dy: 200,
+        r: 2,
+        strokeW: 2,
+        selected: 0
+      },
+      3: {
+        type: "dot",
+        x: 380,
+        y: 200,
+        dx: 380,
+        dy: 200,
+        r: 2,
+        strokeW: 3,
+        selected: 0
+      }
     },
-    2: {
-      type: "dot",
-      x: 390,
-      y: 200,
-      dx: 390,
-      dy: 200,
-      r: 2,
-      strokeW: 1,
-      selected: 0
+    lines: {
+      1: {
+        type: "line",
+        sDot: 1,
+        eDot: 2,
+        strokeW: 1,
+        selected: 0
+      }
     },
-    3: {
-      type: "dot",
-      x: 380,
-      y: 200,
-      dx: 380,
-      dy: 200,
-      r: 2,
-      strokeW: 1,
-      selected: 0
-    },
-    4: {
-      type: "circle",
-      x: 500,
-      y: 160,
-      dx: 500,
-      dy: 160,
-      r: 20,
-      strokeW: 1,
-      selected: 0
-    },
-    5: {
-      type: "circle",
-      x: 200,
-      y: 700,
-      dx: 200,
-      dy: 700,
-      r: 50,
-      strokeW: 1,
-      selected: 0
+    circles: {
+      4: {
+        type: "circle",
+        x: 500,
+        y: 160,
+        dx: 500,
+        dy: 160,
+        r: 20,
+        strokeW: 1,
+        selected: 0
+      },
+      5: {
+        type: "circle",
+        x: 200,
+        y: 700,
+        dx: 200,
+        dy: 700,
+        r: 50,
+        strokeW: 1,
+        selected: 0
+      }
     }
   }
 
@@ -156,7 +168,9 @@ export class WorkspaceComponent implements OnInit {
           elements: this.elements,
           lines: this.lines,
           description: this.description,
-          scale: this.scale
+          scale: this.scale,
+          geo: this.geo,
+          geoElements: this.geoElements
         },
         dataFromTeacher: {},
         columnsInfo: {}
@@ -174,6 +188,7 @@ export class WorkspaceComponent implements OnInit {
   //region Save Image //
 
   saveAsSvg() {
+    this.saveListClick();
     let tempWidth = this.container.nativeElement.attributes.width.value;
     let tempHeight = this.container.nativeElement.attributes.height.value;
     this.container.nativeElement.attributes.width.value = 1920;
@@ -329,6 +344,8 @@ export class WorkspaceComponent implements OnInit {
       id: lineLength,
       y: (this.selection.y / 10 >> 0) * 10 - 10,
       x: (this.selection.x / 20 >> 0) * 20,
+      dy: (this.selection.y / 10 >> 0) * 10 - 10,
+      dx: (this.selection.x / 20 >> 0) * 20,
       fr: {},
       ex: {
         0: {
@@ -952,8 +969,11 @@ export class WorkspaceComponent implements OnInit {
     return true;
   }
 
-  select = function (event, id) {
-    let el = this.geo[id];
+  selectedEx: any = [];
+
+  select = function (id) {
+    let el = this.geo.dots[id];
+    console.log(this.geo)
     if (this.notSaved(this.selected, id)) {
       el.selected = 1;
       el.strokeW = 3;
@@ -1072,6 +1092,7 @@ export class WorkspaceComponent implements OnInit {
           homeworkId: String(this.id)
         })
           .subscribe(result => {
+            console.log(result);
             if (result.data.elements) {
               this.elements = result.data.elements;
             } else {
@@ -1082,10 +1103,20 @@ export class WorkspaceComponent implements OnInit {
                 digits: []
               }
             }
+            if (result.data.geoElements) {
+              this.geoElements = result.data.geoElements;
+            } else {
+              //this.geoElements = [];
+            }
             if (result.data.lines) {
               this.lines = result.data.lines;
             } else {
               this.lines = [];
+            }
+            if (result.data.geo) {
+              //this.geo = result.data.geo;
+            } else {
+              //this.geo = [];
             }
 
             this.scale = 1;
@@ -1149,30 +1180,43 @@ export class WorkspaceComponent implements OnInit {
             this.setGrid()
           }.bind(this),
           onmove: expressionDrag.bind(this),
-          onend: function (event) {
-            var target = event.target;
-            this.lines[target.getAttribute('data-lineid')].x = Math.ceil((this.lines[target.getAttribute('data-lineid')].x - 5) / 10) * 10;
-            this.lines[target.getAttribute('data-lineid')].y = Math.ceil((this.lines[target.getAttribute('data-lineid')].y - 5) / 10) * 10;
-            this.ref.detectChanges();
-            this.onClick({
-              target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
-            });
-            this.ref.detectChanges();
-          }.bind(this)
-        });
+          onend: function (event) { }
+        }).on("tap", function (event) {
+
+          let id = event.target.getAttribute('data-lineid');
+          let el = this.lines[id];
+
+          if (this.notSaved(this.selectedEx, id)) {
+            this.selectedEx.push(id);
+            this.container.nativeElement.attributes.class.value = "touch";
+          } else {
+            if (!notSaved(this.selectedEx, id)) {
+              //el.selected = 0;
+
+              this.selectedEx.splice(this.selectedEx.indexOf(id), 1);
+              if (this.selectedEx.length == 0) {
+                container.attributes.class.value = "";
+              }
+            }
+          }
+        }.bind(this));
     }
 
     function expressionDrag(event) {
-      var target = event.target,
-        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      var target = event.target
 
       var cW = Number(container.attributes.width.value);
       var cH = Number(container.attributes.height.value);
       var cA = container.attributes.viewBox.value.split(' ');
 
-      this.lines[target.getAttribute('data-lineid')].x += Number(x) * (cA[2] / cW);
-      this.lines[target.getAttribute('data-lineid')].y += Number(y) * (cA[3] / cH);
+
+      for (var i = 0; i < this.selectedEx.length; i++) {
+        this.lines[this.selectedEx[i]].dx += Number(event.dx) * (cA[2] / cW);
+        this.lines[this.selectedEx[i]].x = Math.ceil((this.lines[this.selectedEx[i]].dx - 5) / 10) * 10;
+        this.lines[this.selectedEx[i]].dy += Number(event.dy) * (cA[3] / cH);
+        this.lines[this.selectedEx[i]].y = Math.ceil((this.lines[this.selectedEx[i]].dy - 5) / 10) * 10;
+      }
+
       this.onClick({
         target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
       });
