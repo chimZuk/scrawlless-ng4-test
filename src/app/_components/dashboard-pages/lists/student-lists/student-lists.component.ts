@@ -41,6 +41,32 @@ export class StudentListsComponent implements OnInit {
     week: 0
   };
 
+  schedule: any = {
+    subjects: [
+      {
+        id: 1,
+        name: "Математика",
+        days: [
+          1, 3, 5
+        ]
+      },
+      {
+        id: 2,
+        name: "Физика",
+        days: [
+          2, 4
+        ]
+      },
+      {
+        id: 3,
+        name: "Факультатив",
+        days: [
+          6
+        ]
+      }
+    ]
+  }
+
   daysOfWeek: any[] = this.languageService.daysOfWeek;
 
 
@@ -79,8 +105,8 @@ export class StudentListsComponent implements OnInit {
 
         //--------------Semesters implementation
 
-        var startD = new Date("2018-08-10");
-        var endD = new Date("2018-09-06");
+        var startD = new Date("2018-09-01");
+        var endD = new Date("2018-12-25");
 
         console.log(startD < endD);
 
@@ -92,29 +118,15 @@ export class StudentListsComponent implements OnInit {
             {
               id: 0,
               name: "Первая четверть",
-              startDate: new Date("2018-08-10"),
-              endDate: new Date("2018-08-16"),
+              startDate: new Date("2018-09-01"),
+              endDate: new Date("2018-11-04"),
               studyWeeks: []
             },
             {
               id: 1,
               name: "Вторая четверть",
-              startDate: new Date("2018-08-17"),
-              endDate: new Date("2018-08-23"),
-              studyWeeks: []
-            },
-            {
-              id: 2,
-              name: "Третья четверть",
-              startDate: new Date("2018-08-24"),
-              endDate: new Date("2018-08-30"),
-              studyWeeks: []
-            },
-            {
-              id: 3,
-              name: "Четвёртая четверть",
-              startDate: new Date("2018-08-31"),
-              endDate: new Date("2018-09-06"),
+              startDate: new Date("2018-11-05"),
+              endDate: new Date("2018-12-25"),
               studyWeeks: []
             }
           ]
@@ -122,11 +134,13 @@ export class StudentListsComponent implements OnInit {
         }
 
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < this.studyYear.semesters.length; i++) {
           var d = new Date(this.studyYear.semesters[i].startDate);
           var week = {
-            startDate: "",
-            endDate: "",
+            startDate: new Date(),
+            endDate: new Date(),
+            startDateName: "",
+            endDateName: "",
             days: []
           };
           var ifWeek = true;
@@ -138,47 +152,89 @@ export class StudentListsComponent implements OnInit {
 
             if (cDay > 0) {
               if (cDay == 1 || (cDay != 1 && ifWeek)) {
-                week.startDate = this.daysOfWeek[this.lang][cDate.getDay()] + " " + cDate.getDate();
+                week.startDateName = this.daysOfWeek[this.lang][cDate.getDay()] + " " + cDate.getDate();
+                week.startDate = cDate;
 
-                var lists = [];
-                for (let j = 0; j < this.homeworks.length; j++) {
-                  var hDate = new Date(this.homeworks[j].date);
-                  if (hDate.getTime() === cDate.getTime()) {
-                    lists.push(this.homeworks[j]);
+                var classes = [];
+
+                for (var j = 0; j < this.schedule.subjects.length; j++) {
+                  for (var jj = 0; jj < this.schedule.subjects[j].days.length; jj++) {
+                    if (cDate.getDay() == this.schedule.subjects[j].days[jj]) {
+
+                      var lists = [];
+                      for (let jjj = 0; jjj < this.homeworks.length; jjj++) {
+                        var hDate = new Date(this.homeworks[jjj].date);
+                        if (hDate.getTime() === cDate.getTime()) {
+                          if (this.homeworks[jjj].subjectId == this.schedule.subjects[j].id) {
+                            lists.push(this.homeworks[jjj]);
+                          }
+                        }
+                      }
+
+                      classes.push({
+                        name: this.schedule.subjects[j].name,
+                        lists: lists
+                      })
+                    }
                   }
                 }
 
                 week.days.push({
                   date: cDate,
-                  day: this.daysOfWeek[this.lang][cDate.getDay()],
-                  lists: lists
+                  day: this.daysOfWeek[this.lang][cDate.getDay()] + ", " + cDate.getDate(),
+                  lists: lists,
+                  classes: classes
                 });
-                week.endDate = this.daysOfWeek[this.lang][cDate.getDay()] + " " + cDate.getDate();
+                week.endDateName = this.daysOfWeek[this.lang][cDate.getDay()] + " " + cDate.getDate();
+                week.endDate = cDate;
                 ifWeek = false;
               } else {
                 if (cDay != 1 && !ifWeek) {
 
-                  var lists = [];
-                  for (let j = 0; j < this.homeworks.length; j++) {
-                    var hDate = new Date(this.homeworks[j].date);
-                    if (hDate.getTime() === cDate.getTime()) {
-                      lists.push(this.homeworks[j]);
+
+                  var classes = [];
+
+                  for (var j = 0; j < this.schedule.subjects.length; j++) {
+                    for (var jj = 0; jj < this.schedule.subjects[j].days.length; jj++) {
+                      if (cDate.getDay() == this.schedule.subjects[j].days[jj]) {
+
+                        var lists = [];
+                        for (let jjj = 0; jjj < this.homeworks.length; jjj++) {
+                          var hDate = new Date(this.homeworks[jjj].date);
+                          if (hDate.getTime() === cDate.getTime()) {
+                            if (this.homeworks[jjj].subjectId == this.schedule.subjects[j].id) {
+                              lists.push(this.homeworks[jjj]);
+                            }
+                          }
+                        }
+
+                        classes.push({
+                          name: this.schedule.subjects[j].name,
+                          lists: lists
+                        })
+                      }
                     }
                   }
 
+
+
                   week.days.push({
                     date: cDate,
-                    day: this.daysOfWeek[this.lang][cDate.getDay()],
-                    lists: lists
+                    day: this.daysOfWeek[this.lang][cDate.getDay()] + ", " + cDate.getDate(),
+                    lists: lists,
+                    classes: classes
                   });
-                  week.endDate = this.daysOfWeek[this.lang][cDate.getDay()] + " " + cDate.getDate();
+                  week.endDateName = this.daysOfWeek[this.lang][cDate.getDay()] + " " + cDate.getDate();
+                  week.endDate = cDate;
                 }
               }
             } else {
               this.studyYear.semesters[i].studyWeeks.push(week);
               week = {
-                startDate: "",
-                endDate: "",
+                startDate: new Date(),
+                endDate: new Date(),
+                startDateName: "",
+                endDateName: "",
                 days: []
               };
               ifWeek = true;
@@ -188,8 +244,10 @@ export class StudentListsComponent implements OnInit {
           if (!ifWeek) {
             this.studyYear.semesters[i].studyWeeks.push(week);
             week = {
-              startDate: "",
-              endDate: "",
+              startDate: new Date(),
+              endDate: new Date(),
+              startDateName: "",
+              endDateName: "",
               days: []
             };
             ifWeek = true;
@@ -197,10 +255,29 @@ export class StudentListsComponent implements OnInit {
 
         }
 
+        console.log(JSON.stringify(this.studyYear));
 
-        console.log(this.studyYear);
+        var currentDate = new Date();
+        console.log(currentDate);
+        if (currentDate <= this.studyYear.endDate && currentDate >= this.studyYear.startDate) {
+          for (var i = 0; i < this.studyYear.semesters.length; i++) {
+            if (currentDate <= this.studyYear.semesters[i].endDate && currentDate >= this.studyYear.semesters[i].startDate) {
+              this.currentWeek.semester = i;
+              for (var j = 0; j < this.studyYear.semesters[i].studyWeeks.length; j++) {
+                if (currentDate <= this.studyYear.semesters[i].studyWeeks[j].endDate && currentDate >= this.studyYear.semesters[i].studyWeeks[j].startDate) {
+                  this.currentWeek.week = j;
+                  break;
+                }
+              }
+            } else {
+              console.log("semKek")
+            }
+          }
+        } else {
+          console.log("kek");
+        }
 
-
+        console.log(this.currentWeek);
         //-----------End of Semesters implementation
 
       });

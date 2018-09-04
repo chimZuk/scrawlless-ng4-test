@@ -45,6 +45,8 @@ export class CreateListComponent implements OnInit {
     }
   }
 
+  startDate = new Date();
+
   currentDate: any;
 
   loading: boolean = false;

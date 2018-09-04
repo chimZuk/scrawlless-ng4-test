@@ -10,6 +10,7 @@ import { SharedModule } from '../../../../_modules/shared/shared.module'
 import { CreateListComponent } from '../../../dialogs/dashboard-dialogs/create-list/create-list.component';
 
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     StudentListsRouter,
     SharedModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatPaginatorModule
   ],
   declarations: [
     StudentListsComponent,

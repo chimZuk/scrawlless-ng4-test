@@ -47,9 +47,9 @@
   justify-content: center !important; }
 
 /* End of button reset */
-/* Begining of input reset */
+/* Begining of input reset 
 /deep/ .mat-form-field {
-  width: 100% !important; }
+  width: 100% !important; }*/
 
 /* End of input reset */
 /* Begining of menu reset */
