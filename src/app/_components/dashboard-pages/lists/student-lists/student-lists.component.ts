@@ -255,7 +255,7 @@ export class StudentListsComponent implements OnInit {
 
         }
 
-        console.log(JSON.stringify(this.studyYear));
+        console.log(this.studyYear);
 
         var currentDate = new Date();
         console.log(currentDate);
