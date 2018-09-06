@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 import { HomeworkService } from '../../../../_services/homework/homework.service';
 import { LanguageService } from '../../../../_services/language/language.service';
@@ -12,12 +13,15 @@ export class CreateListComponent implements OnInit {
 
   constructor(
     private homeworkService: HomeworkService,
-    private LanguageService: LanguageService
+    private LanguageService: LanguageService,
+    @Inject(MAT_DIALOG_DATA) public HWData: any
   ) { }
 
   terms: any = [];
   language: any = this.LanguageService.language;
   lang: number = this.LanguageService.lang;
+
+  disabledClass: any = false;
 
   subjects: any = [
     {
@@ -62,11 +66,16 @@ export class CreateListComponent implements OnInit {
   }
 
   ngOnInit() {
-    var currentDate = new Date();
-    /*var month = currentDate.getMonth() + 1;
-    var day = currentDate.getDate();
-    var year = currentDate.getFullYear();*/
-    this.data.info.date = currentDate;
+    console.log(this.HWData)
+    if (this.HWData) {
+      this.data.info.date = new Date(this.HWData.date);
+      this.data.info.subjectId = String(this.HWData.subjectID);
+      this.disabledClass = true;
+    } else {
+      var currentDate = new Date();
+      this.data.info.date = currentDate;
+      this.disabledClass = false;
+    }
   }
 
 }

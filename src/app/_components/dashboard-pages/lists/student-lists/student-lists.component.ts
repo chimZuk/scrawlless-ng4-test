@@ -47,7 +47,7 @@ export class StudentListsComponent implements OnInit {
         id: 1,
         name: "Математика",
         days: [
-          1, 3, 5
+          1, 2, 3, 5
         ]
       },
       {
@@ -70,8 +70,18 @@ export class StudentListsComponent implements OnInit {
   daysOfWeek: any[] = this.languageService.daysOfWeek;
 
 
-  openDialog() {
-    let dialogRef = this.dialog.open(CreateListComponent);
+  openDialog(subjID, date) {
+    var data: any = false;
+    if (subjID != 0 && date != 0) {
+      data = {
+        subjectID: subjID,
+        date: date
+      }
+    }
+
+    let dialogRef = this.dialog.open(CreateListComponent, {
+      data: data
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.loading = true;
       this.hwRead();
@@ -172,6 +182,7 @@ export class StudentListsComponent implements OnInit {
                       }
 
                       classes.push({
+                        id: this.schedule.subjects[j].id,
                         name: this.schedule.subjects[j].name,
                         lists: lists
                       })
@@ -209,6 +220,7 @@ export class StudentListsComponent implements OnInit {
                         }
 
                         classes.push({
+                          id: this.schedule.subjects[j].id,
                           name: this.schedule.subjects[j].name,
                           lists: lists
                         })
@@ -321,8 +333,9 @@ export class StudentListsComponent implements OnInit {
   }
 
 
-  listCreate() {
-    this.openDialog();
+  listCreate(subjID, date) {
+    console.log(arguments);
+    this.openDialog(subjID, date);
   }
 
 }

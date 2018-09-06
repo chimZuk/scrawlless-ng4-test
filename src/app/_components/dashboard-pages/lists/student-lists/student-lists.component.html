@@ -77,7 +77,7 @@
                                             </div>
                                         </mat-card>
 
-                                        <mat-card class="addNewButton homework-card" style="align-items: center; justify-content: center;">
+                                        <mat-card (click)="listCreate(subj.id, day.date)" class="addNewButton homework-card" style="align-items: center; justify-content: center;">
                                             <mat-icon color="accent" style="font-size: 60px; height: auto; width: auto;">add_box</mat-icon>
                                         </mat-card>
                                     </div>
@@ -144,7 +144,7 @@
                         </div>
                     </div>-->
                 </div>
-                <button (click)="listCreate()" class="hwCreate" [matTooltip]="language[lang].newList" matTooltipPosition="left" mat-fab>
+                <button (click)="listCreate(0, 0)" class="hwCreate" [matTooltip]="language[lang].newList" matTooltipPosition="left" mat-fab>
                     <mat-icon>note_add</mat-icon>
                 </button>
                 <div *ngIf="loading" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">

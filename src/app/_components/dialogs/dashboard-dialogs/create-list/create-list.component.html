@@ -1,14 +1,14 @@
 <div>
     <form>
         <input name="name" [placeholder]="language[lang].description" [(ngModel)]="data.info.data.description">
-        <select name="subject" size="1" [(ngModel)]="data.info.subjectId">
+        <select name="subject" size="1" [(ngModel)]="data.info.subjectId" [disabled]="disabledClass">
             <option *ngFor="let item of subjects" [value]="item.value">
                 {{ item.name }}
             </option>
         </select>
         <mat-form-field>
             <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>            
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
         </mat-form-field>
     </form>
