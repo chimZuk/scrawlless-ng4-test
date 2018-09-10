@@ -333,6 +333,8 @@ export class WorkspaceComponent implements OnInit {
         break;
       }
     }
+    console.log(JSON.stringify(this.elements));
+    console.log(JSON.stringify(this.lines));
     this.ref.detectChanges();
   }
 
@@ -1093,7 +1095,121 @@ export class WorkspaceComponent implements OnInit {
         })
           .subscribe(result => {
             console.log(result);
-            if (result.data.elements) {
+
+            this.elements = {
+              lines: [0],
+              fractions: [1],
+              powers: [1],
+              expressions: [1, 2, 3],
+              digits: [0, 1]
+            };
+            this.lines = [
+              {
+                id: 0,
+                y: 220,
+                x: 220,
+                dy: 220,
+                dx: 220,
+                fr: {
+                  1: {
+                    pe: 1,
+                    ch: 2,
+                    zn: 3,
+                    isActive: 1
+                  }
+                },
+                pw: {
+                  1: {
+                    pe: 1,
+                    ch: 2,
+                    zn: 3,
+                    isActive: 1
+                  }
+                },
+                ex: {
+                  0: {
+                    line: 0,
+                    pe: 0,
+                    pd: 0,
+                    fr: 0,
+                    pw: 0,
+                    ch: 1,
+                    zn: 0,
+                    osn: 0,
+                    ce: [
+                      1
+                    ],
+                    cd: [
+
+                    ]
+                  },
+                  1: {
+                    line: 0,
+                    pe: 0,
+                    pd: 0,
+                    fr: 0,
+                    pw: 0,
+                    ch: 0,
+                    zn: 0,
+                    osn: 1,
+                    ce: [
+                      2,
+                      3
+                    ],
+                    cd: [
+                      0
+                    ]
+                  },
+                  2: {
+                    line: 0,
+                    pe: 1,
+                    pd: 0,
+                    fr: 0,
+                    pw: 1,
+                    ch: 1,
+                    zn: 0,
+                    osn: 0,
+                    ce: [
+
+                    ],
+                    cd: [
+
+                    ]
+                  },
+                  3: {
+                    line: 0,
+                    pe: 1,
+                    pd: 0,
+                    fr: 0,
+                    pw: 1,
+                    ch: 0,
+                    zn: 1,
+                    osn: 0,
+                    ce: [
+
+                    ],
+                    cd: [
+
+                    ]
+                  }
+                },
+                di: {
+                  0: {
+                    id: 0,
+                    line: 0,
+                    pe: 1,
+                    s: 1,
+                    pos: 1,
+                    value: "",
+                    text: "",
+                    type: "power",
+                    pw: 1
+                  }
+                }
+              }
+            ]
+
+            /*if (result.data.elements) {
               this.elements = result.data.elements;
             } else {
               this.elements = {
@@ -1117,7 +1233,7 @@ export class WorkspaceComponent implements OnInit {
               //this.geo = result.data.geo;
             } else {
               //this.geo = [];
-            }
+            }*/
 
             this.scale = 1;
 

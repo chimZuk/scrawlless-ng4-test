@@ -17,6 +17,7 @@ export class AlgebraComponent {
   ex: any;
   di: any;
   fr: any;
+  pw: any;
 
   expressionHTML: any;
 
@@ -25,44 +26,6 @@ export class AlgebraComponent {
 
   }
 
-
-
-
-
-
-
-  private makeRoot(x, y, width, height, powerWidth) {
-    let yDiff = 4.5 + 10;
-    let xDiff = 3.5;
-
-    let finalHeight = ((height / 2) - 1) * 20;
-    let finalWidth = (width - 1) * 20;
-    let finalPowerWidth = (powerWidth - 1) * 20;
-
-    let r1 = '<line class="st0" x1="' + (x + (1000 * 0.02) - xDiff) + '" y1="' + (y + (50 * 0.02) - yDiff) + '" x2="' + (x + (1000 * 0.02) - xDiff) + '" y2="' + (y + finalHeight + (1300 * 0.02) - yDiff) + '"/>';
-    let r2 = '<line class="st0" x1="' + (x + (1000 * 0.02) - xDiff) + '" y1="' + (y + (50 * 0.02) - yDiff) + '" x2="' + (x + finalWidth + (2350 * 0.02) - xDiff) + '" y2="' + (y + (50 * 0.02) - yDiff) + '"/>';
-    let r3 = '<line class="st0" x1="' + (x + (100 * 0.02) - xDiff) + '" y1="' + (y + finalHeight + (800 * 0.02) - yDiff) + '" x2="' + (x + (850 * 0.02) - xDiff) + '" y2="' + (y + finalHeight + (800 * 0.02) - yDiff) + '"/>';
-    let r4 = '<line class="st0" x1="' + (x + (1000 * 0.02) - xDiff) + '" y1="' + (y + finalHeight + (1300 * 0.02) - yDiff) + '" x2="' + (x + (850 * 0.02) - xDiff) + '" y2="' + (y + finalHeight + (800 * 0.02) - yDiff) + '"/>';
-    let r5 = '<line class="st0" x1="' + (x + finalWidth + (2350 * 0.02) - xDiff) + '" y1="' + (y + (300 * 0.02) - yDiff) + '" x2="' + (x + finalWidth + (2350 * 0.02) - xDiff) + '" y2="' + (y + (50 * 0.02) - yDiff) + '"/>';
-    return r1 + r2 + r3 + r4 + r5;
-  }
-
-  private makePower(width, height, powerWidth, base, power) {
-    let yDiff = 4.5 + 10;
-    let xDiff = 3.5;
-
-    let finalHeight = ((height / 2) - 1) * 20;
-    let finalWidth = (width - 1) * 20;
-    let finalPowerWidth = (powerWidth - 1) * 10;
-
-
-    let Power = '<text transform="matrix(1 0 0 1 ' + 663.9404 * 0.02 + ' ' + (425.9985 * 0.02 - 5) + ')" class="st1 st2">' + power + '</text>';
-    let Base = '<text transform="matrix(1 0 0 1 1 ' + (1093.9971 * 0.02 - 5) + ')" class="st1 st4">' + base + '</text>';
-
-    let PowerSelection = '<rect x="' + (625 * 0.02 + finalWidth) + '" y = "' + (-5) + '" class="st3" width="' + (375 * 0.02 + finalPowerWidth) + '" height="' + 500 * 0.02 + '"/>';
-    let BaseSelection = '<rect x="0" class="st3" y = "' + (-5) + '" width="' + (1001 * 0.02 + finalWidth + finalPowerWidth) + '" height="' + (1250 * 0.02 + finalHeight) + '"/>';
-    return BaseSelection + Base + PowerSelection + Power;
-  }
 
   private expression(ex, id) {
     let height = 2;
@@ -77,7 +40,7 @@ export class AlgebraComponent {
       expr[this.di[ex.cd[i]].pos] = this.di[ex.cd[i]];
       //console.log(ex.cd);
       switch (this.di[ex.cd[i]].type) {
-        case "fraction":
+        case "fraction": {
           let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].zn], this.fr[this.di[ex.cd[i]].fr].zn);
           let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].ch], this.fr[this.di[ex.cd[i]].fr].ch);
 
@@ -106,6 +69,29 @@ export class AlgebraComponent {
           height = 2 + top + bottom;
 
           break;
+        }
+        case "power": {
+          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].zn], this.pw[this.di[ex.cd[i]].pw].zn);
+          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].ch], this.pw[this.di[ex.cd[i]].pw].ch);
+
+
+          let transformX = (zn.width) * 20;
+          //let transformY = ch.height * 10;
+          console.log(zn)
+          expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + transformX + '" data-transformY="' + 0 + '" transform="translate(' + transformX + ',0)">' + ch.html + '</g>';
+          expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + 10 + '" transform="translate(0,' + 10 + ')">' + zn.html + '</g>';
+
+
+          if (top < ch.height - 1) {
+            top = ch.height - 1;
+          }
+          /*if (bottom < zn.height - 1) {
+            bottom = zn.height - 1;
+          }*/
+          height = top + zn.height;
+
+          break;
+        }
         case "digit":
           if (height < 2) {
             height += 2;
@@ -123,7 +109,7 @@ export class AlgebraComponent {
     }
     for (let i = 1; i <= ex.cd.length; i++) {
       switch (expr[i].type) {
-        case "fraction":
+        case "fraction": {
           let line;
 
           if (expr[i].chi.width >= expr[i].zni.width) {
@@ -140,6 +126,13 @@ export class AlgebraComponent {
             width += expr[i].chi.width + 1;
           }
           break;
+        }
+        case "power": {
+          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
+
+          width += expr[i].zni.width + expr[i].chi.width + 1;
+          break;
+        }
         case "digit":
           html += '<text x="' + (width * 20 + expr[i].s * 3) + '" class="textForSave" y = "' + (top * 10 + 17) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
           html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * 3) + '" class="element regularText" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "0">' + expr[i].text + '</text>';
@@ -165,6 +158,7 @@ export class AlgebraComponent {
     this.ex = this.line.ex;
     this.di = this.line.di;
     this.fr = this.line.fr;
+    this.pw = this.line.pw;
     let dragHandler = `<g transform="translate(-20, -20)" class="drag-handler" data-lineID="` + this.line.id + `"><path data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="handler" d="M20,12.5c0,2,0,7.5,0,7.5s-5.4,0-7.5,0C8.4,20,5,16.6,5,12.5S8.4,5,12.5,5S20,8.4,20,12.5z"/>
     <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="12.5" y1="7.5" x2="12.5" y2="17.5"/>
     <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="7.5" y1="12.5" x2="17.5" y2="12.5"/>

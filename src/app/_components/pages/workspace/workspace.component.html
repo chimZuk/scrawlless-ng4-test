@@ -17,8 +17,10 @@
         <svg:rect #list id="list" (click)="setCursor($event, 'canvas', 0);" id="list" width="100%" height="100%" [attr.fill]="'url(' + absUrl + '#smallGrid)'"
         />
 
-        <text class="textForSave" x="120" y="-570" transform="rotate(90,150,50)" font-size="22" font-family="Comic Sans MS">{{ description }}</text>
-        <text class="textForSave" x="120" y="-550" transform="rotate(90,150,50)" font-size="16" font-family="Comic Sans MS">{{ user.firstName }} {{ user.lastName }}</text>
+        <text class="textForSave" x="120" y="-570" transform="rotate(90,150,50)" font-size="22" font-family="Comic Sans MS">{{
+            description }}</text>
+        <text class="textForSave" x="120" y="-550" transform="rotate(90,150,50)" font-size="16" font-family="Comic Sans MS">{{
+            user.firstName }} {{ user.lastName }}</text>
         <line x1="0" y1="0" x2="800" y2="0" stroke="#69b0b7" stroke-width="2" />
         <line x1="0" y1="0" x2="0" y2="1131" stroke="#69b0b7" stroke-width="2" />
         <line x1="800" y1="1131" x2="0" y2="1131" stroke="#69b0b7" stroke-width="2" />
@@ -31,7 +33,7 @@
             <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
         </svg:g>
 
-        <svg:g *ngFor="let el of geoElements.lines; let i = index;">
+        <!--<svg:g *ngFor="let el of geoElements.lines; let i = index;">
             <line [attr.x1]="geo.dots[geo.lines[el].sDot].x" [attr.y1]="geo.dots[geo.lines[el].sDot].y" [attr.x2]="geo.dots[geo.lines[el].eDot].x"
                 [attr.y2]="geo.dots[geo.lines[el].eDot].y" stroke="black" />
         </svg:g>
@@ -46,7 +48,7 @@
             <circle [attr.data-id]="el" [ngClass]="{ 'svgDraggable touch' : geo.circles[el].selected }" (click)="select($event, el)"
                 *ngIf="geo.circles[el].type == 'circle'" [attr.cx]="geo.circles[el].x" [attr.cy]="geo.circles[el].y" [attr.r]="geo.circles[el].r"
                 [attr.stroke-width]="geo.circles[el].strokeW" stroke="black" fill="gray"></circle>
-        </svg:g>
+        </svg:g>-->
 
         <!--<svg:g *ngFor="let circle of geoElements.circles; let i = index;">
             <circle [attr.cx]="geo.circles[circle].x" [attr.cy]="geo.circles[circle].y" [attr.r]="geo.circles[circle].r" stroke="black" fill="gray"></circle>

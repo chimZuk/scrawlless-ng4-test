@@ -47,21 +47,21 @@ export class StudentListsComponent implements OnInit {
         id: 1,
         name: "Математика",
         days: [
-          1, 2, 3, 5
+          1, 2, 3, 4, 5
         ]
       },
       {
         id: 2,
         name: "Физика",
         days: [
-          2, 4
+
         ]
       },
       {
         id: 3,
         name: "Факультатив",
         days: [
-          6
+
         ]
       }
     ]
@@ -117,8 +117,6 @@ export class StudentListsComponent implements OnInit {
 
         var startD = new Date("2018-09-01");
         var endD = new Date("2018-12-25");
-
-        console.log(startD < endD);
 
         this.studyYear = {
           name: "Летняя сессия",
@@ -270,9 +268,12 @@ export class StudentListsComponent implements OnInit {
         console.log(this.studyYear);
 
         var currentDate = new Date();
-        console.log(currentDate);
+        if (currentDate.getDay() == 0) {
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
         if (currentDate <= this.studyYear.endDate && currentDate >= this.studyYear.startDate) {
           for (var i = 0; i < this.studyYear.semesters.length; i++) {
+            console.log(this.studyYear.semesters[i].endDate)
             if (currentDate <= this.studyYear.semesters[i].endDate && currentDate >= this.studyYear.semesters[i].startDate) {
               this.currentWeek.semester = i;
               for (var j = 0; j < this.studyYear.semesters[i].studyWeeks.length; j++) {
@@ -281,12 +282,11 @@ export class StudentListsComponent implements OnInit {
                   break;
                 }
               }
+              break;
             } else {
-              console.log("semKek")
             }
           }
         } else {
-          console.log("kek");
         }
 
         console.log(this.currentWeek);
