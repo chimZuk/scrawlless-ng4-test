@@ -191,6 +191,10 @@
   bottom: 2vw;
   right: 20vw; }
 
+#advOperators {
+  bottom: 14.5vw;
+  right: 20vw; }
+
 .tools {
   left: 1vw;
   top: 15vw;
@@ -201,7 +205,7 @@
   background-color: #fff;
   color: #ed7e28; }
 
-.tools button, #operators button {
+.tools button, #operators button, #advOperators button {
   margin: 0.1vw;
   transition: all 0.5s;
   padding: 0.4vw 0 !important;
@@ -266,5 +270,8 @@ circle {
 /deep/ .regularText {
   font-size: 16px !important;
   font-family: scwlsWorkspace !important; }
+
+/deep/ .powerCH .regularText {
+  font-size: 13px !important; }
 
 /*# sourceMappingURL=workspace.component.css.map */

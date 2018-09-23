@@ -211,6 +211,19 @@
         </button>
     </mat-card>
 
+    <mat-card #advOperators id="advOperators" class="ui keyboard" *ngIf="mode === 'math'">
+        <div class="flex-column">
+            <div class="flex-row">
+                <button mat-raised-button (click)="write('+', 'op');">
+                    <span class="i-font i-plus"></span>
+                </button>
+                <button mat-raised-button (click)="write('-', 'op');">
+                    <span class="i-font i-minus"></span>
+                </button>
+            </div>
+        </div>        
+    </mat-card>
+
     <mat-card class="ui tools">
         <button mat-raised-button color="accent" [class.selectedTool]="mode == 'remove'" (click)="switchMode('remove')">
             <mat-icon>remove_circle_outline</mat-icon>

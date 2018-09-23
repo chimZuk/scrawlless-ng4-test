@@ -48,6 +48,8 @@ export class WorkspaceComponent implements OnInit {
   vh: any;
   scale: number;
 
+  hwDate: any;
+
   sheetDrag: any;
   sheetDragEnabled = true;
   selected: any = [];
@@ -162,7 +164,7 @@ export class WorkspaceComponent implements OnInit {
       homeworkId: String(this.id),
       info: {
         homeworkType: "HW",
-        date: "1/12/2019",
+        date: this.hwDate,
         subjectId: String(1),
         data: {
           elements: this.elements,
@@ -1011,7 +1013,7 @@ export class WorkspaceComponent implements OnInit {
           let x = this.algebra.elX(ev.target);
           let y = this.algebra.elY(ev.target);
           let cs = Number(ev.target.getAttribute("data-cs"));
-          this.selection.x = x + cs * 20 + 6;
+          this.selection.x = x + cs * 20 + 2;
           this.selection.y = y + top * 10 + 16.8;
           this.selection.line = line;
           this.selection.ex = ex;
@@ -1173,7 +1175,7 @@ export class WorkspaceComponent implements OnInit {
 
                     ],
                     cd: [
-
+                      2
                     ]
                   },
                   3: {
@@ -1189,7 +1191,7 @@ export class WorkspaceComponent implements OnInit {
 
                     ],
                     cd: [
-
+                      1
                     ]
                   }
                 },
@@ -1204,43 +1206,63 @@ export class WorkspaceComponent implements OnInit {
                     text: "",
                     type: "power",
                     pw: 1
+                  },
+                  1: {
+                    id: 1,
+                    line: 0,
+                    pe: 3,
+                    s: 1,
+                    pos: 1,
+                    value: 4,
+                    text: "&#xe903;",
+                    type: "digit"
+                  },
+                  2: {
+                    id: 2,
+                    line: 0,
+                    pe: 2,
+                    s: 1,
+                    pos: 1,
+                    value: 1,
+                    text: "&#xe900;",
+                    type: "digit"
                   }
                 }
               }
             ]
 
-            /*if (result.data.elements) {
-              this.elements = result.data.elements;
-            } else {
-              this.elements = {
-                lines: [],
-                fractions: [],
-                expressions: [],
-                digits: []
-              }
-            }
-            if (result.data.geoElements) {
-              this.geoElements = result.data.geoElements;
-            } else {
-              //this.geoElements = [];
-            }
-            if (result.data.lines) {
-              this.lines = result.data.lines;
-            } else {
-              this.lines = [];
-            }
-            if (result.data.geo) {
-              //this.geo = result.data.geo;
-            } else {
-              //this.geo = [];
-            }*/
-
+            /* if (result.data.elements) {
+               this.elements = result.data.elements;
+             } else {
+               this.elements = {
+                 lines: [],
+                 fractions: [],
+                 expressions: [],
+                 digits: []
+               }
+             }
+             if (result.data.geoElements) {
+               this.geoElements = result.data.geoElements;
+             } else {
+               //this.geoElements = [];
+             }
+             if (result.data.lines) {
+               this.lines = result.data.lines;
+             } else {
+               this.lines = [];
+             }
+             if (result.data.geo) {
+               //this.geo = result.data.geo;
+             } else {
+               //this.geo = [];
+             }
+ */
             this.scale = 1;
 
             this.description = result.data.description;
             this.vw = window.innerWidth;
             this.vh = window.innerHeight;
-
+            this.hwDate = result.date;
             this.loading = false;
             this.ref.detectChanges();
 

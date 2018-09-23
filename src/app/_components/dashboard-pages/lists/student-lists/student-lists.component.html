@@ -10,7 +10,6 @@
             </div>
             <div class="tab-content">
                 <div *ngIf="!loading">
-
                     <div class="days" style="margin-top: 10px;">
                         <div *ngFor="let day of studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].days" style="margin-top: 20px;">
                             <p>{{day.day}}</p>
@@ -48,7 +47,7 @@
                                             </div>
                                         </mat-card>
 
-                                        <mat-card (click)="listCreate(subj.id, day.date)" class="addNewButton homework-card" style="align-items: center; justify-content: center;">
+                                        <mat-card (click)="listCreate(1, day.date)" class="addNewButton homework-card" style="align-items: center; justify-content: center;">
                                             <mat-icon color="accent" style="font-size: 60px; height: auto; width: auto;">add_box</mat-icon>
                                         </mat-card>
                                     </div>

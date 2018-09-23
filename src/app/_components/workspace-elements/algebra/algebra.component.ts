@@ -27,7 +27,7 @@ export class AlgebraComponent {
   }
 
 
-  private expression(ex, id) {
+  private expression(ex, id, depth) {
     let height = 2;
     let width = 0;
     let top = 0;
@@ -41,8 +41,8 @@ export class AlgebraComponent {
       //console.log(ex.cd);
       switch (this.di[ex.cd[i]].type) {
         case "fraction": {
-          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].zn], this.fr[this.di[ex.cd[i]].fr].zn);
-          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].ch], this.fr[this.di[ex.cd[i]].fr].ch);
+          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].zn], this.fr[this.di[ex.cd[i]].fr].zn, depth);
+          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].ch], this.fr[this.di[ex.cd[i]].fr].ch, depth);
 
 
           if (ch.width >= zn.width) {
@@ -71,24 +71,23 @@ export class AlgebraComponent {
           break;
         }
         case "power": {
-          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].zn], this.pw[this.di[ex.cd[i]].pw].zn);
-          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].ch], this.pw[this.di[ex.cd[i]].pw].ch);
+          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].zn], this.pw[this.di[ex.cd[i]].pw].zn, depth);
+          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].ch], this.pw[this.di[ex.cd[i]].pw].ch, depth + 6);
 
 
           let transformX = (zn.width) * 20;
-          //let transformY = ch.height * 10;
-          console.log(zn)
-          expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + transformX + '" data-transformY="' + 0 + '" transform="translate(' + transformX + ',0)">' + ch.html + '</g>';
-          expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + 10 + '" transform="translate(0,' + 10 + ')">' + zn.html + '</g>';
+          let transformY = (ch.height - 1) * 10;
+          expr[this.di[ex.cd[i]].pos].chtml = '<g class="powerCH" data-transformX="' + transformX + '" data-transformY="' + -10 + '" transform="translate(' + transformX + ', -10)"><path fill="transparent" stroke-width="1" stroke-linecap="round" stroke-dasharray="2,2" stroke="black" d="M' + 0 + ' ' + ((ch.height - 2) * 10 + 5) + ' L' + 0 + ' ' + ((ch.height - 2) * 10 + 20) + ' L' + 15 + ' ' + ((ch.height - 2) * 10 + 20) + '" />' + ch.html + '</g>';
+          expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(0,' + transformY + ')">' + zn.html + '</g>';
 
 
           if (top < ch.height - 1) {
-            top = ch.height - 1;
+            top = ch.height;
           }
           /*if (bottom < zn.height - 1) {
             bottom = zn.height - 1;
           }*/
-          height = top + zn.height;
+          height = ch.height + zn.height;
 
           break;
         }
@@ -113,9 +112,9 @@ export class AlgebraComponent {
           let line;
 
           if (expr[i].chi.width >= expr[i].zni.width) {
-            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].chi.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].chi.width + 1) * 20 + 1 - 10) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
           } else {
-            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].zni.width + 1) * 20 + 1) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].zni.width + 1) * 20 + 1 - 10) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
           }
 
           html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + line + '</g>';
@@ -129,18 +128,31 @@ export class AlgebraComponent {
         }
         case "power": {
           html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
-
-          width += expr[i].zni.width + expr[i].chi.width + 1;
+          width += expr[i].zni.width + expr[i].chi.width;
           break;
         }
         case "digit":
+          var fontSize = 16;
+          var widthConst = 20;
+          if (depth > 0) {
+            fontSize = (10 + (3 / depth));
+            console.log(fontSize);
+            console.log(depth);
+            //widthConst = (20 - (depth * 2) / d);
+          }
           html += '<text x="' + (width * 20 + expr[i].s * 3) + '" class="textForSave" y = "' + (top * 10 + 17) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
-          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * 3) + '" class="element regularText" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "0">' + expr[i].text + '</text>';
+          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * 3) + '" class="element regularText" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "0"  style="font-size: ' + fontSize + 'px !important;">' + expr[i].text + '</text>';
           width += expr[i].s;
           break;
         case "operator":
+          var fontSize = 16;
+          var widthConst = 20;
+          if (depth > 0) {
+            fontSize = (16 - (3 / depth));
+            //widthConst = (20 - (depth * 2) / d);
+          }
           html += '<text x="' + (width * 20 + expr[i].s * 2) + '" class="textForSave" y = "' + (top * 10 + 17.5) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
-          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * 2) + '" class="element regularText" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "0">' + expr[i].text + '</text>';
+          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * 2) + '" class="element regularText" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "0" style="font-size: ' + fontSize + 'px !important;">' + expr[i].text + '</text>';
           width += expr[i].s;
           break;
 
@@ -149,7 +161,7 @@ export class AlgebraComponent {
       }
     }
 
-    html = '<rect fill="transparent" data-type="ex" data-expressionid="' + id + '" data-lineid="' + this.line.id + '" data-top="' + top + '" data-cs="' + width + '" x="0" class="expression" y = "0" width="' + (width + 1) * 20 + '" height="' + height * 10 + '"/>' + html;
+    html = '<rect fill="transparent" data-type="ex" data-expressionid="' + id + '" data-lineid="' + this.line.id + '" data-top="' + top + '" data-cs="' + width + '" x="0" class="expression" y = "0" width="' + ((width + 1) * 20 - 10) + '" height="' + height * 10 + '"/>' + html;
     return { height: height, width: width, top: top, bottom: bottom, html: html }
   }
 
@@ -171,7 +183,7 @@ export class AlgebraComponent {
     <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="17.5" y1="12.5" x2="15" y2="11.2"/>
     <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="15" y1="13.7" x2="17.5" y2="12.5"/></g>`;
 
-    let zhtml = '<g class="line-element" data-transformX="' + this.line.x + '" data-transformY="' + this.line.y + '" transform="translate(' + this.line.x + ',' + this.line.y + ')">' + dragHandler + this.expression(this.ex[this.ex[0].ce[0]], this.ex[0].ce[0]).html + '</g>';
+    let zhtml = '<g class="line-element" data-transformX="' + this.line.x + '" data-transformY="' + this.line.y + '" transform="translate(' + this.line.x + ',' + this.line.y + ')">' + dragHandler + this.expression(this.ex[this.ex[0].ce[0]], this.ex[0].ce[0], 0).html + '</g>';
     return zhtml;
   }
 
