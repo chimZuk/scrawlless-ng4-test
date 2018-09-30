@@ -73,7 +73,7 @@ export class AlgebraComponent {
             let transformY = ch.height * 10;
 
             expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + 0 + '" data-transformY="' + 0 + '" transform="translate(0,0)">' + ch.html + '</g>';
-            expr[this.di[ex.cd[i]].pos].zhtml = '<g onclick="console.log(`keke`)" data-transformX="' + transformX + '" data-transformY="' + transformY + '" transform="translate(' + transformX + ',' + transformY + ')">' + zn.html + '</g>';
+            expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + transformX + '" data-transformY="' + transformY + '" transform="translate(' + transformX + ',' + transformY + ')">' + zn.html + '</g>';
           } else {
             let transformX = ((zn.width - ch.width) / 2) * 20;
             if (zn.width <= 1 * cst.wdc) {
@@ -163,12 +163,12 @@ export class AlgebraComponent {
           break;
         }
         case "digit":
-          html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="textForSave" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
+          html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="textForSave" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "' + cst.fc * 1.25 + '">' + expr[i].value + '</text>';
           html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="element regularText" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "0"  style="font-size: ' + cst.fc + 'px !important;">' + expr[i].text + '</text>';
           width += expr[i].s * cst.hdc;
           break;
         case "operator":
-          html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="textForSave" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
+          html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="textForSave" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "' + cst.fc * 1.25 + '">' + expr[i].value + '</text>';
           html += '<text data-type="op" x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="element regularText" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "0" style="font-size: ' + cst.fc + 'px !important;">' + expr[i].text + '</text>';
           width += expr[i].s * cst.hdc;
           break;

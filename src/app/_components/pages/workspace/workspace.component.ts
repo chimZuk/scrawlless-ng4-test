@@ -341,8 +341,7 @@ export class WorkspaceComponent implements OnInit {
         break;
       }
     }
-    console.log(JSON.stringify(this.elements));
-    console.log(JSON.stringify(this.lines));
+    console.log(this.lines);
     this.ref.detectChanges();
   }
 
@@ -357,6 +356,7 @@ export class WorkspaceComponent implements OnInit {
       dy: (this.selection.y / 10 >> 0) * 10 - 10,
       dx: (this.selection.x / 20 >> 0) * 20,
       fr: {},
+      pw: {},
       ex: {
         0: {
           line: lineLength,
@@ -802,7 +802,6 @@ export class WorkspaceComponent implements OnInit {
         id: null,
         di: null
       }
-
       for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
         if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
           lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
@@ -810,24 +809,28 @@ export class WorkspaceComponent implements OnInit {
           lastDI.id = this.lines[line].ex[ex].cd[i];
         }
       }
-
+      for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+        if (Number(this.lines[line].ex[ex].cd[i]) == Number(lastDI.id)) {
+          this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos = 1;
+        }
+      }
       var newDI = {
         id: diLength,
         line: line,
         pe: ex,
         s: 1,
-        pos: this.lines[line].ex[ex].cd.length + 1,
+        pos: lastDI.pos,
         value: "",
         text: "",
-        type: "fraction",
-        fr: this.elements.fractions.length + 1
+        type: "power",
+        pw: this.elements.powers.length + 1
       }
 
       this.lines[line].di[diLength] = newDI;
       this.lines[line].ex[ex].cd.push(diLength);
       this.elements.digits.push(diLength);
 
-      var newFR = {
+      var newPW = {
         pe: ex,
         pd: this.elements.digits[this.elements.digits.length],
         ch: this.elements.expressions.length + 1,
@@ -839,7 +842,7 @@ export class WorkspaceComponent implements OnInit {
         line: line,
         pe: ex,
         pd: diLength,
-        fr: this.elements.fractions.length + 1,
+        pw: this.elements.powers.length + 1,
         ch: 1, zn: 0, osn: 0,
         ce: [],
         cd: []
@@ -849,14 +852,14 @@ export class WorkspaceComponent implements OnInit {
         line: line,
         pe: ex,
         pd: diLength,
-        fr: this.elements.fractions.length + 1,
+        pw: this.elements.powers.length + 1,
         ch: 0, zn: 1, osn: 0,
         ce: [],
-        cd: []
+        cd: [lastDI.id]
       }
 
-      this.lines[line].fr[this.elements.fractions.length + 1] = newFR;
-      this.elements.fractions.push(this.elements.fractions.length + 1);
+      this.lines[line].pw[this.elements.powers.length + 1] = newPW;
+      this.elements.powers.push(this.elements.powers.length + 1);
 
       this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
@@ -870,72 +873,15 @@ export class WorkspaceComponent implements OnInit {
 
       this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+
+      for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+        if (Number(this.lines[line].ex[ex].cd[i]) == Number(lastDI.id)) {
+          this.lines[line].ex[ex].cd.splice(i, 1);
+        }
+      }
       this.elements.expressions.push(this.elements.expressions.length + 1);
     } else {
-      this.createLine();
-      let line = this.selection.line;
-      let ex = this.selection.ex;
-      let diLength = Object.keys(this.lines[line].di).length;
-      var newDI = {
-        id: diLength,
-        line: line,
-        pe: ex,
-        s: 1,
-        pos: this.lines[line].ex[ex].cd.length + 1,
-        value: "",
-        text: "",
-        type: "fraction",
-        fr: this.elements.fractions.length + 1
-      }
-
-      this.lines[line].di[diLength] = newDI;
-      this.lines[line].ex[ex].cd.push(diLength);
-      this.elements.digits.push(diLength);
-
-      var newFR = {
-        pe: ex,
-        pd: this.elements.digits[this.elements.digits.length],
-        ch: this.elements.expressions.length + 1,
-        zn: this.elements.expressions.length + 2,
-        isActive: 1
-      }
-
-      var newCh = {
-        line: line,
-        pe: ex,
-        pd: diLength,
-        fr: this.elements.fractions.length + 1,
-        ch: 1, zn: 0, osn: 0,
-        ce: [],
-        cd: []
-      }
-
-      var newZn = {
-        line: line,
-        pe: ex,
-        pd: diLength,
-        fr: this.elements.fractions.length + 1,
-        ch: 0, zn: 1, osn: 0,
-        ce: [],
-        cd: []
-      }
-
-      this.lines[line].fr[this.elements.fractions.length + 1] = newFR;
-      this.elements.fractions.push(this.elements.fractions.length + 1);
-
-      this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
-      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
-      this.elements.expressions.push(this.elements.expressions.length + 1);
-
-      this.selection.ex = this.elements.expressions.length;
-      this.selection.line = line;
-      this.onClick({
-        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
-      });
-
-      this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
-      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
-      this.elements.expressions.push(this.elements.expressions.length + 1);
+      console.log("error");
     }
   }
 
@@ -1135,7 +1081,6 @@ export class WorkspaceComponent implements OnInit {
 
   select = function (id) {
     let el = this.geo.dots[id];
-    console.log(this.geo)
     if (this.notSaved(this.selected, id)) {
       el.selected = 1;
       el.strokeW = 3;
@@ -1255,7 +1200,6 @@ export class WorkspaceComponent implements OnInit {
           homeworkId: String(this.id)
         })
           .subscribe(result => {
-            console.log(result);
 
             this.elements = {
               lines: [0],
