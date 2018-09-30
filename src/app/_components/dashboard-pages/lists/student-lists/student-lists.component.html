@@ -12,7 +12,7 @@
                 <div *ngIf="!loading">
                     <div class="days" style="margin-top: 10px;">
                         <div *ngFor="let day of studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].days" style="margin-top: 20px;">
-                            <p>{{day.day}}</p>
+                            <p>{{day.name}}</p>
                             <hr>
 
                             <div *ngFor="let subj of day.classes">
@@ -53,10 +53,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <mat-card class="addNewButton" style="width: 200px; display: flex; flex-direction: row; padding: 10px !important; align-items: center; margin-top: 10px;">
+                            <!--<mat-card class="addNewButton" style="width: 200px; display: flex; flex-direction: row; padding: 10px !important; align-items: center; margin-top: 10px;">
                                 <mat-icon color="accent">add_box</mat-icon>
                                 <p style="margin-left: 5px; line-height: 10px;">Добавить предмет...</p>
-                            </mat-card>
+                            </mat-card>-->
                         </div>
                     </div>
 

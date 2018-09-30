@@ -155,7 +155,7 @@ export class StudentListsComponent implements OnInit {
     let token = JSON.parse(localStorage.getItem('currentUser')).token;
     let data = {
       token: token,
-      homeworkId: homeworkId
+      homeworkId: String(homeworkId)
     }
     this.loading = true;
     this.homeworkService.deleteList(data)

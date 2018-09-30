@@ -1402,6 +1402,7 @@ export class WorkspaceComponent implements OnInit {
               this.elements = {
                 lines: [],
                 fractions: [],
+                powers: [],
                 expressions: [],
                 digits: []
               }
