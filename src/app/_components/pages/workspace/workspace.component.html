@@ -1,6 +1,57 @@
+<style>
+    /deep/ .expression {
+        fill: transparent;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+
+    /deep/ .expression:hover {
+        stroke: #F15A24;
+        cursor: pointer;
+    }
+
+    /deep/ text,
+    /deep/ line {
+        user-select: none;
+        cursor: pointer;
+    }
+
+    /deep/ .handler {
+        fill: #FFFFFF;
+        stroke: #F15A24;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+    }
+
+    /deep/ .arrow {
+        fill: none;
+        stroke: #000000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+        cursor: move;
+    }
+
+    /deep/ .textForSave {
+        font-size: 0 !important;
+    }
+
+    /deep/ .regularText {
+        font-size: 16px !important;
+        font-family: scwlsWorkspace !important;
+    }
+
+    /deep/ .powerCH .regularText {
+        font-size: 13px !important;
+    }
+</style>
+
 <div *ngIf="!loading" id="autoScroll">
-    <svg version="1.1" id="cover" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class="" [attr.width]="0.9 * vw"
-        [attr.height]="0.9 * 1.41375 * vw" viewBox="0 0 800 1131">
+    <svg version="1.1" id="cover" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class=""
+        [attr.width]="0.9 * vw" [attr.height]="0.9 * 1.41375 * vw" viewBox="0 0 800 1131">
         <defs>
             <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
                 <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#69b0b7" id="cell" stroke-width="0.5" />
@@ -14,8 +65,8 @@
             </filter>
         </defs>
         <rect width="100%" height="100%" fill="#fff" />
-        <svg:rect #list id="list" (click)="setCursor($event, 'canvas', 0);" id="list" width="100%" height="100%" [attr.fill]="'url(' + absUrl + '#smallGrid)'"
-        />
+        <svg:rect #list id="list" (click)="setCursor($event, 'canvas', 0);" id="list" width="100%" height="100%"
+            [attr.fill]="'url(' + absUrl + '#smallGrid)'" />
 
         <text class="textForSave" x="120" y="-570" transform="rotate(90,150,50)" font-size="22" font-family="Comic Sans MS">{{
             description }}</text>
@@ -26,8 +77,8 @@
         <line x1="800" y1="1131" x2="0" y2="1131" stroke="#69b0b7" stroke-width="2" />
         <line x1="800" y1="1131" x2="800" y2="0" stroke="#69b0b7" stroke-width="2" />
         <line id="field" x1="700.55" y1="0" x2="700.55" y2="1131" stroke="#ed7e28" stroke-width="2" />
-        <text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="selection.x" [attr.y]="selection.y" font-family="scwlsWorkspace"
-            font-size="16">&#xe911;</text>
+        <text #cursor id="cursor" [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="selection.x" [attr.y]="selection.y"
+            font-family="scwlsWorkspace" [attr.font-size]="16 * selection.fdc">&#xe911;</text>
 
         <svg:g *ngFor="let line of elements.lines; let i = index;">
             <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
@@ -66,7 +117,8 @@
         <button mat-fab color="accent" class="fullscreen" *ngIf="!isFullscreen" (click)="isFullscreen = true;" onclick="editor_fullscreen()">
             <mat-icon>fullscreen</mat-icon>
         </button>
-        <button mat-fab color="accent" class="exitFullscreen" *ngIf="isFullscreen" (click)="isFullscreen = false;" onclick="editor_exitFullscreen()">
+        <button mat-fab color="accent" class="exitFullscreen" *ngIf="isFullscreen" (click)="isFullscreen = false;"
+            onclick="editor_exitFullscreen()">
             <mat-icon>fullscreen_exit</mat-icon>
         </button>
     </mat-card>
@@ -214,14 +266,14 @@
     <mat-card #advOperators id="advOperators" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-raised-button (click)="write('+', 'op');">
+                <button mat-raised-button (click)="write(null, 'pw');">
                     <span class="i-font i-plus"></span>
                 </button>
-                <button mat-raised-button (click)="write('-', 'op');">
+                <button mat-raised-button (click)="write(null, 'pw');">
                     <span class="i-font i-minus"></span>
                 </button>
             </div>
-        </div>        
+        </div>
     </mat-card>
 
     <mat-card class="ui tools">

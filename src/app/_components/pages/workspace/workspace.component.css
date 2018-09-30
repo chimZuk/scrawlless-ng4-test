@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url(../../../../assets/css/workspace.css);
+@import "../../../../assets/css/workspace.css";
 @import url("https://fonts.googleapis.com/css?family=Exo+2");
 @import url("https://fonts.googleapis.com/css?family=Itim");
 @font-face {
@@ -7,8 +7,9 @@
   src: url("../../../../assets/fonts/scwlsWorkspace.eot?yezmmz");
   src: url("../../../../assets/fonts/scwlsWorkspace.eot?yezmmz#iefix") format("embedded-opentype"), url("../../../../assets/fonts/scwlsWorkspace.woff2?yezmmz") format("woff2"), url("../../../../assets/fonts/scwlsWorkspace.ttf?yezmmz") format("truetype"), url("../../../../assets/fonts/scwlsWorkspace.woff?yezmmz") format("woff"), url("../../../../assets/fonts/scwlsWorkspace.svg?yezmmz#scwlsWorkspace") format("svg");
   font-weight: normal;
-  font-style: normal; }
-[class^="i-"], [class*=" i-"] {
+  font-style: normal;
+}
+[class^=i-], [class*=" i-"] {
   font-family: "scwlsWorkspace" !important;
   speak: none;
   font-style: normal;
@@ -17,204 +18,260 @@
   text-transform: none;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
+  -moz-osx-font-smoothing: grayscale;
+}
 
 .i-one:before {
-  content: ""; }
+  content: "";
+}
 
 .i-two:before {
-  content: ""; }
+  content: "";
+}
 
 .i-three:before {
-  content: ""; }
+  content: "";
+}
 
 .i-four:before {
-  content: ""; }
+  content: "";
+}
 
 .i-five:before {
-  content: ""; }
+  content: "";
+}
 
 .i-six:before {
-  content: ""; }
+  content: "";
+}
 
 .i-seven:before {
-  content: ""; }
+  content: "";
+}
 
 .i-eight:before {
-  content: ""; }
+  content: "";
+}
 
 .i-nine:before {
-  content: ""; }
+  content: "";
+}
 
 .i-zero:before {
-  content: ""; }
+  content: "";
+}
 
 .i-plus:before {
-  content: ""; }
+  content: "";
+}
 
 .i-minus:before {
-  content: ""; }
+  content: "";
+}
 
 .i-mult:before {
-  content: ""; }
+  content: "";
+}
 
 .i-divide:before {
-  content: ""; }
+  content: "";
+}
 
 .i-equal:before {
-  content: ""; }
+  content: "";
+}
 
 .i-dot:before {
-  content: ""; }
+  content: "";
+}
 
 .i-comma:before {
-  content: ""; }
+  content: "";
+}
 
 .i-cursour:before {
-  content: ""; }
+  content: "";
+}
 
 .i-root:before {
-  content: ""; }
+  content: "";
+}
 
 .i-rootlong:before {
-  content: ""; }
+  content: "";
+}
 
 .i-roottop:before {
-  content: ""; }
+  content: "";
+}
 
 .i-rootend:before {
-  content: ""; }
+  content: "";
+}
 
 .i-roottopend:before {
-  content: ""; }
+  content: "";
+}
 
 .i-rootmiddlelongsvg:before {
-  content: ""; }
+  content: "";
+}
 
 .flex-row {
-  display: flex; }
+  display: flex;
+}
 
 .flex-column {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+}
 
 @keyframes cursor {
   0% {
-    fill: black; }
+    fill: black;
+  }
   50% {
-    fill: transparent; }
+    fill: transparent;
+  }
   100% {
-    fill: black; } }
+    fill: black;
+  }
+}
 #cursor {
   animation-name: cursor;
   animation-duration: 1s;
   animation-iteration-count: infinite;
-  cursor: text; }
+  cursor: text;
+}
 
 #list {
-  cursor: text; }
+  cursor: text;
+}
 
 #main {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
-  right: 0; }
+  right: 0;
+}
 
 .ui {
   position: fixed;
-  padding: 0.2vw !important; }
+  padding: 0.2vw !important;
+}
 
 .ui .mat-icon, .ui .i-font {
   height: auto !important;
   width: auto !important;
-  font-size: 5vw !important; }
+  font-size: 5vw !important;
+}
 
 .squareSingle {
   width: 7vw;
-  height: 7vw; }
+  height: 7vw;
+}
 
 .squareSingle button {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+}
 
 .zIn {
   top: 1vw;
-  right: 2vw; }
+  right: 2vw;
+}
 
 .zOut {
   top: 1vw;
-  left: 1vw; }
+  left: 1vw;
+}
 
 #fullscreen {
   top: 11vw;
-  right: 2vw; }
+  right: 2vw;
+}
 
 .exitToApp {
   top: 21vw;
-  right: 2vw; }
+  right: 2vw;
+}
 
 .download {
   bottom: 2vw;
-  left: 1vw; }
+  left: 1vw;
+}
 
 .keyboard {
-  display: flex; }
+  display: flex;
+}
 
 .termsCard {
   bottom: 2vw;
   left: 1vw;
   width: auto;
-  height: auto; }
+  height: auto;
+}
 
 .termsList {
   display: flex;
   justify-content: center;
-  margin: 10px 0; }
+  margin: 10px 0;
+}
 
 .termsList h3 {
-  margin: 0 5px; }
+  margin: 0 5px;
+}
 
 .termsActions {
   margin: 0 10px;
   display: flex;
-  margin-bottom: 10px !important; }
+  margin-bottom: 10px !important;
+}
 
 .termsActions > div {
-  margin: 0 5px; }
+  margin: 0 5px;
+}
 
 #numbers {
   bottom: 2vw;
-  right: 2vw; }
+  right: 2vw;
+}
 
 #operators {
   bottom: 2vw;
-  right: 20vw; }
+  right: 20vw;
+}
 
 #advOperators {
   bottom: 14.5vw;
-  right: 20vw; }
+  right: 20vw;
+}
 
 .tools {
   left: 1vw;
   top: 15vw;
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+}
 
 .selectedTool {
   background-color: #fff;
-  color: #ed7e28; }
+  color: #ed7e28;
+}
 
 .tools button, #operators button, #advOperators button {
   margin: 0.1vw;
   transition: all 0.5s;
   padding: 0.4vw 0 !important;
-  flex: 1; }
+  flex: 1;
+}
 
 #numbers button {
   margin: 0.2vw;
   padding: 0.4vw 0.8vw !important;
-  flex: 1; }
+  flex: 1;
+}
 
 #cover {
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
@@ -224,54 +281,16 @@
   display: block;
   transition: all 0.5s;
   margin-top: 10px;
-  margin-bottom: 10px; }
+  margin-bottom: 10px;
+}
 
 .touch {
   touch-action: none !important;
-  cursor: move; }
+  cursor: move;
+}
 
 circle {
-  cursor: pointer; }
-
-/deep/ .expression {
-  fill: transparent;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-miterlimit: 10; }
-
-/deep/ .expression:hover {
-  stroke: #F15A24;
-  cursor: pointer; }
-
-/deep/ text, /deep/ line {
-  user-select: none;
-  cursor: pointer; }
-
-/deep/ .handler {
-  fill: #FFFFFF;
-  stroke: #F15A24;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-miterlimit: 10; }
-
-/deep/ .arrow {
-  fill: none;
-  stroke: #000000;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-miterlimit: 10;
-  cursor: move; }
-
-/deep/ .textForSave {
-  font-size: 0 !important; }
-
-/deep/ .regularText {
-  font-size: 16px !important;
-  font-family: scwlsWorkspace !important; }
-
-/deep/ .powerCH .regularText {
-  font-size: 13px !important; }
+  cursor: pointer;
+}
 
 /*# sourceMappingURL=workspace.component.css.map */

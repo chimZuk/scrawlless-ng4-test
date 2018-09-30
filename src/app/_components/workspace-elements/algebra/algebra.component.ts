@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
+import { Component } from '@angular/core';
 
 
 @Component({
@@ -27,8 +26,30 @@ export class AlgebraComponent {
   }
 
 
+  private getConstants(depth) {
+    let widthConst = 16;
+    let heightConst = 16;
+    let fontConst = 16;
+    var diff = 5;
+    if (depth > 0) {
+      for (let i = 1; i <= depth; i++) {
+        diff = diff / i;
+        widthConst -= diff;
+        heightConst -= diff;
+        fontConst -= diff;
+      }
+    }
+    widthConst = widthConst * 1.25;
+    heightConst = heightConst * 0.625;
+    fontConst = fontConst;
+    return { fc: fontConst, wc: widthConst, hc: heightConst, fdc: fontConst / 16, wdc: widthConst / 20, hdc: heightConst / 10 };
+  }
+
+
+
   private expression(ex, id, depth) {
-    let height = 2;
+    let cst = this.getConstants(depth);
+    let height = 2 * cst.hdc;
     let width = 0;
     let top = 0;
     let bottom = 0;
@@ -38,7 +59,6 @@ export class AlgebraComponent {
 
     for (let i = 0; i < ex.cd.length; i++) {
       expr[this.di[ex.cd[i]].pos] = this.di[ex.cd[i]];
-      //console.log(ex.cd);
       switch (this.di[ex.cd[i]].type) {
         case "fraction": {
           let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.fr[this.di[ex.cd[i]].fr].zn], this.fr[this.di[ex.cd[i]].fr].zn, depth);
@@ -47,58 +67,61 @@ export class AlgebraComponent {
 
           if (ch.width >= zn.width) {
             let transformX = ((ch.width - zn.width) / 2) * 20;
+            if (ch.width <= 1 * cst.wdc) {
+              transformX = 0;
+            }
             let transformY = ch.height * 10;
 
             expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + 0 + '" data-transformY="' + 0 + '" transform="translate(0,0)">' + ch.html + '</g>';
             expr[this.di[ex.cd[i]].pos].zhtml = '<g onclick="console.log(`keke`)" data-transformX="' + transformX + '" data-transformY="' + transformY + '" transform="translate(' + transformX + ',' + transformY + ')">' + zn.html + '</g>';
           } else {
-            let transformX = ((zn.width - ch.width) / 2) * 20
+            let transformX = ((zn.width - ch.width) / 2) * 20;
+            if (zn.width <= 1 * cst.wdc) {
+              transformX = 0;
+            }
             let transformY = ch.height * 10;
 
-            expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + transformX + '" data-transformY="' + 0 + '" transform="translate(' + ((zn.width - ch.width) / 2) * 20 + ',0)">' + ch.html + '</g>';
+            expr[this.di[ex.cd[i]].pos].chtml = '<g data-transformX="' + transformX + '" data-transformY="' + 0 + '" transform="translate(' + transformX + ',0)">' + ch.html + '</g>';
             expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(0,' + ch.height * 10 + ')">' + zn.html + '</g>';
           }
 
 
-          if (top < ch.height - 1) {
-            top = ch.height - 1;
+          if (top < ch.height - 1 * cst.hdc) {
+            top = ch.height - 1 * cst.hdc;
           }
-          if (bottom < zn.height - 1) {
-            bottom = zn.height - 1;
+          if (bottom < zn.height - 1 * cst.hdc) {
+            bottom = zn.height - 1 * cst.hdc;
           }
-          height = 2 + top + bottom;
+          height = 2 * cst.hdc + top + bottom;
 
           break;
         }
         case "power": {
           let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].zn], this.pw[this.di[ex.cd[i]].pw].zn, depth);
-          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].ch], this.pw[this.di[ex.cd[i]].pw].ch, depth + 6);
+          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].ch], this.pw[this.di[ex.cd[i]].pw].ch, depth + 1);
 
 
           let transformX = (zn.width) * 20;
-          let transformY = (ch.height - 1) * 10;
-          expr[this.di[ex.cd[i]].pos].chtml = '<g class="powerCH" data-transformX="' + transformX + '" data-transformY="' + -10 + '" transform="translate(' + transformX + ', -10)"><path fill="transparent" stroke-width="1" stroke-linecap="round" stroke-dasharray="2,2" stroke="black" d="M' + 0 + ' ' + ((ch.height - 2) * 10 + 5) + ' L' + 0 + ' ' + ((ch.height - 2) * 10 + 20) + ' L' + 15 + ' ' + ((ch.height - 2) * 10 + 20) + '" />' + ch.html + '</g>';
+          let transformY = (ch.height - 1 * cst.hdc) * 10;
+          expr[this.di[ex.cd[i]].pos].chtml = '<g class="powerCH" data-transformX="' + transformX + '" data-transformY="' + -10 * cst.hdc + '" transform="translate(' + transformX + ', ' + -10 * cst.hdc + ')"><path fill="transparent" stroke-width="' + 1 * cst.wdc + '" stroke-linecap="round" stroke-dasharray="' + 2 * cst.wdc + ',' + 2 * cst.wdc + '" stroke="black" d="M' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 5 * cst.hdc) + ' L' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + ' L' + 15 * cst.wdc + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + '" />' + ch.html + '</g>';
           expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(0,' + transformY + ')">' + zn.html + '</g>';
 
 
-          if (top < ch.height - 1) {
+          if (top < ch.height - 1 * cst.hdc) {
             top = ch.height;
           }
-          /*if (bottom < zn.height - 1) {
-            bottom = zn.height - 1;
-          }*/
           height = ch.height + zn.height;
 
           break;
         }
         case "digit":
-          if (height < 2) {
-            height += 2;
+          if (height < 2 * cst.hdc) {
+            height += 2 * cst.hdc;
           }
           break;
         case "operator":
-          if (height < 2) {
-            height += 2;
+          if (height < 2 * cst.hdc) {
+            height += 2 * cst.hdc;
           }
           break;
 
@@ -112,48 +135,42 @@ export class AlgebraComponent {
           let line;
 
           if (expr[i].chi.width >= expr[i].zni.width) {
-            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].chi.width + 1) * 20 + 1 - 10) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+            let fw = 0;
+            if (expr[i].chi.width < 1 * cst.wdc) {
+              fw = 1 * cst.wdc;
+            }
+            line = '<line data-type="line" style="stroke-linecap:round;" x1="' + -1 * cst.wdc + '" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].chi.width + fw + 1 * cst.wdc) * 20 + 1 - 10) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="' + 2 * cst.wdc + '" />'
           } else {
-            line = '<line data-type="line" style="stroke-linecap:round;" x1="-1" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].zni.width + 1) * 20 + 1 - 10) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="2" />'
+            let fw = 0;
+            if (expr[i].zni.width < 1 * cst.wdc) {
+              fw = 1 * cst.wdc;
+            }
+            line = '<line data-type="line" style="stroke-linecap:round;" x1="' + -1 * cst.wdc + '" y1="' + expr[i].chi.height * 10 + '" x2="' + Number((expr[i].zni.width + fw + 1 * cst.wdc) * 20 + 1 - 10) + '" y2="' + expr[i].chi.height * 10 + '" stroke="black" stroke-width="' + 2 * cst.wdc + '" />'
           }
 
-          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + line + '</g>';
+          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + line + '</g>';
 
           if (expr[i].zni.width >= expr[i].chi.width) {
-            width += expr[i].zni.width + 1;
+            width += expr[i].zni.width + 1 * cst.wdc;
           } else {
-            width += expr[i].chi.width + 1;
+            width += expr[i].chi.width + 1 * cst.wdc;
           }
           break;
         }
         case "power": {
-          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
+          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
           width += expr[i].zni.width + expr[i].chi.width;
           break;
         }
         case "digit":
-          var fontSize = 16;
-          var widthConst = 20;
-          if (depth > 0) {
-            fontSize = (10 + (3 / depth));
-            console.log(fontSize);
-            console.log(depth);
-            //widthConst = (20 - (depth * 2) / d);
-          }
-          html += '<text x="' + (width * 20 + expr[i].s * 3) + '" class="textForSave" y = "' + (top * 10 + 17) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
-          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * 3) + '" class="element regularText" y = "' + (top * 10 + 17) + '" font-family = "scwlsWorkspace" font-size = "0"  style="font-size: ' + fontSize + 'px !important;">' + expr[i].text + '</text>';
-          width += expr[i].s;
+          html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="textForSave" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
+          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="element regularText" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "0"  style="font-size: ' + cst.fc + 'px !important;">' + expr[i].text + '</text>';
+          width += expr[i].s * cst.hdc;
           break;
         case "operator":
-          var fontSize = 16;
-          var widthConst = 20;
-          if (depth > 0) {
-            fontSize = (16 - (3 / depth));
-            //widthConst = (20 - (depth * 2) / d);
-          }
-          html += '<text x="' + (width * 20 + expr[i].s * 2) + '" class="textForSave" y = "' + (top * 10 + 17.5) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
-          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * 2) + '" class="element regularText" y = "' + (top * 10 + 17.5) + '" font-family = "scwlsWorkspace" font-size = "0" style="font-size: ' + fontSize + 'px !important;">' + expr[i].text + '</text>';
-          width += expr[i].s;
+          html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="textForSave" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "20">' + expr[i].value + '</text>';
+          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="element regularText" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "0" style="font-size: ' + cst.fc + 'px !important;">' + expr[i].text + '</text>';
+          width += expr[i].s * cst.hdc;
           break;
 
         default:
@@ -161,7 +178,12 @@ export class AlgebraComponent {
       }
     }
 
-    html = '<rect fill="transparent" data-type="ex" data-expressionid="' + id + '" data-lineid="' + this.line.id + '" data-top="' + top + '" data-cs="' + width + '" x="0" class="expression" y = "0" width="' + ((width + 1) * 20 - 10) + '" height="' + height * 10 + '"/>' + html;
+    let fw = 0;
+    if (width < 1 * cst.wdc) {
+      fw = 1 * cst.wdc;
+    }
+
+    html = '<rect fill="transparent" stroke-width="' + 1.5 * cst.wdc + '" data-fdc="' + cst.fdc + '" data-wdc="' + cst.wdc + '" data-hdc="' + cst.hdc + '" data-type="ex" data-expressionid="' + id + '" data-lineid="' + this.line.id + '" data-top="' + top + '" data-cs="' + width + '" x="0" class="expression" y = "0" width="' + ((width + fw + 1 * cst.wdc) * 20 - ((10 / 20) * cst.wdc) * 20) + '" height="' + height * 10 + '"/>' + html;
     return { height: height, width: width, top: top, bottom: bottom, html: html }
   }
 
