@@ -196,6 +196,10 @@ export class WorkspaceComponent implements OnInit {
     let tempHeight = this.container.nativeElement.attributes.height.value;
     this.container.nativeElement.attributes.width.value = 1920;
     this.container.nativeElement.attributes.height.value = 2715;
+    for (var i = 0; i < document.getElementsByClassName("regularText").length; i++) {
+      document.getElementsByClassName("regularText")[i].setAttribute("style", "font-size: 0px !important;");
+    }
+
     document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
     document.getElementById("cell").setAttribute("stroke-width", "2");
     document.getElementById("field").setAttribute("stroke-width", "4");
@@ -239,6 +243,10 @@ export class WorkspaceComponent implements OnInit {
     document.getElementById("list").setAttribute("fill", "url(" + window.location.href + "#smallGrid)");
     this.container.nativeElement.attributes.width.value = tempWidth;
     this.container.nativeElement.attributes.height.value = tempHeight;
+
+    for (var i = 0; i < document.getElementsByClassName("regularText").length; i++) {
+      document.getElementsByClassName("regularText")[i].setAttribute("style", "");
+    }
   }
 
   //endregion Save Image //
@@ -1201,7 +1209,7 @@ export class WorkspaceComponent implements OnInit {
         })
           .subscribe(result => {
 
-            this.elements = {
+            /*this.elements = {
               lines: [0],
               fractions: [],
               powers: [1, 2],
@@ -1387,33 +1395,32 @@ export class WorkspaceComponent implements OnInit {
                 }
               }
             ]
-
-            /* if (result.data.elements) {
-               this.elements = result.data.elements;
-             } else {
-               this.elements = {
-                 lines: [],
-                 fractions: [],
-                 expressions: [],
-                 digits: []
-               }
-             }
-             if (result.data.geoElements) {
-               this.geoElements = result.data.geoElements;
-             } else {
-               //this.geoElements = [];
-             }
-             if (result.data.lines) {
-               this.lines = result.data.lines;
-             } else {
-               this.lines = [];
-             }
-             if (result.data.geo) {
-               //this.geo = result.data.geo;
-             } else {
-               //this.geo = [];
-             }
- */
+*/
+            if (result.data.elements) {
+              this.elements = result.data.elements;
+            } else {
+              this.elements = {
+                lines: [],
+                fractions: [],
+                expressions: [],
+                digits: []
+              }
+            }
+            if (result.data.geoElements) {
+              this.geoElements = result.data.geoElements;
+            } else {
+              //this.geoElements = [];
+            }
+            if (result.data.lines) {
+              this.lines = result.data.lines;
+            } else {
+              this.lines = [];
+            }
+            if (result.data.geo) {
+              //this.geo = result.data.geo;
+            } else {
+              //this.geo = [];
+            }
             this.scale = 1;
 
             this.description = result.data.description;
@@ -1487,7 +1494,6 @@ export class WorkspaceComponent implements OnInit {
           } else {
             if (!notSaved(this.selectedEx, id)) {
               //el.selected = 0;
-
               this.selectedEx.splice(this.selectedEx.indexOf(id), 1);
               if (this.selectedEx.length == 0) {
                 container.attributes.class.value = "";

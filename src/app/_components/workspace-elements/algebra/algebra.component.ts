@@ -164,12 +164,12 @@ export class AlgebraComponent {
         }
         case "digit":
           html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="textForSave" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "' + cst.fc * 1.25 + '">' + expr[i].value + '</text>';
-          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="element regularText" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "0"  style="font-size: ' + cst.fc + 'px !important;">' + expr[i].text + '</text>';
+          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="element regularText" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "' + cst.fc + '">' + expr[i].text + '</text>';
           width += expr[i].s * cst.hdc;
           break;
         case "operator":
           html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="textForSave" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "' + cst.fc * 1.25 + '">' + expr[i].value + '</text>';
-          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="element regularText" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "0" style="font-size: ' + cst.fc + 'px !important;">' + expr[i].text + '</text>';
+          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="element regularText" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "' + cst.fc + '">' + expr[i].text + '</text>';
           width += expr[i].s * cst.hdc;
           break;
 
