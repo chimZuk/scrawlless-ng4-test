@@ -140,7 +140,13 @@ export class StudentListsComponent implements OnInit {
         }
         console.log(this.studyYear);
         console.log(this.currentWeek);
-        this.loading = false;
+
+        this.homeworkService.getRawHomeworks(data)
+          .subscribe(result => {
+            console.log(result);
+            this.loading = false;
+          });
+
         //-----------End of Semesters implementation
 
       });

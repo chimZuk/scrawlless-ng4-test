@@ -41,7 +41,19 @@ export class HomeworkService {
   }
 
   getHomeworks(data: any): Observable<any> {
-    return this.http.post(this.href + 'api/homeworks.read', { data })
+    return this.http.post(this.href + 'api/homeworks.inSchedule.read', { data })
+      .map((response: Response) => {
+        let data = response.json();
+        if (data) {
+          return data;
+        } else {
+          return "Error";
+        }
+      });
+  }
+
+  getRawHomeworks(data: any): Observable<any> {
+    return this.http.post(this.href + 'api/homeworks.byUser.read', { data })
       .map((response: Response) => {
         let data = response.json();
         if (data) {
