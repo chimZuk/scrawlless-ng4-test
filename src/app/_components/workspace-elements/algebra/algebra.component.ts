@@ -17,6 +17,7 @@ export class AlgebraComponent {
   di: any;
   fr: any;
   pw: any;
+  br: any;
 
   expressionHTML: any;
 
@@ -56,7 +57,6 @@ export class AlgebraComponent {
     let html = "";
 
     let expr = {};
-
     for (let i = 0; i < ex.cd.length; i++) {
       expr[this.di[ex.cd[i]].pos] = this.di[ex.cd[i]];
       switch (this.di[ex.cd[i]].type) {
@@ -103,15 +103,52 @@ export class AlgebraComponent {
 
           let transformX = (zn.width) * 20;
           let transformY = (ch.height - 1 * cst.hdc) * 10;
-          expr[this.di[ex.cd[i]].pos].chtml = '<g class="powerCH" data-transformX="' + transformX + '" data-transformY="' + -10 * cst.hdc + '" transform="translate(' + transformX + ', ' + -10 * cst.hdc + ')"><path fill="transparent" stroke-width="' + 1 * cst.wdc + '" stroke-linecap="round" stroke-dasharray="' + 2 * cst.wdc + ',' + 2 * cst.wdc + '" stroke="black" d="M' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 5 * cst.hdc) + ' L' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + ' L' + 15 * cst.wdc + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + '" />' + ch.html + '</g>';
+          expr[this.di[ex.cd[i]].pos].chtml = '<g class="powerCH" data-transformX="' + transformX + '" data-transformY="' + -10 * cst.hdc + '" transform="translate(' + transformX + ', ' + -10 * cst.hdc + ')"><path fill="transparent" stroke-width="' + 1 * cst.wdc + '" stroke-linecap="round" stroke-dasharray="' + 2 * cst.wdc + ',' + 2 * cst.wdc + '" stroke="black" d="M' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 8 * cst.hdc) + ' L' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + ' L' + 15 * cst.wdc + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + '" />' + ch.html + '</g>';
           expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(0,' + transformY + ')">' + zn.html + '</g>';
 
 
-          if (top < ch.height - 1 * cst.hdc) {
+          if (top < ch.height) {
             top = ch.height;
           }
-          height = ch.height + zn.height;
+          if (bottom < zn.bottom) {
+            bottom = zn.bottom;
+          }
+          height = 2 * cst.hdc + top + bottom;
+          break;
+        }
+        case "brackets": {
+          let cn = expr[this.di[ex.cd[i]].pos].cni = this.expression(this.ex[this.br[this.di[ex.cd[i]].br].cn], this.br[this.di[ex.cd[i]].br].cn, depth);
+          let transformY = (cn.height / 2 - (cn.top - cn.bottom) + ((cn.top - cn.bottom) * (0.5 * cst.hdc))) * 10;
+          expr[this.di[ex.cd[i]].pos].cnhtml = '<g data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(0,' + transformY + ')"><path d="M' + 2.5 * cst.wdc + ' 0 C -' + 2.5 * cst.wdc + ' ' + 5 * cst.hdc + ', -' + 2.5 * cst.wdc + ' ' + (cn.height * 10 - 5 * cst.hdc) + ', ' + 2.5 * cst.wdc + ' ' + cn.height * 10 + '" stroke="black" stroke-width="' + 1.5 * cst.wdc + '" stroke-linecap="round" fill="transparent"/>' + cn.html + '<path d="M' + ((cn.width + cn.fw) * 20 - 2.5 * cst.wdc) + ' 0 C ' + ((cn.width + cn.fw) * 20 + 2.5 * cst.wdc) + ' ' + 5 * cst.hdc + ', ' + ((cn.width + cn.fw) * 20 + 2.5 * cst.wdc) + ' ' + (cn.height * 10 - 5 * cst.hdc) + ', ' + ((cn.width + cn.fw) * 20 - 2.5 * cst.wdc) + ' ' + cn.height * 10 + '" stroke="black" stroke-width="' + 1.5 * cst.wdc + '" stroke-linecap="round" fill="transparent"/></g>';
 
+          if (top < cn.top) {
+            top = cn.top;
+          }
+          if (bottom < cn.bottom) {
+            bottom = cn.bottom;
+          }
+
+          height = 2 * cst.hdc + top + bottom;
+          break;
+        }
+        case "powerWbrackets": {
+          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.br[this.di[ex.cd[i]].br].cn], this.br[this.di[ex.cd[i]].br].cn, depth);
+          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.pw[this.di[ex.cd[i]].pw].ch], this.pw[this.di[ex.cd[i]].pw].ch, depth + 1);
+
+
+          let transformX = (zn.width) * 20;
+          let transformY = (ch.height - 1 * cst.hdc) * 10;
+          expr[this.di[ex.cd[i]].pos].chtml = '<g class="powerCH" data-transformX="' + transformX + '" data-transformY="' + -10 * cst.hdc + '" transform="translate(' + transformX + ', ' + -10 * cst.hdc + ')"><path fill="transparent" stroke-width="' + 1 * cst.wdc + '" stroke-linecap="round" stroke-dasharray="' + 2 * cst.wdc + ',' + 2 * cst.wdc + '" stroke="black" d="M' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 5 * cst.hdc) + ' L' + 0 + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + ' L' + 15 * cst.wdc + ' ' + ((ch.height - 2 * cst.hdc) * 10 + 20 * cst.hdc) + '" />' + ch.html + '</g>';
+          expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(0,' + transformY + ')"><path d="M' + 2.5 * cst.wdc + ' 0 C -' + 2.5 * cst.wdc + ' ' + 5 * cst.hdc + ', -' + 2.5 * cst.wdc + ' ' + (zn.height * 10 - 5 * cst.hdc) + ', ' + 2.5 * cst.wdc + ' ' + zn.height * 10 + '" stroke="black" stroke-width="' + 1.5 * cst.wdc + '" stroke-linecap="round" fill="transparent"/>' + zn.html + '<path d="M' + ((zn.width + zn.fw) * 20 - 2.5 * cst.wdc) + ' 0 C ' + ((zn.width + zn.fw) * 20 + 2.5 * cst.wdc) + ' ' + 5 * cst.hdc + ', ' + ((zn.width + zn.fw) * 20 + 2.5 * cst.wdc) + ' ' + (zn.height * 10 - 5 * cst.hdc) + ', ' + ((zn.width + zn.fw) * 20 - 2.5 * cst.wdc) + ' ' + zn.height * 10 + '" stroke="black" stroke-width="' + 1.5 * cst.wdc + '" stroke-linecap="round" fill="transparent"/></g>';
+
+
+          if (top < ch.height + zn.height / 2 - 1 * cst.hdc) {
+            top = ch.height + zn.height / 2 - 1 * cst.hdc;
+          }
+          if (bottom < zn.height / 2 - 1 * cst.hdc) {
+            bottom = zn.height / 2 - 1 * cst.hdc;
+          }
+          height = 2 * cst.hdc + top + bottom;
           break;
         }
         case "digit":
@@ -149,17 +186,48 @@ export class AlgebraComponent {
           }
 
           html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + line + '</g>';
+          if (expr[i].zni.width == expr[i].chi.width) {
+            if (expr[i].zni.width > 0) {
+              width += expr[i].zni.width + 1 * cst.wdc;
+            } else {
+              width += expr[i].zni.width + 2 * cst.wdc;
+            }
 
-          if (expr[i].zni.width >= expr[i].chi.width) {
-            width += expr[i].zni.width + 1 * cst.wdc;
           } else {
-            width += expr[i].chi.width + 1 * cst.wdc;
+            if (expr[i].zni.width > expr[i].chi.width) {
+              width += expr[i].zni.width + 1 * cst.wdc;
+            } else {
+              width += expr[i].chi.width + 1 * cst.wdc;
+            }
           }
+
           break;
         }
         case "power": {
           html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
-          width += expr[i].zni.width + expr[i].chi.width;
+          if (expr[i].chi.width < 1 * cst.wdc) {
+            width += expr[i].zni.width + expr[i].chi.width + 1;
+          } else {
+            width += expr[i].zni.width + expr[i].chi.width;
+          }
+          break;
+        }
+        case "powerWbrackets": {
+          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height - (expr[i].zni.height / 2) + 2 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height - (expr[i].zni.height / 2) + 2 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
+          if (expr[i].chi.width < 1 * cst.wdc) {
+            width += expr[i].zni.width + expr[i].chi.width + 1;
+          } else {
+            width += expr[i].zni.width + expr[i].chi.width;
+          }
+          break;
+        }
+        case "brackets": {
+          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].cni.height + 1 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].cni.height + 1 * cst.hdc) * 10 + ')">' + expr[i].cnhtml + '</g>';
+          if (expr[i].cni.width < 1 * cst.wdc) {
+            width += expr[i].cni.width + 1;
+          } else {
+            width += expr[i].cni.width;
+          }
           break;
         }
         case "digit":
@@ -184,7 +252,10 @@ export class AlgebraComponent {
     }
 
     html = '<rect fill="transparent" stroke-width="' + 1.5 * cst.wdc + '" data-fdc="' + cst.fdc + '" data-wdc="' + cst.wdc + '" data-hdc="' + cst.hdc + '" data-type="ex" data-expressionid="' + id + '" data-lineid="' + this.line.id + '" data-top="' + top + '" data-cs="' + width + '" x="0" class="expression" y = "0" width="' + ((width + fw + 1 * cst.wdc) * 20 - ((10 / 20) * cst.wdc) * 20) + '" height="' + height * 10 + '"/>' + html;
-    return { height: height, width: width, top: top, bottom: bottom, html: html }
+    if (ex.cn == 1) {
+      width += 0.5 * cst.wdc
+    }
+    return { height: height, width: width, fw: fw, top: top, bottom: bottom, html: html }
   }
 
   getExpression(line) {
@@ -193,6 +264,7 @@ export class AlgebraComponent {
     this.di = this.line.di;
     this.fr = this.line.fr;
     this.pw = this.line.pw;
+    this.br = this.line.br;
     let dragHandler = `<g transform="translate(-20, -20)" class="drag-handler" data-lineID="` + this.line.id + `"><path data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="handler" d="M20,12.5c0,2,0,7.5,0,7.5s-5.4,0-7.5,0C8.4,20,5,16.6,5,12.5S8.4,5,12.5,5S20,8.4,20,12.5z"/>
     <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="12.5" y1="7.5" x2="12.5" y2="17.5"/>
     <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="7.5" y1="12.5" x2="17.5" y2="12.5"/>

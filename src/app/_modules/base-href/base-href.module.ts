@@ -8,6 +8,6 @@ import { CommonModule } from '@angular/common';
   declarations: []
 })
 export class BaseHrefModule {
-  public base: string = "https://scrawlless.me/";
-  public socketbase: string = "https://scrawlless.me";
+  public base: string = "https://scrawlless.com/";
+  public socketbase: string = "https://scrawlless.com";
 }
