@@ -337,6 +337,11 @@ export class WorkspaceComponent implements OnInit {
         this.writePw();
         break;
       }
+      case "br": {
+        this.undoHistory = [];
+        this.writeBr();
+        break;
+      }
       case "di": {
         this.writeDi(val);
         break;
@@ -349,7 +354,6 @@ export class WorkspaceComponent implements OnInit {
         break;
       }
     }
-    console.log(this.lines);
     this.ref.detectChanges();
   }
 
@@ -364,6 +368,7 @@ export class WorkspaceComponent implements OnInit {
       dy: (this.selection.y / 10 >> 0) * 10 - 10,
       dx: (this.selection.x / 20 >> 0) * 20,
       fr: {},
+      br: {},
       pw: {},
       ex: {
         0: {
@@ -801,6 +806,7 @@ export class WorkspaceComponent implements OnInit {
 
 
   writePw(): any {
+    console.log(this.lines);
     if (this.selection.line != null) {
       let line = this.selection.line;
       let ex = this.selection.ex;
@@ -817,59 +823,213 @@ export class WorkspaceComponent implements OnInit {
           lastDI.id = this.lines[line].ex[ex].cd[i];
         }
       }
+      console.log(lastDI);
+
+      if (lastDI.di.type != "brackets") {
+        for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+          if (Number(this.lines[line].ex[ex].cd[i]) == Number(lastDI.id)) {
+            this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos = 1;
+          }
+        }
+        var newDI;
+        if (lastDI.di.type != "fraction") {
+          newDI = {
+            id: diLength,
+            line: line,
+            pe: ex,
+            s: 1,
+            pos: lastDI.pos,
+            value: "",
+            text: "",
+            type: "power",
+            pw: this.elements.powers.length + 1
+          }
+        } else {
+          newDI = {
+            id: diLength,
+            line: line,
+            pe: ex,
+            s: 1,
+            pos: lastDI.pos,
+            value: "",
+            text: "",
+            type: "powerWbrackets",
+            pw: this.elements.powers.length + 1,
+            br: this.elements.brackets.length + 1
+          }
+          var newBR = {
+            pe: ex,
+            pd: this.elements.digits[this.elements.digits.length - 1],
+            cn: this.elements.expressions.length + 2,
+            isActive: 1
+          }
+          this.lines[line].br[this.elements.brackets.length + 1] = newBR;
+          this.elements.brackets.push(this.elements.brackets.length + 1);
+        }
+
+        this.lines[line].di[diLength] = newDI;
+        this.lines[line].ex[ex].cd.push(diLength);
+        this.elements.digits.push(diLength);
+
+        var newPW = {
+          pe: ex,
+          pd: this.elements.digits[this.elements.digits.length],
+          ch: this.elements.expressions.length + 1,
+          zn: this.elements.expressions.length + 2,
+          isActive: 1
+        }
+
+        var newCh = {
+          line: line,
+          pe: ex,
+          pd: diLength,
+          pw: this.elements.powers.length + 1,
+          ch: 1, zn: 0, osn: 0,
+          ce: [],
+          cd: []
+        }
+
+        var newZn;
+        if (lastDI.di.type != "fraction") {
+          newZn = {
+            line: line,
+            pe: ex,
+            pd: diLength,
+            pw: this.elements.powers.length + 1,
+            ch: 0, zn: 1, osn: 0,
+            ce: [],
+            cd: [lastDI.id]
+          }
+        } else {
+          newZn = {
+            line: line,
+            pe: ex,
+            pd: diLength,
+            pw: this.elements.powers.length + 1,
+            ch: 0, zn: 1, osn: 0, cn: 1,
+            ce: [],
+            cd: [lastDI.id]
+          }
+        }
+
+        this.lines[line].pw[this.elements.powers.length + 1] = newPW;
+        this.elements.powers.push(this.elements.powers.length + 1);
+
+        this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
+        this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+        this.elements.expressions.push(this.elements.expressions.length + 1);
+
+        this.selection.ex = this.elements.expressions.length;
+        this.selection.line = line;
+        this.onClick({
+          target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+        });
+
+        this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
+        this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+
+        for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+          if (Number(this.lines[line].ex[ex].cd[i]) == Number(lastDI.id)) {
+            this.lines[line].ex[ex].cd.splice(i, 1);
+          }
+        }
+        this.elements.expressions.push(this.elements.expressions.length + 1);
+      } else {
+
+        this.lines[lastDI.di.line].di[lastDI.id].type = "powerWbrackets";
+        this.lines[lastDI.di.line].di[lastDI.id].pw = this.elements.powers.length + 1;
+        this.lines[lastDI.di.line].di[lastDI.id].zn = 1;
+
+        var newPW = {
+          pe: ex,
+          pd: lastDI.id,
+          ch: this.elements.expressions.length + 1,
+          zn: this.lines[lastDI.di.line].di[lastDI.id].pe,
+          isActive: 1
+        }
+
+        var newCh = {
+          line: line,
+          pe: ex,
+          pd: diLength,
+          pw: this.elements.powers.length + 1,
+          ch: 1, zn: 0, osn: 0,
+          ce: [],
+          cd: []
+        }
+
+        this.lines[line].pw[this.elements.powers.length + 1] = newPW;
+        this.elements.powers.push(this.elements.powers.length + 1);
+
+        this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
+        this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+        this.elements.expressions.push(this.elements.expressions.length + 1);
+
+        this.selection.ex = this.elements.expressions.length;
+        this.selection.line = line;
+        this.onClick({
+          target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+        });
+      }
+    } else {
+      console.log("error");
+    }
+  }
+
+  writeBr(): any {
+    if (this.selection.line != null) {
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      let lastDI = {
+        pos: 0,
+        id: null,
+        di: null
+      }
+
       for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
-        if (Number(this.lines[line].ex[ex].cd[i]) == Number(lastDI.id)) {
-          this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos = 1;
+        if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
+          lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
+          lastDI.di = this.lines[line].di[this.lines[line].ex[ex].cd[i]];
+          lastDI.id = this.lines[line].ex[ex].cd[i];
         }
       }
+
       var newDI = {
         id: diLength,
         line: line,
         pe: ex,
         s: 1,
-        pos: lastDI.pos,
+        pos: this.lines[line].ex[ex].cd.length + 1,
         value: "",
         text: "",
-        type: "power",
-        pw: this.elements.powers.length + 1
+        type: "brackets",
+        br: this.elements.brackets.length + 1
       }
 
       this.lines[line].di[diLength] = newDI;
       this.lines[line].ex[ex].cd.push(diLength);
       this.elements.digits.push(diLength);
-
-      var newPW = {
+      var newBR = {
         pe: ex,
-        pd: this.elements.digits[this.elements.digits.length],
-        ch: this.elements.expressions.length + 1,
-        zn: this.elements.expressions.length + 2,
+        pd: this.elements.digits[this.elements.digits.length - 1],
+        cn: this.elements.expressions.length + 1,
         isActive: 1
       }
 
-      var newCh = {
+      var newCn = {
         line: line,
         pe: ex,
         pd: diLength,
-        pw: this.elements.powers.length + 1,
-        ch: 1, zn: 0, osn: 0,
+        br: this.elements.brackets.length + 1,
+        ch: 0, zn: 0, osn: 0, cn: 1,
         ce: [],
         cd: []
       }
+      this.lines[line].br[this.elements.brackets.length + 1] = newBR;
+      this.elements.brackets.push(this.elements.brackets.length + 1);
 
-      var newZn = {
-        line: line,
-        pe: ex,
-        pd: diLength,
-        pw: this.elements.powers.length + 1,
-        ch: 0, zn: 1, osn: 0,
-        ce: [],
-        cd: [lastDI.id]
-      }
-
-      this.lines[line].pw[this.elements.powers.length + 1] = newPW;
-      this.elements.powers.push(this.elements.powers.length + 1);
-
-      this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
+      this.lines[line].ex[this.elements.expressions.length + 1] = newCn;
       this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
 
@@ -878,18 +1038,68 @@ export class WorkspaceComponent implements OnInit {
       this.onClick({
         target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
       });
-
-      this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
-      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+    } else {
+      this.createLine();
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      let lastDI = {
+        pos: 0,
+        id: null,
+        di: null
+      }
 
       for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
-        if (Number(this.lines[line].ex[ex].cd[i]) == Number(lastDI.id)) {
-          this.lines[line].ex[ex].cd.splice(i, 1);
+        if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
+          lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
+          lastDI.di = this.lines[line].di[this.lines[line].ex[ex].cd[i]];
+          lastDI.id = this.lines[line].ex[ex].cd[i];
         }
       }
+
+      var newDI = {
+        id: diLength,
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: "",
+        text: "",
+        type: "brackets",
+        br: this.elements.brackets.length + 1
+      }
+
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+      var newBR = {
+        pe: ex,
+        pd: this.elements.digits[this.elements.digits.length - 1],
+        cn: this.elements.expressions.length + 1,
+        isActive: 1
+      }
+
+      var newCn = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        br: this.elements.brackets.length + 1,
+        ch: 0, zn: 0, osn: 0, cn: 1,
+        ce: [],
+        cd: []
+      }
+      this.lines[line].br[this.elements.brackets.length + 1] = newBR;
+      this.elements.brackets.push(this.elements.brackets.length + 1);
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newCn;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
       this.elements.expressions.push(this.elements.expressions.length + 1);
-    } else {
-      console.log("error");
+
+      this.selection.ex = this.elements.expressions.length;
+      this.selection.line = line;
+      this.onClick({
+        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+      });
     }
   }
 
@@ -1208,194 +1418,7 @@ export class WorkspaceComponent implements OnInit {
           homeworkId: String(this.id)
         })
           .subscribe(result => {
-
-            /*this.elements = {
-              lines: [0],
-              fractions: [],
-              powers: [1, 2],
-              expressions: [1, 2, 3, 4, 5],
-              digits: [0, 1, 2, 3, 4]
-            };
-            this.lines = [
-              {
-                id: 0,
-                y: 220,
-                x: 220,
-                dy: 220,
-                dx: 220,
-                fr: {
-
-                },
-                pw: {
-                  1: {
-                    pe: 1,
-                    ch: 2,
-                    zn: 3,
-                    isActive: 1
-                  },
-                  2: {
-                    pe: 2,
-                    ch: 4,
-                    zn: 5,
-                    isActive: 1
-                  }
-                },
-                ex: {
-                  0: {
-                    line: 0,
-                    pe: 0,
-                    pd: 0,
-                    fr: 0,
-                    pw: 0,
-                    ch: 1,
-                    zn: 0,
-                    osn: 0,
-                    ce: [
-                      1
-                    ],
-                    cd: [
-
-                    ]
-                  },
-                  1: {
-                    line: 0,
-                    pe: 0,
-                    pd: 0,
-                    fr: 0,
-                    pw: 0,
-                    ch: 0,
-                    zn: 0,
-                    osn: 1,
-                    ce: [
-                      2,
-                      3
-                    ],
-                    cd: [
-                      0
-                    ]
-                  },
-                  2: {
-                    line: 0,
-                    pe: 1,
-                    pd: 0,
-                    fr: 0,
-                    pw: 1,
-                    ch: 1,
-                    zn: 0,
-                    osn: 1,
-                    ce: [
-                      4, 5
-                    ],
-                    cd: [
-                      3
-                    ]
-                  },
-                  3: {
-                    line: 0,
-                    pe: 1,
-                    pd: 0,
-                    fr: 0,
-                    pw: 1,
-                    ch: 0,
-                    zn: 1,
-                    osn: 0,
-                    ce: [
-
-                    ],
-                    cd: [
-                      1
-                    ]
-                  },
-                  4: {
-                    line: 0,
-                    pe: 2,
-                    pd: 0,
-                    fr: 0,
-                    pw: 2,
-                    ch: 1,
-                    zn: 0,
-                    osn: 0,
-                    ce: [
-
-                    ],
-                    cd: [
-                      4
-                    ]
-                  },
-                  5: {
-                    line: 0,
-                    pe: 2,
-                    pd: 0,
-                    fr: 0,
-                    pw: 2,
-                    ch: 0,
-                    zn: 1,
-                    osn: 0,
-                    ce: [
-
-                    ],
-                    cd: [
-                      2
-                    ]
-                  }
-                },
-                di: {
-                  0: {
-                    id: 0,
-                    line: 0,
-                    pe: 1,
-                    s: 1,
-                    pos: 1,
-                    value: "",
-                    text: "",
-                    type: "power",
-                    pw: 1
-                  },
-                  1: {
-                    id: 1,
-                    line: 0,
-                    pe: 3,
-                    s: 1,
-                    pos: 1,
-                    value: 4,
-                    text: "&#xe903;",
-                    type: "digit"
-                  },
-                  2: {
-                    id: 2,
-                    line: 0,
-                    pe: 5,
-                    s: 1,
-                    pos: 1,
-                    value: 1,
-                    text: "&#xe900;",
-                    type: "digit"
-                  },
-                  3: {
-                    id: 3,
-                    line: 0,
-                    pe: 2,
-                    s: 1,
-                    pos: 1,
-                    value: "",
-                    text: "",
-                    type: "power",
-                    pw: 2
-                  },
-                  4: {
-                    id: 4,
-                    line: 0,
-                    pe: 4,
-                    s: 1,
-                    pos: 1,
-                    value: 3,
-                    text: "&#xe902;",
-                    type: "digit"
-                  }
-                }
-              }
-            ]
-*/
+            console.log(result);
             if (result.data.elements) {
               this.elements = result.data.elements;
             } else {
@@ -1403,6 +1426,7 @@ export class WorkspaceComponent implements OnInit {
                 lines: [],
                 fractions: [],
                 powers: [],
+                brackets: [],
                 expressions: [],
                 digits: []
               }
