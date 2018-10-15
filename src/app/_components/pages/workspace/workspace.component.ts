@@ -288,6 +288,7 @@ export class WorkspaceComponent implements OnInit {
   //region Writing Module //
 
   getCharacter(val) {
+    console.log(val);
     switch (val) {
       case 1:
         return "&#xe900;";
@@ -832,7 +833,7 @@ export class WorkspaceComponent implements OnInit {
           }
         }
         var newDI;
-        if (lastDI.di.type != "fraction") {
+        if (lastDI.di.type != "fraction" && lastDI.di.type != "root") {
           newDI = {
             id: diLength,
             line: line,
@@ -890,7 +891,7 @@ export class WorkspaceComponent implements OnInit {
         }
 
         var newZn;
-        if (lastDI.di.type != "fraction") {
+        if (lastDI.di.type != "fraction" && lastDI.di.type != "root") {
           newZn = {
             line: line,
             pe: ex,
@@ -1419,6 +1420,164 @@ export class WorkspaceComponent implements OnInit {
         })
           .subscribe(result => {
             console.log(result);
+            /*this.elements = {
+              lines: [
+                0
+              ],
+              fractions: [],
+              powers: [],
+              roots: [
+                1
+              ],
+              brackets: [],
+              expressions: [
+                1,
+                2,
+                3
+              ],
+              digits: [
+                0,
+                1,
+                2,
+                3,
+                4
+              ]
+            }
+            this.lines = [
+              {
+                id: 0,
+                y: 80,
+                x: 120,
+                dy: 80,
+                dx: 120,
+                fr: {},
+                br: {},
+                pw: {},
+                rt: {
+                  1: {
+                    pe: 1,
+                    ch: 2,
+                    zn: 3,
+                    isActive: 1
+                  }
+                },
+                ex: {
+                  0: {
+                    line: 0,
+                    pe: 0,
+                    pd: 0,
+                    fr: 0,
+                    ch: 1,
+                    zn: 0,
+                    osn: 0,
+                    ce: [
+                      1
+                    ],
+                    cd: []
+                  },
+                  1: {
+                    line: 0,
+                    pe: 0,
+                    pd: 0,
+                    fr: 0,
+                    ch: 0,
+                    zn: 0,
+                    osn: 1,
+                    ce: [
+                      2,
+                      3
+                    ],
+                    cd: [
+                      0,
+                      1,
+                      3
+                    ]
+                  },
+                  2: {
+                    line: 0,
+                    pe: 1,
+                    pd: 3,
+                    pw: 0,
+                    rt: 1,
+                    ch: 1,
+                    zn: 0,
+                    osn: 0,
+                    ce: [],
+                    cd: [
+                      4
+                    ]
+                  },
+                  3: {
+                    line: 0,
+                    pe: 1,
+                    pd: 3,
+                    pw: 0,
+                    rt: 1,
+                    ch: 0,
+                    zn: 1,
+                    osn: 0,
+                    ce: [],
+                    cd: [
+                      2
+                    ]
+                  }
+                },
+                di: {
+                  0: {
+                    id: 0,
+                    line: 0,
+                    pe: 1,
+                    s: 1,
+                    pos: 1,
+                    value: 2,
+                    text: "&#xe901;",
+                    type: "digit"
+                  },
+                  1: {
+                    id: 1,
+                    line: 0,
+                    pe: 1,
+                    s: 1,
+                    pos: 2,
+                    value: "+",
+                    text: "&#xe90a;",
+                    type: "operator"
+                  },
+                  2: {
+                    id: 2,
+                    line: 0,
+                    pe: 1,
+                    s: 1.73,
+                    pos: 1,
+                    value: 45,
+                    text: "&#xe903;&#xe904;",
+                    type: "digit"
+                  },
+                  3: {
+                    id: 3,
+                    line: 0,
+                    pe: 1,
+                    s: 1,
+                    pos: 3,
+                    value: "",
+                    text: "",
+                    type: "root",
+                    rt: 1
+                  },
+                  4: {
+                    id: 4,
+                    line: 0,
+                    pe: 2,
+                    s: 1,
+                    pos: 1,
+                    value: 2,
+                    text: "&#xe901;",
+                    type: "digit"
+                  }
+                }
+              }
+            ];
+*/
             if (result.data.elements) {
               this.elements = result.data.elements;
             } else {

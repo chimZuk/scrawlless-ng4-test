@@ -17,6 +17,7 @@ export class AlgebraComponent {
   di: any;
   fr: any;
   pw: any;
+  rt: any;
   br: any;
 
   expressionHTML: any;
@@ -50,6 +51,7 @@ export class AlgebraComponent {
 
   private expression(ex, id, depth) {
     let cst = this.getConstants(depth);
+    let cstD = this.getConstants(depth + 1);
     let height = 2 * cst.hdc;
     let width = 0;
     let top = 0;
@@ -113,6 +115,34 @@ export class AlgebraComponent {
           if (bottom < zn.bottom) {
             bottom = zn.bottom;
           }
+          height = 2 * cst.hdc + top + bottom;
+          break;
+        }
+        case "root": {
+          let zn = expr[this.di[ex.cd[i]].pos].zni = this.expression(this.ex[this.rt[this.di[ex.cd[i]].rt].zn], this.rt[this.di[ex.cd[i]].rt].zn, depth);
+          let ch = expr[this.di[ex.cd[i]].pos].chi = this.expression(this.ex[this.rt[this.di[ex.cd[i]].rt].ch], this.rt[this.di[ex.cd[i]].rt].ch, depth + 1);
+
+
+          let transformX = (ch.width + 0.5 * cst.wdc) * 20;
+          let transformY = (2 * cst.hdc - ch.height - (zn.height - 1 * cst.hdc) / 2) * 10;
+          let znTransformY = (2 * cst.hdc - zn.height) * 10;
+          expr[this.di[ex.cd[i]].pos].chtml = '<g class="powerCH" data-transformX="' + 0 + '" data-transformY="' + transformY + '" transform="translate(' + 0 + ', ' + transformY + ')"><path fill="transparent" stroke-width="' + 1.5 * cst.wdc + '" stroke-linecap="round" stroke="black" d="M' + 0 + ' ' + (ch.height) * 10 + ' L' + (ch.width + 0.4 * cst.wdc) * 20 + ' ' + (ch.height) * 10 + ' L' + (ch.width + 0.5 * cst.wdc) * 20 + ' ' + (ch.height + (zn.height - 1 * cst.hdc) / 2) * 10 + ' L' + (ch.width + 0.5 * cst.wdc) * 20 + ' ' + (-1 * (zn.height + 1 * cst.hdc) / 2 + ch.height) * 10 + ' L' + (ch.width + 1 * cst.wdc + zn.width) * 20 + ' ' + (-1 * (zn.height + 1 * cst.hdc) / 2 + ch.height) * 10 + ' L' + (ch.width + 1 * cst.wdc + zn.width) * 20 + ' ' + (-1 * (zn.height + 1 * cst.hdc) / 2 + ch.height + 0.7 * cst.hdc) * 10 + '" />' + ch.html + '</g>';
+          expr[this.di[ex.cd[i]].pos].zhtml = '<g data-transformX="' + transformX + '" data-transformY="' + znTransformY + '" transform="translate(' + transformX + ',' + znTransformY + ')">' + zn.html + '</g>';
+
+          if (ch.height < zn.height) {
+            if (top < zn.top) {
+              top = zn.top;
+            }
+          } else {
+            if (top < ch.height) {
+              top = zn.top;
+            }
+          }
+          if (bottom < zn.bottom) {
+            bottom = zn.bottom;
+          }
+
+
           height = 2 * cst.hdc + top + bottom;
           break;
         }
@@ -206,16 +236,25 @@ export class AlgebraComponent {
         case "power": {
           html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height + 1 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
           if (expr[i].chi.width < 1 * cst.wdc) {
-            width += expr[i].zni.width + expr[i].chi.width + 1;
+            width += expr[i].zni.width + expr[i].chi.width + 1 * cst.wdc;
           } else {
             width += expr[i].zni.width + expr[i].chi.width;
+          }
+          break;
+        }
+        case "root": {
+          html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top + bottom) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top + bottom) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
+          if (expr[i].chi.width < 1 * cst.wdc) {
+            width += expr[i].zni.width + expr[i].chi.width + 1 * cst.wdc;
+          } else {
+            width += expr[i].zni.width + expr[i].chi.width + 1 * cst.wdc;
           }
           break;
         }
         case "powerWbrackets": {
           html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height - (expr[i].zni.height / 2) + 2 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height - (expr[i].zni.height / 2) + 2 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
           if (expr[i].chi.width < 1 * cst.wdc) {
-            width += expr[i].zni.width + expr[i].chi.width + 1;
+            width += expr[i].zni.width + expr[i].chi.width  + 1 * cst.wdc;
           } else {
             width += expr[i].zni.width + expr[i].chi.width;
           }
@@ -264,6 +303,7 @@ export class AlgebraComponent {
     this.di = this.line.di;
     this.fr = this.line.fr;
     this.pw = this.line.pw;
+    this.rt = this.line.rt;
     this.br = this.line.br;
     let dragHandler = `<g transform="translate(-20, -20)" class="drag-handler" data-lineID="` + this.line.id + `"><path data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="handler" d="M20,12.5c0,2,0,7.5,0,7.5s-5.4,0-7.5,0C8.4,20,5,16.6,5,12.5S8.4,5,12.5,5S20,8.4,20,12.5z"/>
     <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="12.5" y1="7.5" x2="12.5" y2="17.5"/>

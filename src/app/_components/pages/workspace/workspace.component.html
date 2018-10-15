@@ -244,7 +244,7 @@
                 <button mat-raised-button (click)="write('×', 'op');">
                     <span class="i-font i-mult"></span>
                 </button>
-                <button mat-raised-button (click)="write(null, 'fr');">
+                <button mat-raised-button (click)="write('/', 'op');">
                     <span class="i-font i-divide"></span>
                 </button>
             </div>
@@ -265,11 +265,14 @@
     <mat-card #advOperators id="advOperators" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-raised-button (click)="write(null, 'pw');">
-                    <span class="i-font i-plus"></span>
+                <button mat-raised-button (click)="write(null, 'br');" style="min-height: 7vw !important; min-width: 5vw !important;">
+                    <span style="font-size: 2vw;">( )</span>
                 </button>
-                <button mat-raised-button (click)="write(null, 'br');">
-                    <span style="font-size: 2vw; margin: 0px 2vw;">( )</span>
+                <button mat-raised-button (click)="write(null, 'fr');" style="min-height: 7vw !important; min-width: 5vw !important;">
+                    <span style="font-size: 2vw;">/</span>
+                </button>
+                <button mat-raised-button (click)="write(null, 'pw');" style="min-height: 7vw !important; min-width: 5vw !important;">
+                    <span style="font-size: 2vw;">^</span>
                 </button>
             </div>
         </div>
