@@ -1,9 +1,16 @@
-<mat-tab-group>
+<mat-tab-group [selectedIndex]="currentTab" (selectedTabChange)="tabSwitch($event)">
     <mat-tab class="tabs" [label]="language[lang].diary2">
         <div class="tab">
             <div class="search">
-                <div *ngIf="!loading" style="padding-bottom: 15px;">
-                    <h1>{{ studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].startDateName + " - " +
+                <div *ngIf="!loading" style="padding-bottom: 15px; display: flex;">
+                    <button mat-mini-fab (click)="changeWeek(-1)" style="margin-right: 15px;">
+                        <mat-icon aria-label="Previous Week" matTooltip="Предыдущая неделя">keyboard_arrow_left</mat-icon>
+                    </button>
+                    <button mat-mini-fab (click)="changeWeek(1)" style="margin-right: 20px;">
+                        <mat-icon aria-label="Next Week" matTooltip="Следующая неделя">keyboard_arrow_right</mat-icon>
+                    </button>
+                    <h1>{{ studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].startDateName + " - "
+                        +
                         studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].endDateName }}
                     </h1>
                 </div>
@@ -11,7 +18,8 @@
             <div class="tab-content">
                 <div *ngIf="!loading">
                     <div class="days" style="margin-top: 10px;">
-                        <div *ngFor="let day of studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].days" style="margin-top: 20px;">
+                        <div *ngFor="let day of studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].days"
+                            style="margin-top: 20px;">
                             <p>{{day.name}}</p>
                             <hr>
 
@@ -33,21 +41,25 @@
                                                 <div class="preview"></div>
                                             </div>
                                             <div class="card-action">
-                                                <button mat-mini-fab [matTooltip]="language[lang].delete" matTooltipPosition="below" (click)="deleteList(list?.id)">
+                                                <button mat-mini-fab [matTooltip]="language[lang].delete"
+                                                    matTooltipPosition="below" (click)="deleteList(list?.id)">
                                                     <mat-icon>delete</mat-icon>
                                                 </button>
                                                 <div>
-                                                    <button mat-mini-fab [matTooltip]="language[lang].sendToTeacher" matTooltipPosition="below">
+                                                    <button mat-mini-fab [matTooltip]="language[lang].sendToTeacher"
+                                                        matTooltipPosition="below">
                                                         <mat-icon>send</mat-icon>
                                                     </button>
-                                                    <button mat-mini-fab [matTooltip]="language[lang].open" matTooltipPosition="below" (click)="directToList(list?.id)">
+                                                    <button mat-mini-fab [matTooltip]="language[lang].open"
+                                                        matTooltipPosition="below" (click)="directToList(list?.id)">
                                                         <mat-icon>launch</mat-icon>
                                                     </button>
                                                 </div>
                                             </div>
                                         </mat-card>
 
-                                        <mat-card (click)="listCreate(1, day.date)" class="addNewButton homework-card" style="align-items: center; justify-content: center;">
+                                        <mat-card (click)="listCreate(1, day.date)" class="addNewButton homework-card"
+                                            style="align-items: center; justify-content: center;">
                                             <mat-icon color="accent" style="font-size: 60px; height: auto; width: auto;">add_box</mat-icon>
                                         </mat-card>
                                     </div>
@@ -62,7 +74,71 @@
 
 
                 </div>
-                <button (click)="listCreate(0, 0)" class="hwCreate" [matTooltip]="language[lang].newList" matTooltipPosition="left" mat-fab>
+                <button (click)="listCreate(0, 0)" class="hwCreate" [matTooltip]="language[lang].newList"
+                    matTooltipPosition="left" mat-fab>
+                    <mat-icon>note_add</mat-icon>
+                </button>
+                <div *ngIf="loading" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
+                    <mat-spinner></mat-spinner>
+                </div>
+
+
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab class="tabs" [label]="language[lang].tasks">
+        <div class="tab">
+            <div class="search">
+                <div *ngIf="!loading" style="padding-bottom: 15px; display: flex;">
+                    <!--<button mat-mini-fab (click)="changeWeek(-1)" style="margin-right: 15px;">
+                        <mat-icon aria-label="Previous Week" matTooltip="Предыдущая неделя">keyboard_arrow_left</mat-icon>
+                    </button>
+                    <button mat-mini-fab (click)="changeWeek(1)" style="margin-right: 20px;">
+                        <mat-icon aria-label="Next Week" matTooltip="Следующая неделя">keyboard_arrow_right</mat-icon>
+                    </button>
+                    <h1>{{ studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].startDateName + " - "
+                        +
+                        studyYear.semesters[currentWeek.semester].studyWeeks[currentWeek.week].endDateName }}
+                    </h1>-->
+                </div>
+            </div>
+            <div class="tab-content">
+                <div *ngIf="!loading">
+                    <div class="sheets" style="display: flex; flex-wrap: wrap;">
+
+                        <mat-card *ngFor="let list of homeworks" class="homework-card">
+                            <div class="card-header">
+                                <h1>{{ list.data.description }}</h1>
+                            </div>
+                            <div class="card-content">
+                                <div class="preview"></div>
+                            </div>
+                            <div class="card-action">
+                                <button mat-mini-fab [matTooltip]="language[lang].delete" matTooltipPosition="below"
+                                    (click)="deleteList(list?.id)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                                <div>
+                                    <button mat-mini-fab [matTooltip]="language[lang].sendToTeacher" matTooltipPosition="below">
+                                        <mat-icon>send</mat-icon>
+                                    </button>
+                                    <button mat-mini-fab [matTooltip]="language[lang].open" matTooltipPosition="below"
+                                        (click)="directToList(list?.id)">
+                                        <mat-icon>launch</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </mat-card>
+
+                        <mat-card (click)="listCreate(0, 0)" class="addNewButton homework-card" style="align-items: center; justify-content: center;">
+                            <mat-icon color="accent" style="font-size: 60px; height: auto; width: auto;">add_box</mat-icon>
+                        </mat-card>
+                    </div>
+
+
+                </div>
+                <button (click)="listCreate(0, 0)" class="hwCreate" [matTooltip]="language[lang].newList"
+                    matTooltipPosition="left" mat-fab>
                     <mat-icon>note_add</mat-icon>
                 </button>
                 <div *ngIf="loading" style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center;">
