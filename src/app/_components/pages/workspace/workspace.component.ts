@@ -343,6 +343,11 @@ export class WorkspaceComponent implements OnInit {
         this.writeBr();
         break;
       }
+      case "rt": {
+        this.undoHistory = [];
+        this.writeRt();
+        break;
+      }
       case "di": {
         this.writeDi(val);
         break;
@@ -370,6 +375,7 @@ export class WorkspaceComponent implements OnInit {
       dx: (this.selection.x / 20 >> 0) * 20,
       fr: {},
       br: {},
+      rt: {},
       pw: {},
       ex: {
         0: {
@@ -1105,6 +1111,154 @@ export class WorkspaceComponent implements OnInit {
   }
 
 
+  writeRt(): any {
+    if (this.selection.line != null) {
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      let lastDI = {
+        pos: 0,
+        id: null,
+        di: null
+      }
+
+      for (var i = 0; i < this.lines[line].ex[ex].cd.length; i++) {
+        if (this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos > lastDI.pos) {
+          lastDI.pos = this.lines[line].di[this.lines[line].ex[ex].cd[i]].pos;
+          lastDI.di = this.lines[line].di[this.lines[line].ex[ex].cd[i]];
+          lastDI.id = this.lines[line].ex[ex].cd[i];
+        }
+      }
+
+      var newDI = {
+        id: diLength,
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: "",
+        text: "",
+        type: "root",
+        rt: this.elements.roots.length + 1
+      }
+
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+
+      var newRT = {
+        pe: ex,
+        pd: this.elements.digits[this.elements.digits.length],
+        ch: this.elements.expressions.length + 1,
+        zn: this.elements.expressions.length + 2,
+        isActive: 1
+      }
+
+      var newCh = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        rt: this.elements.roots.length + 1,
+        ch: 1, zn: 0, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      var newZn = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        rt: this.elements.roots.length + 1,
+        ch: 0, zn: 1, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      this.lines[line].rt[this.elements.roots.length + 1] = newRT;
+      this.elements.roots.push(this.elements.roots.length + 1);
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+
+      this.selection.ex = this.elements.expressions.length;
+      this.selection.line = line;
+      this.onClick({
+        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+      });
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+    } else {
+      this.createLine();
+      let line = this.selection.line;
+      let ex = this.selection.ex;
+      let diLength = Object.keys(this.lines[line].di).length;
+      var newDI = {
+        id: diLength,
+        line: line,
+        pe: ex,
+        s: 1,
+        pos: this.lines[line].ex[ex].cd.length + 1,
+        value: "",
+        text: "",
+        type: "root",
+        rt: this.elements.roots.length + 1
+      }
+
+      this.lines[line].di[diLength] = newDI;
+      this.lines[line].ex[ex].cd.push(diLength);
+      this.elements.digits.push(diLength);
+
+      var newRT = {
+        pe: ex,
+        pd: this.elements.digits[this.elements.digits.length],
+        ch: this.elements.expressions.length + 1,
+        zn: this.elements.expressions.length + 2,
+        isActive: 1
+      }
+
+      var newCh = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        rt: this.elements.roots.length + 1,
+        ch: 1, zn: 0, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      var newZn = {
+        line: line,
+        pe: ex,
+        pd: diLength,
+        rt: this.elements.roots.length + 1,
+        ch: 0, zn: 1, osn: 0,
+        ce: [],
+        cd: []
+      }
+
+      this.lines[line].rt[this.elements.roots.length + 1] = newRT;
+      this.elements.roots.push(this.elements.roots.length + 1);
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newCh;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+
+      this.selection.ex = this.elements.expressions.length;
+      this.selection.line = line;
+      this.onClick({
+        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
+      });
+
+      this.lines[line].ex[this.elements.expressions.length + 1] = newZn;
+      this.lines[line].ex[ex].ce.push(this.elements.expressions.length + 1);
+      this.elements.expressions.push(this.elements.expressions.length + 1);
+    }
+  }
+
+
 
 
   //endregion Writing Module //
@@ -1584,6 +1738,7 @@ export class WorkspaceComponent implements OnInit {
               this.elements = {
                 lines: [],
                 fractions: [],
+                roots: [],
                 powers: [],
                 brackets: [],
                 expressions: [],

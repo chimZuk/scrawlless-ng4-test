@@ -56,23 +56,28 @@ export class CreateListComponent implements OnInit {
   loading: boolean = false;
 
   listCreate() {
-    console.log(this.data);
     this.loading = true;
     this.homeworkService.listCreate(this.data)
       .subscribe(result => {
-        console.log(this.data);
         this.loading = false;
       });
   }
 
   ngOnInit() {
-    console.log(this.HWData)
     if (this.HWData) {
       this.data.info.date = new Date(this.HWData.date);
       this.data.info.subjectId = String(this.HWData.subjectID);
       this.disabledClass = true;
     } else {
       var currentDate = new Date();
+      var day: number = currentDate.getDay();
+      if (day == 6) {
+        currentDate.setDate(currentDate.getDate() - 1);
+      } else {
+        if (day == 0) {
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+      }
       this.data.info.date = currentDate;
       this.disabledClass = false;
     }

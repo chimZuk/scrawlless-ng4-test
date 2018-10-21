@@ -29,6 +29,8 @@ export class StudentListsComponent implements OnInit {
   loading: boolean = true;
   homeworks: any[];
 
+  currentTab: number = 0;
+
   studyYear: any = {
     name: "",
     startDate: "",
@@ -84,22 +86,77 @@ export class StudentListsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       this.loading = true;
-      this.hwRead();
+      switch (this.currentTab) {
+        case 0: {
+          this.diaryRead("regular");
+          break;
+        }
+        case 1: {
+          this.hwRead("regular");
+          break;
+        }
+        default: {
+          this.diaryRead("regular");
+          break;
+        }
+      }
+
     });
   }
 
 
-  setWeek(sem, id) {
+  setWeek(sem, id, type) {
     this.currentWeek = {
       semester: sem,
       week: id
     }
-    console.log(this.currentWeek)
+  }
+
+  changeWeek(direction) {
+    if (this.currentWeek.week + direction < this.studyYear.semesters[this.currentWeek.semester].studyWeeks.length && this.currentWeek.week + direction >= 0) {
+      this.currentWeek.week += direction;
+    }
+  }
+
+  tabSwitch(event) {
+    this.currentTab = event.index;
+    localStorage.setItem('lastOpenedListsTab', event.index);
+    switch (this.currentTab) {
+      case 0: {
+        this.diaryRead("regular");
+        break;
+      }
+      case 1: {
+        this.hwRead("regular");
+        break;
+      }
+      default: {
+        this.diaryRead("regular");
+        break;
+      }
+    }
   }
 
 
+  hwRead(type) {
+    let token = JSON.parse(localStorage.getItem('currentUser')).token;
+    let data = {
+      token: token
+    }
+    this.loading = true;
+    this.homeworkService.getRawHomeworks(data)
+      .subscribe(result => {
+        this.homeworks = result;
+        if (type == "initial") {
+          this.diaryRead("initial");
+        } else {
+          this.loading = false;
+        }
+      });
+  }
 
-  hwRead() {
+
+  diaryRead(type) {
     let token = JSON.parse(localStorage.getItem('currentUser')).token;
     let data = {
       token: token
@@ -116,19 +173,16 @@ export class StudentListsComponent implements OnInit {
             currentDate.setDate(currentDate.getDate() - 2);
           }
         }
-
+        var semester = 0;
+        var week = 0;
 
         if (currentDate <= new Date(this.studyYear.endDate) && currentDate >= new Date(this.studyYear.startDate)) {
           for (var i = 0; i < this.studyYear.semesters.length; i++) {
             if (currentDate <= new Date(this.studyYear.semesters[i].endDate) && currentDate >= new Date(this.studyYear.semesters[i].startDate)) {
-              this.currentWeek.semester = i;
+              semester = i;
               for (var j = 0; j < this.studyYear.semesters[i].studyWeeks.length; j++) {
-                console.log("lol");
-                console.log(currentDate);
-                console.log(new Date(this.studyYear.semesters[i].studyWeeks[j].startDate));
-                console.log(new Date(this.studyYear.semesters[i].studyWeeks[j].endDate));
                 if (currentDate <= new Date(this.studyYear.semesters[i].studyWeeks[j].endDate) && currentDate >= new Date(this.studyYear.semesters[i].studyWeeks[j].startDate)) {
-                  this.currentWeek.week = j;
+                  week = j;
                   break;
                 }
               }
@@ -138,17 +192,11 @@ export class StudentListsComponent implements OnInit {
           }
         } else {
         }
-        console.log(this.studyYear);
-        console.log(this.currentWeek);
 
-        this.homeworkService.getRawHomeworks(data)
-          .subscribe(result => {
-            console.log(result);
-            this.loading = false;
-          });
-
-        //-----------End of Semesters implementation
-
+        if (type == "initial") {
+          this.setWeek(semester, week, type);
+        }
+        this.loading = false;
       });
   }
 
@@ -166,12 +214,39 @@ export class StudentListsComponent implements OnInit {
     this.loading = true;
     this.homeworkService.deleteList(data)
       .subscribe(result => {
-        this.hwRead();
+        switch (this.currentTab) {
+          case 0: {
+            this.diaryRead("regular");
+            break;
+          }
+          case 1: {
+            this.hwRead("regular");
+            break;
+          }
+          default: {
+            this.diaryRead("regular");
+            break;
+          }
+        }
       });
   }
 
   ngOnInit() {
-    this.hwRead();
+    this.currentTab = Number(localStorage.getItem('lastOpenedListsTab'));
+    switch (this.currentTab) {
+      case 0: {
+        this.diaryRead("initial");
+        break;
+      }
+      case 1: {
+        this.hwRead("initial");
+        break;
+      }
+      default: {
+        this.diaryRead("initial");
+        break;
+      }
+    }
   }
 
   terms: any = []
@@ -191,7 +266,6 @@ export class StudentListsComponent implements OnInit {
 
 
   listCreate(subjID, date) {
-    console.log(arguments);
     this.openDialog(subjID, date);
   }
 
