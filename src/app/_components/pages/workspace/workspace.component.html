@@ -49,8 +49,8 @@
 </style>
 
 <div *ngIf="!loading" id="autoScroll">
-    <svg version="1.1" id="cover" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class=""
-        [attr.width]="0.9 * vw" [attr.height]="0.9 * 1.41375 * vw" viewBox="0 0 800 1131">
+    <svg version="1.1" id="cover" (mousemove)="onMouseMove($event)" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg"
+        class="" [attr.width]="0.9 * vw" [attr.height]="0.9 * 1.41375 * vw" viewBox="0 0 800 1131">
         <defs>
             <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
                 <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#69b0b7" id="cell" stroke-width="0.5" />
@@ -64,8 +64,8 @@
             </filter>
         </defs>
         <rect width="100%" height="100%" fill="#fff" />
-        <svg:rect #list id="list" (click)="setCursor($event, 'canvas', 0);" id="list" width="100%" height="100%"
-            [attr.fill]="'url(' + absUrl + '#smallGrid)'" />
+        <svg:rect #list id="list" [class.geoCursor]="mode == 'geo'" (click)="setCursor($event, 'canvas', 0);" id="list"
+            width="100%" height="100%" [attr.fill]="'url(' + absUrl + '#smallGrid)'" />
 
         <text class="textForSave" x="120" y="-570" transform="rotate(90,150,50)" font-size="22" font-family="Comic Sans MS">{{
             description }}</text>
@@ -83,30 +83,30 @@
             <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
         </svg:g>
 
-        <!--<svg:g *ngFor="let el of geoElements.lines; let i = index;">
+        <svg:g *ngFor="let el of geoElements.circles; let i = index;">
+            <circle [attr.data-id]="el" [ngClass]="{ 'svgDraggable touch' : geo.circles[el].selected }" (click)="select($event, el, 'circles')"
+                *ngIf="geo.circles[el].type == 'circle'" [attr.cx]="geo.dots[geo.circles[el].cDot].x" [attr.cy]="geo.dots[geo.circles[el].cDot].y"
+                [attr.r]="geo.circles[el].r" [attr.stroke-width]="geo.circles[el].strokeW" stroke="black" fill="none"></circle>
+        </svg:g>
+
+        <svg:g *ngFor="let el of geoElements.lines; let i = index;">
             <line [attr.x1]="geo.dots[geo.lines[el].sDot].x" [attr.y1]="geo.dots[geo.lines[el].sDot].y" [attr.x2]="geo.dots[geo.lines[el].eDot].x"
                 [attr.y2]="geo.dots[geo.lines[el].eDot].y" stroke="black" />
         </svg:g>
 
         <svg:g *ngFor="let el of geoElements.dots; let i = index;">
-            <circle [attr.data-id]="el" [ngClass]="{ 'svgDraggable touch' : geo.dots[el].selected }" (click)="select($event, el)" *ngIf="geo.dots[el].type == 'dot'"
-                [attr.cx]="geo.dots[el].x" [attr.cy]="geo.dots[el].y" [attr.r]="geo.dots[el].r" [attr.stroke-width]="1" stroke="black"
-                fill="gray"></circle>
+            <text [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="geo.dots[el].x - 3" [attr.y]="geo.dots[el].y - 8"
+                [attr.font-size]="10">{{geo.dots[el].name}}</text>
+            <text class="textForSave" [attr.x]="geo.dots[el].x - 3" [attr.y]="geo.dots[el].y - 8" [attr.font-size]="10">{{geo.dots[el].name}}</text>
+            <circle [attr.data-id]="el" [ngClass]="{ 'svgDraggable touch' : geo.dots[el].selected }" (click)="select($event, el, 'dots')"
+                *ngIf="geo.dots[el].type == 'dot'" [attr.cx]="geo.dots[el].x" [attr.cy]="geo.dots[el].y" [attr.r]="geo.dots[el].r"
+                [attr.stroke-width]="1" stroke="black" fill="gray"></circle>
         </svg:g>
 
-        <svg:g *ngFor="let el of geoElements.circles; let i = index;">
-            <circle [attr.data-id]="el" [ngClass]="{ 'svgDraggable touch' : geo.circles[el].selected }" (click)="select($event, el)"
-                *ngIf="geo.circles[el].type == 'circle'" [attr.cx]="geo.circles[el].x" [attr.cy]="geo.circles[el].y" [attr.r]="geo.circles[el].r"
-                [attr.stroke-width]="geo.circles[el].strokeW" stroke="black" fill="gray"></circle>
-        </svg:g>-->
+        <circle [attr.data-id]="el" *ngIf="tempElement.type == 'dot'" (click)="setCursor($event, 'dot', 0);" style="cursor: crosshair;"
+            [attr.cx]="tempElement.x" [attr.cy]="tempElement.y" [attr.r]="tempElement.r" [attr.stroke-width]="1" stroke="black"
+            fill="gray"></circle>
 
-        <!--<svg:g *ngFor="let circle of geoElements.circles; let i = index;">
-            <circle [attr.cx]="geo.circles[circle].x" [attr.cy]="geo.circles[circle].y" [attr.r]="geo.circles[circle].r" stroke="black" fill="gray"></circle>
-        </svg:g>-->
-
-
-        <!--<circle cx="500" cy="150" r="50" stroke="black" stroke-width="1" fill="gray" class="" (click)="select($event)" />
-        <circle cx="400" cy="500" r="80" stroke="black" stroke-width="3" fill="none" class="" (click)="select($event)" />-->
     </svg>
 
 
@@ -275,6 +275,29 @@
                     <span class="i-font i-power"></span>
                 </button>
                 <button mat-raised-button (click)="write(null, 'rt');" style="min-height: 7vw !important; min-width: 5vw !important;">
+                    <span class="i-font i-root" style="font-size: 2vw !important;"></span>
+                </button>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card #geoElements id="geoElements" class="ui keyboard" *ngIf="mode === 'geo'">
+        <div class="flex-column">
+            <div class="flex-row">
+                <button mat-raised-button [class.selectedGeoTool]="modeType == 'dot'" (click)="switchModeType('dot');"
+                    style="min-height: 7vw !important; min-width: 5vw !important;">
+                    <span class="i-font i-brackets"></span>
+                </button>
+                <button mat-raised-button [class.selectedGeoTool]="modeType == 'line'" (click)="switchModeType('line');"
+                    style="min-height: 7vw !important; min-width: 5vw !important;">
+                    <span class="i-font i-fraction"></span>
+                </button>
+                <button mat-raised-button [class.selectedGeoTool]="modeType == 'circle'" (click)="switchModeType('circle');"
+                    style="min-height: 7vw !important; min-width: 5vw !important;">
+                    <span class="i-font i-power"></span>
+                </button>
+                <button mat-raised-button [class.selectedGeoTool]="modeType == 'rectangle'" (click)="switchModeType('rectangle');"
+                    style="min-height: 7vw !important; min-width: 5vw !important;">
                     <span class="i-font i-root" style="font-size: 2vw !important;"></span>
                 </button>
             </div>

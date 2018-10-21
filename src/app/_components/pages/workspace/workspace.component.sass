@@ -21,6 +21,18 @@
   -moz-osx-font-smoothing: grayscale
 
 
+.i-brackets:before 
+  content: "\e912"
+
+.i-fraction:before 
+  content: "\e913"
+
+.i-power:before 
+  content: "\e914"
+
+.i-root:before 
+  content: "\e915"
+
 .i-one:before 
   content: "\e900"
 
@@ -74,24 +86,6 @@
 
 .i-cursour:before 
   content: "\e911"
-
-.i-root:before 
-  content: "\e912"
-
-.i-rootlong:before 
-  content: "\e913"
-
-.i-roottop:before 
-  content: "\e914"
-
-.i-rootend:before 
-  content: "\e915"
-
-.i-roottopend:before 
-  content: "\e916"
-
-.i-rootmiddlelongsvg:before 
-  content: "\e917"
 
 
 .flex-row
@@ -202,6 +196,10 @@
   bottom: 14.5vw
   right: 20vw
 
+#geoElements
+  top: 1vw
+  left: 20vw
+
 .tools
   left: 1vw
   top: 15vw
@@ -212,7 +210,12 @@
   background-color: #fff
   color: #ed7e28
 
-.tools button, #operators button, #advOperators button
+  
+.selectedGeoTool
+  background-color: #ed7e28
+  color: #fff
+
+.tools button, #operators button, #advOperators button, #geoElements button
   margin: 0.1vw
   transition: all 0.5s
   padding: 0.4vw 0 !important
@@ -239,3 +242,6 @@
 
 circle
   cursor: pointer
+
+.geoCursor
+  cursor: crosshair !important
