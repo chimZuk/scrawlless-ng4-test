@@ -190,8 +190,8 @@
 }
 
 .download {
-  bottom: 2vw;
-  left: 1vw;
+  top: 31vw;
+  right: 2vw;
 }
 
 .keyboard {
@@ -236,7 +236,7 @@
 }
 
 #advOperators {
-  bottom: 14.5vw;
+  bottom: 15vw;
   right: 20vw;
 }
 
@@ -245,9 +245,29 @@
   left: 20vw;
 }
 
+#letters {
+  bottom: 2vw;
+  left: 1vw;
+  max-width: 55vw;
+}
+
+#selectLetters {
+  top: 1vw;
+  right: 13vw;
+}
+
+#selectLetters button:hover {
+  background-color: red;
+}
+
+#addRisk {
+  bottom: 11vw;
+  left: 1vw;
+}
+
 .tools {
   left: 1vw;
-  top: 15vw;
+  top: 12vw;
   display: flex;
   flex-direction: column;
 }
@@ -262,7 +282,7 @@
   color: #fff;
 }
 
-.tools button, #operators button, #advOperators button, #geoElements button {
+.tools button, #operators button, #advOperators button, #geoElements button, #selectLetters button {
   margin: 0.1vw;
   transition: all 0.5s;
   padding: 0.4vw 0 !important;
@@ -286,17 +306,37 @@
   margin-bottom: 10px;
 }
 
+#cover * {
+  user-select: none;
+}
+
 .touch {
   touch-action: none !important;
   cursor: move;
 }
 
-circle {
+.dot {
   cursor: pointer;
 }
 
 .geoCursor {
   cursor: crosshair !important;
+}
+
+.selectCursor {
+  cursor: default !important;
+}
+
+.sResizeCursor {
+  cursor: s-resize !important;
+}
+
+.wResizeCursor {
+  cursor: w-resize !important;
+}
+
+.primaryFill {
+  fill: #ed7e28;
 }
 
 /*# sourceMappingURL=workspace.component.css.map */

@@ -69,13 +69,30 @@ export class WorkspaceComponent implements OnInit {
   description: string = "";
 
   isDragging = false;
+  isResizing = false;
+  wasMoving = false;
+  wasSelMoving = false;
 
   lines: any;
   elements: any;
 
-  tempElement: any = {
+  tempDot: any = {
     type: "none"
   };
+
+  tempLine: any = {
+    type: "none"
+  };
+
+  tempSelection: any = {
+    type: "none"
+  }
+
+
+  lastDraw: any = {
+    type: "none",
+    step: 0
+  }
 
   geoElements: any = {
     dots: [0, 1, 2, 3],
@@ -143,6 +160,7 @@ export class WorkspaceComponent implements OnInit {
         type: "circle",
         cDot: 3,
         r: 20,
+        dr: 20,
         strokeW: 1,
         selected: 0
       },
@@ -150,11 +168,122 @@ export class WorkspaceComponent implements OnInit {
         type: "circle",
         cDot: 2,
         r: 50,
+        dr: 50,
         strokeW: 1,
         selected: 0
       }
     }
   }
+
+
+  lettersKeyboard: any = [
+    {
+      name: "A",
+      gen: 0
+    },
+    {
+      name: "B",
+      gen: 0
+    },
+    {
+      name: "C",
+      gen: 0
+    },
+    {
+      name: "D",
+      gen: 0
+    },
+    {
+      name: "E",
+      gen: 0
+    },
+    {
+      name: "F",
+      gen: 0
+    },
+    {
+      name: "G",
+      gen: 0
+    },
+    {
+      name: "H",
+      gen: 0
+    },
+    {
+      name: "I",
+      gen: 0
+    },
+    {
+      name: "J",
+      gen: 0
+    },
+    {
+      name: "K",
+      gen: 0
+    },
+    {
+      name: "L",
+      gen: 0
+    },
+    {
+      name: "M",
+      gen: 0
+    },
+    {
+      name: "N",
+      gen: 0
+    },
+    {
+      name: "O",
+      gen: 0
+    },
+    {
+      name: "P",
+      gen: 0
+    },
+    {
+      name: "Q",
+      gen: 0
+    },
+    {
+      name: "R",
+      gen: 0
+    },
+    {
+      name: "S",
+      gen: 0
+    },
+    {
+      name: "T",
+      gen: 0
+    },
+    {
+      name: "U",
+      gen: 0
+    },
+    {
+      name: "V",
+      gen: 0
+    },
+    {
+      name: "W",
+      gen: 0
+    },
+    {
+      name: "X",
+      gen: 0
+    },
+    {
+      name: "Y",
+      gen: 0
+    },
+    {
+      name: "Z",
+      gen: 0
+    }
+  ];
+
+  selectedLetters: any = [];
 
   terms: any = [];
 
@@ -383,43 +512,415 @@ export class WorkspaceComponent implements OnInit {
   draw(element, geoPoint) {
     this.redoHistory = [];
     switch (this.modeType) {
-      case "dot": {
-        var newDot = {
-          type: "dot",
-          name: "",
-          x: geoPoint.x,
-          y: geoPoint.y,
-          dx: geoPoint.x,
-          dy: geoPoint.y,
-          r: 4,
-          strokeW: 1,
-          selected: 0
+      case "select": {
+        if (this.tempSelection.type == "select" && !this.wasSelMoving) {
+          console.log("lol")
+          this.wasSelMoving = false;
+          if (this.setSX(geoPoint.x) > this.tempSelection.sx) {
+            this.tempSelection.x = this.tempSelection.sx;
+            this.tempSelection.width = this.setSX(geoPoint.x) - this.tempSelection.x;
+          } else {
+            this.tempSelection.x = this.setSX(geoPoint.x);
+            this.tempSelection.width = this.tempSelection.sx - this.tempSelection.x;
+          }
+          if (this.setSY(geoPoint.y) > this.tempSelection.sy) {
+            this.tempSelection.y = this.tempSelection.sy;
+            this.tempSelection.height = this.setSY(geoPoint.y) - this.tempSelection.y;
+          } else {
+            this.tempSelection.y = this.setSY(geoPoint.y);
+            this.tempSelection.height = this.tempSelection.sy - this.tempSelection.y;
+          }
+          this.deselectAll();
+          for (var i = 0; i < this.geoElements.dots.length; i++) {
+            var dot = this.geo.dots[this.geoElements.dots[i]];
+            if (dot.x >= this.tempSelection.x && dot.x <= (this.tempSelection.x + this.tempSelection.width) && dot.y >= this.tempSelection.y && dot.y <= (this.tempSelection.y + this.tempSelection.height)) {
+              if (!this.geo.dots[this.geoElements.dots[i]].selected) {
+                this.select(this.geoElements.dots[i], "dots");
+              }
+            }
+          }
         }
-        var dotID = this.geoElements.dots.length;
-        this.geoElements.dots.push(dotID)
-        this.geo.dots[dotID] = newDot;
+        break;
+      }
+      case "dot": {
+        var checked = this.checkExisting(geoPoint.x, geoPoint.y);
+        if (!checked.exist) {
+          var name: string = "";
+          var gen: number = 0;
+          if (this.selectedLetters[0]) {
+            name = String(this.selectedLetters[0].name);
+            gen = Number(this.selectedLetters[0].gen);
+          }
+          var newDot = {
+            type: "dot",
+            name: name,
+            gen: gen,
+            x: geoPoint.x,
+            y: geoPoint.y,
+            dx: geoPoint.x,
+            dy: geoPoint.y,
+            r: 4,
+            strokeW: 1,
+            selected: 0
+          }
+          var dotID = this.geoElements.dots.length;
+          this.geoElements.dots.push(dotID)
+          this.geo.dots[dotID] = newDot;
+          if (this.selectedLetters[0]) {
+            this.selectedLetters.splice(0, 1);
+          }
+        } else {
+          if (this.selectedLetters[0]) {
+            this.geo.dots[checked.id].name = this.selectedLetters[0].name;
+            this.geo.dots[checked.id].gen = this.selectedLetters[0].gen;
+            this.selectedLetters.splice(0, 1);
+          }
+        }
         break;
       }
       case "line": {
+        if (this.lastDraw.type == "line") {
+          if (this.lastDraw.step == 1) {
+            var checked = this.checkExisting(geoPoint.x, geoPoint.y);
+            var newDotID;
+            if (checked.exist) {
+              newDotID = checked.id;
+            } else {
+              var name: string = "";
+              var gen: number = 0;
+              if (this.selectedLetters[0]) {
+                name = String(this.selectedLetters[0].name);
+                gen = Number(this.selectedLetters[0].gen);
+              }
+              var newDot = {
+                type: "dot",
+                name: name,
+                gen: gen,
+                x: geoPoint.x,
+                y: geoPoint.y,
+                dx: geoPoint.x,
+                dy: geoPoint.y,
+                r: 4,
+                strokeW: 1,
+                selected: 0
+              }
+              var dotID = this.geoElements.dots.length;
+              this.geoElements.dots.push(dotID)
+              this.geo.dots[dotID] = newDot;
+              newDotID = dotID;
+              if (this.selectedLetters[0]) {
+                this.selectedLetters.splice(0, 1);
+              }
+            }
+
+            if (this.lastDraw.sDot != newDotID) {
+              var newLine = {
+                type: "line",
+                sDot: this.lastDraw.sDot,
+                eDot: newDotID,
+                strokeW: 1,
+                selected: 0
+              }
+
+              var lineID = this.geoElements.lines.length;
+              this.geoElements.lines.push(lineID)
+              this.geo.lines[lineID] = newLine;
+            }
+
+            this.lastDraw = {
+              type: "none",
+              step: 0
+            }
+            this.tempLine = {
+              type: "none"
+            }
+          }
+        } else {
+          if (this.lastDraw.type == "none") {
+            var checked = this.checkExisting(geoPoint.x, geoPoint.y);
+            var newDotID;
+            if (checked.exist) {
+              newDotID = checked.id;
+            } else {
+              var name: string = "";
+              var gen: number = 0;
+              if (this.selectedLetters[0]) {
+                name = String(this.selectedLetters[0].name);
+                gen = Number(this.selectedLetters[0].gen);
+              }
+              var newDot = {
+                type: "dot",
+                name: name,
+                gen: gen,
+                x: geoPoint.x,
+                y: geoPoint.y,
+                dx: geoPoint.x,
+                dy: geoPoint.y,
+                r: 4,
+                strokeW: 1,
+                selected: 0
+              }
+              var dotID = this.geoElements.dots.length;
+              this.geoElements.dots.push(dotID)
+              this.geo.dots[dotID] = newDot;
+              newDotID = dotID;
+              if (this.selectedLetters[0]) {
+                this.selectedLetters.splice(0, 1);
+              }
+            }
+
+            this.lastDraw = {
+              type: "line",
+              step: 1,
+              sDot: newDotID
+            }
+          }
+        }
+        break;
+      }
+      case "multiline": {
+        if (this.lastDraw.type == "line") {
+          if (this.lastDraw.step == 1) {
+            var checked = this.checkExisting(geoPoint.x, geoPoint.y);
+            var newDotID;
+            if (checked.exist) {
+              newDotID = checked.id;
+            } else {
+              var name: string = "";
+              var gen: number = 0;
+              if (this.selectedLetters[0]) {
+                name = String(this.selectedLetters[0].name);
+                gen = Number(this.selectedLetters[0].gen);
+              }
+              var newDot = {
+                type: "dot",
+                name: name,
+                gen: gen,
+                x: geoPoint.x,
+                y: geoPoint.y,
+                dx: geoPoint.x,
+                dy: geoPoint.y,
+                r: 4,
+                strokeW: 1,
+                selected: 0
+              }
+              var dotID = this.geoElements.dots.length;
+              this.geoElements.dots.push(dotID)
+              this.geo.dots[dotID] = newDot;
+              newDotID = dotID;
+              if (this.selectedLetters[0]) {
+                this.selectedLetters.splice(0, 1);
+              }
+            }
+
+            if (this.lastDraw.sDot != newDotID) {
+              var newLine = {
+                type: "line",
+                sDot: this.lastDraw.sDot,
+                eDot: newDotID,
+                strokeW: 1,
+                selected: 0
+              }
+
+              var lineID = this.geoElements.lines.length;
+              this.geoElements.lines.push(lineID)
+              this.geo.lines[lineID] = newLine;
+            }
+
+            if (newDotID == this.lastDraw.fDot) {
+              this.lastDraw = {
+                type: "none",
+                step: 0
+              }
+              this.tempLine = {
+                type: "none"
+              }
+            } else {
+              this.lastDraw = {
+                type: "line",
+                step: 1,
+                sDot: newDotID,
+                fDot: this.lastDraw.fDot
+              }
+            }
+
+          }
+        } else {
+          if (this.lastDraw.type == "none") {
+            var checked = this.checkExisting(geoPoint.x, geoPoint.y);
+            var newDotID;
+            if (checked.exist) {
+              newDotID = checked.id;
+            } else {
+              var name: string = "";
+              var gen: number = 0;
+              if (this.selectedLetters[0]) {
+                name = String(this.selectedLetters[0].name);
+                gen = Number(this.selectedLetters[0].gen);
+              }
+              var newDot = {
+                type: "dot",
+                name: name,
+                gen: gen,
+                x: geoPoint.x,
+                y: geoPoint.y,
+                dx: geoPoint.x,
+                dy: geoPoint.y,
+                r: 4,
+                strokeW: 1,
+                selected: 0
+              }
+              var dotID = this.geoElements.dots.length;
+              this.geoElements.dots.push(dotID)
+              this.geo.dots[dotID] = newDot;
+              newDotID = dotID;
+              if (this.selectedLetters[0]) {
+                this.selectedLetters.splice(0, 1);
+              }
+            }
+
+            this.lastDraw = {
+              type: "line",
+              step: 1,
+              sDot: newDotID,
+              fDot: newDotID
+            }
+          }
+        }
         break;
       }
       case "circle": {
+        if (this.lastDraw.type == "circle") {
+          if (this.lastDraw.step == 1) {
+            var newCircle = {
+              type: "circle",
+              cDot: this.lastDraw.sDot,
+              r: Math.abs(this.geo.dots[this.lastDraw.sDot].x - geoPoint.x),
+              dr: Math.abs(this.geo.dots[this.lastDraw.sDot].x - geoPoint.x),
+              strokeW: 1,
+              selected: 0
+            }
+
+            var circleID = this.geoElements.circles.length;
+            this.geoElements.circles.push(circleID)
+            this.geo.circles[circleID] = newCircle;
+
+
+            this.lastDraw = {
+              type: "none",
+              step: 0
+            }
+            this.tempLine = {
+              type: "none"
+            }
+          }
+        } else {
+          if (this.lastDraw.type == "none") {
+            var checked = this.checkExisting(geoPoint.x, geoPoint.y);
+            var newDotID;
+            if (checked.exist) {
+              newDotID = checked.id;
+            } else {
+              var name: string = "";
+              var gen: number = 0;
+              if (this.selectedLetters[0]) {
+                name = String(this.selectedLetters[0].name);
+                gen = Number(this.selectedLetters[0].gen);
+              }
+              var newDot = {
+                type: "dot",
+                name: name,
+                gen: gen,
+                x: geoPoint.x,
+                y: geoPoint.y,
+                dx: geoPoint.x,
+                dy: geoPoint.y,
+                r: 4,
+                strokeW: 1,
+                selected: 0
+              }
+              var dotID = this.geoElements.dots.length;
+              this.geoElements.dots.push(dotID)
+              this.geo.dots[dotID] = newDot;
+              newDotID = dotID;
+              if (this.selectedLetters[0]) {
+                this.selectedLetters.splice(0, 1);
+              }
+            }
+
+            this.lastDraw = {
+              type: "circle",
+              step: 1,
+              sDot: newDotID
+            }
+          }
+        }
         break;
       }
       case "rectangle": {
+        break;
+      }
+      case "letters": {
+        var checked = this.checkExisting(geoPoint.x, geoPoint.y);
+        if (checked.exist) {
+          this.geo.dots[checked.id].name = this.selectedLetters[0].name;
+          this.geo.dots[checked.id].gen = this.selectedLetters[0].gen;
+          this.selectedLetters.splice(0, 1);
+        }
         break;
       }
       default: {
         break;
       }
     }
+    this.wasMoving = false;
     this.ref.detectChanges();
   }
 
   //-----------------------DRAWING IMPLEMENTATIOn-----------------------
 
-  drawDot(event) {
-    console.log(event);
+  checkExisting(x, y) {
+    for (var i = 0; i < this.geoElements.dots.length; i++) {
+      var x1 = this.geo.dots[i].x - 5;
+      var x2 = this.geo.dots[i].x + 5;
+      var y1 = this.geo.dots[i].y - 5;
+      var y2 = this.geo.dots[i].y + 5;
+
+      if (x >= x1 && x <= x2 && y >= y1 && y <= y2) {
+        return {
+          exist: true,
+          id: i
+        }
+      }
+    }
+    return {
+      exist: false,
+      id: 0
+    }
+  }
+
+  changeGen(val) {
+    if (val != 0) {
+      var gen = this.lettersKeyboard[0].gen;
+      if (gen + val >= 0 && gen + val <= 9) {
+        for (var i = 0; i < this.lettersKeyboard.length; i++) {
+          this.lettersKeyboard[i].gen += val;
+        }
+      }
+    } else {
+      for (var i = 0; i < this.lettersKeyboard.length; i++) {
+        this.lettersKeyboard[i].gen = 0;
+      }
+    }
+
+  }
+
+  addLetter(i) {
+    this.selectedLetters.push(Object.assign({}, this.lettersKeyboard[i]));
+  }
+
+  removeLetter(i) {
+    this.selectedLetters.splice(i, 1);
   }
 
   //-----------------------END OF DRAWING IMPLEMENTATIOn-----------------------
@@ -1453,7 +1954,6 @@ export class WorkspaceComponent implements OnInit {
         }
       }
     } else {
-      console.log("lololo")
       var geoPoint: any = {};
       geoPoint.x = Math.round((this.setSX(ev.offsetX)) / 10) * 10;
       geoPoint.y = Math.round((this.setSY(ev.offsetY)) / 10) * 10;
@@ -1461,28 +1961,167 @@ export class WorkspaceComponent implements OnInit {
     }
   }
 
+  onMouseDown(ev) {
+    if (this.modeType == "select") {
+      this.tempSelection.type = "select";
+      this.tempSelection.sx = this.setSX(ev.offsetX);
+      this.tempSelection.sy = this.setSY(ev.offsetY);
+      this.tempSelection.x = this.setSX(ev.offsetX);
+      this.tempSelection.y = this.setSY(ev.offsetY);
+      this.tempSelection.width = 20;
+      this.tempSelection.height = 20;
+    }
+  }
+
+  onMouseUp(ev) {
+    console.log(this.wasSelMoving)
+    if (this.modeType == "select" && this.wasSelMoving) {
+      this.tempSelection = {
+        type: "none"
+      }
+      this.modeType = "";
+    }
+  }
+
   onMouseMove(ev) {
+    this.wasMoving = true;
     if (this.modeType != "") {
       switch (this.modeType) {
+        case "select": {
+          if (this.tempSelection.type == "select") {
+            this.wasSelMoving = true;
+            if (this.setSX(ev.offsetX) > this.tempSelection.sx) {
+              this.tempSelection.x = this.tempSelection.sx;
+              this.tempSelection.width = this.setSX(ev.offsetX) - this.tempSelection.x;
+            } else {
+              this.tempSelection.x = this.setSX(ev.offsetX);
+              this.tempSelection.width = this.tempSelection.sx - this.tempSelection.x;
+            }
+            if (this.setSY(ev.offsetY) > this.tempSelection.sy) {
+              this.tempSelection.y = this.tempSelection.sy;
+              this.tempSelection.height = this.setSY(ev.offsetY) - this.tempSelection.y;
+            } else {
+              this.tempSelection.y = this.setSY(ev.offsetY);
+              this.tempSelection.height = this.tempSelection.sy - this.tempSelection.y;
+            }
+            this.deselectAll();
+            for (var i = 0; i < this.geoElements.dots.length; i++) {
+              var dot = this.geo.dots[this.geoElements.dots[i]];
+              if (dot.x >= this.tempSelection.x && dot.x <= (this.tempSelection.x + this.tempSelection.width) && dot.y >= this.tempSelection.y && dot.y <= (this.tempSelection.y + this.tempSelection.height)) {
+                if (!this.geo.dots[this.geoElements.dots[i]].selected) {
+                  this.select(this.geoElements.dots[i], "dots");
+                }
+              }
+            }
+          }
+          break;
+        }
         case "dot": {
-          console.log("lol")
-          this.tempElement.type = "dot";
-          this.tempElement.x = this.setSX(ev.offsetX);
-          this.tempElement.y = this.setSY(ev.offsetY);
-          this.tempElement.r = 4;
+          this.tempDot.type = "dot";
+          this.tempDot.x = this.setSX(ev.offsetX);
+          this.tempDot.y = this.setSY(ev.offsetY);
+          this.tempDot.r = 4;
+          this.tempDot.fill = "gray";
+          if (this.selectedLetters[0]) {
+            this.tempDot.name = this.selectedLetters[0].name;
+            this.tempDot.gen = this.selectedLetters[0].gen;
+          } else {
+            this.tempDot.name = "";
+            this.tempDot.gen = 0;
+          }
           break;
         }
         case "line": {
+          if (this.lastDraw.type == "none") {
+            this.tempDot.type = "dot";
+            this.tempDot.x = this.setSX(ev.offsetX);
+            this.tempDot.y = this.setSY(ev.offsetY);
+            this.tempDot.r = 4;
+            this.tempDot.fill = "gray";
+          } else {
+            if (this.lastDraw.type == "line") {
+              this.tempDot.type = "dot";
+              this.tempDot.x = this.setSX(ev.offsetX);
+              this.tempDot.y = this.setSY(ev.offsetY);
+              this.tempDot.r = 4;
+
+              this.tempLine.type = "line";
+              this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
+              this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempLine.x2 = this.setSX(ev.offsetX);
+              this.tempLine.y2 = this.setSY(ev.offsetY);
+            }
+          }
+          break;
+        }
+        case "multiline": {
+          if (this.lastDraw.type == "none") {
+            this.tempDot.type = "dot";
+            this.tempDot.x = this.setSX(ev.offsetX);
+            this.tempDot.y = this.setSY(ev.offsetY);
+            this.tempDot.r = 4;
+            this.tempDot.fill = "gray";
+          } else {
+            if (this.lastDraw.type == "line") {
+              this.tempDot.type = "dot";
+              this.tempDot.x = this.setSX(ev.offsetX);
+              this.tempDot.y = this.setSY(ev.offsetY);
+              this.tempDot.r = 4;
+
+              this.tempLine.type = "line";
+              this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
+              this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempLine.x2 = this.setSX(ev.offsetX);
+              this.tempLine.y2 = this.setSY(ev.offsetY);
+            }
+          }
           break;
         }
         case "circle": {
+          if (this.lastDraw.type == "none") {
+            this.tempDot.type = "dot";
+            this.tempDot.x = this.setSX(ev.offsetX);
+            this.tempDot.y = this.setSY(ev.offsetY);
+            this.tempDot.r = 4;
+            this.tempDot.fill = "gray";
+          } else {
+            if (this.lastDraw.type == "circle") {
+              this.tempDot.type = "dot";
+              this.tempDot.x = this.setSX(ev.offsetX);
+              this.tempDot.y = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempDot.r = 5;
+              this.tempDot.fill = "#ed7e28";
+
+              this.tempLine.type = "circle";
+              this.tempLine.cx = this.geo.dots[this.lastDraw.sDot].x;
+              this.tempLine.cy = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempLine.r = Math.abs(this.geo.dots[this.lastDraw.sDot].x - this.setSX(ev.offsetX));
+            }
+          }
           break;
         }
         case "rectangle": {
           break;
         }
+        case "letters": {
+          this.tempDot.type = "dot";
+          this.tempDot.x = this.setSX(ev.offsetX);
+          this.tempDot.y = this.setSY(ev.offsetY);
+          this.tempDot.r = 4;
+          this.tempDot.fill = "gray";
+          if (this.selectedLetters[0]) {
+            this.tempDot.name = this.selectedLetters[0].name;
+            this.tempDot.gen = this.selectedLetters[0].gen;
+          } else {
+            this.tempDot.name = "";
+            this.tempDot.gen = "";
+          }
+          break;
+        }
         default: {
-          this.tempElement.type = "none";
+          this.tempDot = { type: "none" };
+          this.tempLine = { type: "none" };
+          this.lastDraw = { type: "none" };
           break;
         }
       }
@@ -1533,7 +2172,16 @@ export class WorkspaceComponent implements OnInit {
       this.mode = "";
     }
     this.modeType = "";
-    this.tempElement.type = "none";
+    this.tempDot = { type: "none" };
+    this.tempLine = { type: "none" };
+    this.lastDraw = { type: "none" };
+    this.selectedLetters = [];
+    this.wasMoving = false;
+    this.wasSelMoving = false;
+    this.tempSelection = {
+      type: "none"
+    }
+    this.changeGen(0);
     this.deselectAll();
   }
 
@@ -1542,8 +2190,17 @@ export class WorkspaceComponent implements OnInit {
       this.modeType = modeType;
     } else {
       this.modeType = "";
-      this.tempElement.type = "none";
     }
+    this.tempDot = { type: "none" };
+    this.tempLine = { type: "none" };
+    this.lastDraw = { type: "none" };
+    this.selectedLetters = [];
+    this.wasMoving = false;
+    this.wasSelMoving = false;
+    this.tempSelection = {
+      type: "none"
+    }
+    this.changeGen(0);
     this.deselectAll();
   }
 
@@ -1573,8 +2230,6 @@ export class WorkspaceComponent implements OnInit {
   //region Drag Center //
 
   notSaved = function (array, element) {
-
-    console.log(this.selected);
     for (var i = 0; i < array.length; i++) {
       if (JSON.stringify(array[i]) === JSON.stringify(element)) {
         return false;
@@ -1585,7 +2240,7 @@ export class WorkspaceComponent implements OnInit {
 
   selectedEx: any = [];
 
-  select = function (ev, id, type) {
+  select = function (id, type) {
     let el = this.geo[type][id];
     if (!this.isDragging && this.notSaved(this.selected, {
       id: id,
@@ -1735,7 +2390,11 @@ export class WorkspaceComponent implements OnInit {
             if (result.data.geoElements) {
               this.geoElements = result.data.geoElements;
             } else {
-              this.geoElements = [];
+              this.geoElements = {
+                dots: [],
+                lines: [],
+                circles: []
+              };
             }
             if (result.data.lines) {
               this.lines = result.data.lines;
@@ -1745,7 +2404,11 @@ export class WorkspaceComponent implements OnInit {
             if (result.data.geo) {
               this.geo = result.data.geo;
             } else {
-              this.geo = [];
+              this.geo = {
+                dots: [],
+                lines: [],
+                circles: []
+              };
             }
             this.scale = 1;
 
@@ -1797,6 +2460,7 @@ export class WorkspaceComponent implements OnInit {
               this.deselectAll();
               this.ref.detectChanges();
               this.isDragging = false;
+              this.isResizing = false;
             }.bind(this), 1);
           }.bind(this)
         }).on("tap", function (event) {
@@ -1866,18 +2530,29 @@ export class WorkspaceComponent implements OnInit {
 
     function dragMoveListener(event) {
       let id = event.target.getAttribute("data-id");
-      let el = this.geo[id];
 
       var cW = Number(container.attributes.width.value);
       var cH = Number(container.attributes.height.value);
       var cA = container.attributes.viewBox.value.split(' ');
-
-      for (var i = 0; i < this.selected.length; i++) {
-        this.geo[this.selected[i].type][this.selected[i].id].dx += Number(event.dx) * (cA[2] / cW);
-        this.geo[this.selected[i].type][this.selected[i].id].x = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dx - 5) / 10) * 10;
-        this.geo[this.selected[i].type][this.selected[i].id].dy += Number(event.dy) * (cA[3] / cH);
-        this.geo[this.selected[i].type][this.selected[i].id].y = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dy - 5) / 10) * 10;
+      if (event.target.getAttribute("data-type") != "radius") {
+        for (var i = 0; i < this.selected.length; i++) {
+          this.geo[this.selected[i].type][this.selected[i].id].dx += Number(event.dx) * (cA[2] / cW);
+          this.geo[this.selected[i].type][this.selected[i].id].x = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dx - 5) / 10) * 10;
+          this.geo[this.selected[i].type][this.selected[i].id].dy += Number(event.dy) * (cA[3] / cH);
+          this.geo[this.selected[i].type][this.selected[i].id].y = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dy - 5) / 10) * 10;
+        }
+      } else {
+        if (event.target.getAttribute("data-dType") == "w") {
+          this.isResizing = 1;
+          this.geo.circles[id].dr += Number(event.dx) * (cA[2] / cW) * Number(event.target.getAttribute("data-direction"));
+          this.geo.circles[id].r = Math.ceil((this.geo.circles[id].dr - 5) / 10) * 10;
+        } else {
+          this.isResizing = 2;
+          this.geo.circles[id].dr += Number(event.dy) * (cA[3] / cH) * Number(event.target.getAttribute("data-direction"));
+          this.geo.circles[id].r = Math.ceil((this.geo.circles[id].dr - 5) / 10) * 10;
+        }
       }
+
       this.ref.detectChanges();
     }
   }
