@@ -1,6 +1,8 @@
+
+import {filter} from 'rxjs/operators';
 import { Component } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import 'rxjs/add/operator/filter';
+
 
 import { Title } from '@angular/platform-browser';
 
@@ -17,8 +19,8 @@ export class AppComponent {
     private router: Router,
     private languageService: LanguageService
   ) {
-    router.events
-      .filter(event => event instanceof NavigationEnd)
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         var title: String = String(event.urlAfterRedirects);
         title = title.substring(title.lastIndexOf("/") + 1);

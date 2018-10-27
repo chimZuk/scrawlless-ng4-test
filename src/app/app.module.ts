@@ -2,6 +2,7 @@ import { HttpModule } from '@angular/http';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LOCALE_ID } from '@angular/core';
 
@@ -9,11 +10,14 @@ import { AuthGuard } from './_guards/auth.guard';
 
 import { SharedModule } from './_modules/shared/shared.module'
 import { BaseHrefModule } from './_modules/base-href/base-href.module'
-
-import { RouterModule, Routes } from '@angular/router';
 import { appRouter } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [
@@ -24,6 +28,8 @@ import { AppComponent } from './app.component';
     BrowserAnimationsModule,
     HttpModule,
     appRouter,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
     BaseHrefModule
   ],

@@ -305,17 +305,20 @@
     <mat-card #advOperators id="advOperators" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-raised-button (click)="write(null, 'br');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-brackets"></span>
+                <button mat-raised-button (click)="write(null, 'br');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/brackets.svg">
                 </button>
-                <button mat-raised-button (click)="write(null, 'fr');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-fraction"></span>
+                <button mat-raised-button (click)="write(null, 'fr');"
+                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/fraction.svg">
                 </button>
-                <button mat-raised-button (click)="write(null, 'pw');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-power"></span>
+                <button mat-raised-button (click)="write(null, 'pw');"
+                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/power.svg">
                 </button>
-                <button mat-raised-button (click)="write(null, 'rt');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-root" style="font-size: 2vw !important;"></span>
+                <button mat-raised-button (click)="write(null, 'rt');"
+                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/root.svg">
                 </button>
             </div>
         </div>

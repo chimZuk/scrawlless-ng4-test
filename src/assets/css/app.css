@@ -1,8 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Exo+2");
 @import url("https://fonts.googleapis.com/css?family=Itim");
 /* Begining of tabs reset */
+
 /deep/ .mat-tab-list {
-  margin-left: 20px !important; }
+  margin-left: 20px !important;
+}
 
 /deep/ .mat-tab-label {
   min-width: 0px !important;
@@ -10,82 +12,116 @@
   margin-right: 2px !important;
   font-size: 19px !important;
   padding: 0px 12px !important;
-  opacity: 0.6 !important; }
+  opacity: 0.6 !important;
+}
 
 /deep/ .mat-tab-label-active {
-  opacity: 1 !important; }
+  opacity: 1 !important;
+}
 
 /deep/ .mat-ink-bar {
   height: 0 !important;
-  visibility: hidden !important; }
+  visibility: hidden !important;
+}
 
 /deep/ .mat-tab-header {
-  border: 0 !important; }
+  border: 0 !important;
+}
 
 /deep/ .mat-tab-body-content {
-  overflow: hidden !important; }
+  overflow: hidden !important;
+}
 
 /deep/ .mat-tab-body-wrapper {
   border-radius: 5px !important;
   padding: 0px 24px 0px 24px !important;
-  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 !important; }
+  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 !important;
+}
+
+/deep/ .mat-mini-fab .mat-button-wrapper {
+  padding: 0 !important;
+  line-height: 0px !important;
+}
+
 
 /* End of tabs reset */
+
 /* Begining of card reset */
+
 /deep/ .mat-card {
   border-radius: 5px !important;
   padding: 20px !important;
-  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 !important; }
+  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 !important;
+}
 
 /* End of card reset */
+
 /* Begining of button reset */
+
 /deep/ button {
+  display: flex !important;
   min-width: 0 !important;
   line-height: auto !important;
   padding: 0 !important;
   align-content: center !important;
-  justify-content: center !important; }
+  justify-content: center !important;
+}
 
 /* End of button reset */
+
 /* Begining of input reset 
 /deep/ .mat-form-field {
   width: 100% !important; }*/
 
 /* End of input reset */
+
 /* Begining of menu reset */
+
 /deep/ .mat-menu-panel {
   box-shadow: none !important;
   padding: 5px !important;
   margin: -5px !important;
   background: transparent !important;
   max-width: none !important;
-  min-width: none !important; }
+  min-width: none !important;
+}
 
 /deep/ .mat-menu-content {
-  padding: 0 !important; }
+  padding: 0 !important;
+}
 
 /* End of menu reset */
+
 /* Begining of tooltip reset */
+
 /deep/ .mat-tooltip {
   font-size: 25px !important;
   padding-top: 5px !important;
-  padding-bottom: 6px !important; }
+  padding-bottom: 6px !important;
+}
 
 /* End of tooltp reset */
+
 /* Begining of dialog reset */
+
 /deep/ .mat-dialog-container {
-  border-radius: 5px !important; }
+  border-radius: 5px !important;
+}
 
 /* End of dialog reset */
+
 /* Begining of button reset */
+
 /deep/ .mat-fab .mat-button-wrapper {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   line-height: 0px !important;
-  padding: 0 !important; }
+  padding: 0 !important;
+}
 
 /* End of button reset */
+
 /deep/ input {
   font: inherit;
   background: 0 0;
@@ -95,24 +131,32 @@
   padding: 10px;
   margin: 0;
   width: calc(100% - 20px);
-  font-family: "Exo 2", sans-serif !important; }
+  font-family: "Exo 2", sans-serif !important;
+}
 
 /deep/ input:focus {
-  border-bottom: 1px solid #ed7e28; }
+  border-bottom: 1px solid #ed7e28;
+}
 
 /deep/ form {
-  position: relative; }
-  /deep/ form input {
-    margin-bottom: 20px; }
-  /deep/ form select {
-    margin-bottom: 20px; }
+  position: relative;
+}
+
+/deep/ form input {
+  margin-bottom: 20px;
+}
+
+/deep/ form select {
+  margin-bottom: 20px;
+}
 
 /deep/ input, input:before, input:after {
   -webkit-user-select: initial !important;
   -khtml-user-select: initial !important;
   -moz-user-select: initial !important;
   -ms-user-select: initial !important;
-  user-select: initial !important; }
+  user-select: initial !important;
+}
 
 /deep/ select {
   font: inherit;
@@ -123,10 +167,12 @@
   padding: 10px;
   margin: 0;
   width: 100%;
-  font-family: "Exo 2", sans-serif !important; }
+  font-family: "Exo 2", sans-serif !important;
+}
 
 /deep/ select:focus {
-  border-bottom: 1px solid #ed7e28; }
+  border-bottom: 1px solid #ed7e28;
+}
 
 /deep/ workspace {
   overflow: scroll;
@@ -135,9 +181,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #427a8d; }
+  background-color: #427a8d;
+}
 
 /deep/ .mat-spinner circle {
-  stroke: #ed7e28 !important; }
+  stroke: #ed7e28 !important;
+}
 
 /*# sourceMappingURL=app.css.map */

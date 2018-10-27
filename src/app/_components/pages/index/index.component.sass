@@ -10,7 +10,25 @@
     min-height: 100%
     padding: 0 8%
     background-position-x: center
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
 
+.header
+    background-color: #427a8d
+    top: 20px
+    width: 80%
+    max-width: 1300px
+    position: fixed
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    z-index: 9998
+    padding: 20px
+
+.login-card
+    margin: 0px
 
 .logo 
     background-image: url(../../../../assets/img/back.gif)
@@ -20,8 +38,13 @@
     height: 108px
     float: right
 
+.first
+    margin-top: 190px
+
+
 .content
-    width: 100%
+    width: 100%   
+    max-width: 1200px
     position: relative
     display: flex
     align-items: flex-start
@@ -41,6 +64,7 @@
     height: 100%
 
 .video-content
+    max-width: 900px
     @include absolute-width(55vw)
     flex: 2
     margin-top: 20px
@@ -76,7 +100,8 @@
 .auth-button
     margin: 2.5px auto
 
-.footer
+.footer    
+    max-width: 1220px
     height: 100%
     padding: 10px $i
 
@@ -95,15 +120,15 @@ img
 
 .title
     user-select: none
-    font-size: 40px
+    font-size: 45px
     @media screen and (max-width: $b-small)
-        font-size: 30px
+        font-size: 35px
     @media screen and (max-width: $b-tiny)
-        font-size: 25px
+        font-size: 30px
 
 .sub-title
     user-select: none
-    font-size: 18px
+    font-size: 20px
     @media screen and (max-width: $b-tiny)
         font-size: 16px
 
@@ -113,6 +138,7 @@ img
 
 .second
     margin-bottom: 20px
+    max-width: 1200px
     justify-content: space-between
     @media screen and (max-width: $b-medium)
         flex-direction: column $i
@@ -125,6 +151,7 @@ img
 
 .absLabel
     position: absolute
+    z-index: 9999
     top: -32px
     left: -20px
     transform: rotate(-20deg)

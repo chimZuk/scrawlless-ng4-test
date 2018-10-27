@@ -4,12 +4,19 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../_services/authentication/authentication.service';
 import { LanguageService } from '../../../_services/language/language.service';
 
+import { FormControl, Validators } from '@angular/forms';
+
 @Component({
   selector: 'index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
+
+  emailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email,
+  ]);
 
   constructor(
     private router: Router,

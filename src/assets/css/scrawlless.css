@@ -319,23 +319,23 @@
     border-top: .84375em solid transparent
 }
 
-.mat-form-field-autofill-control:-webkit-autofill+.mat-form-field-placeholder-wrapper .mat-form-field-float {
+.mat-form-field-autofill-control:-webkit-autofill+.mat-form-field-label-wrapper .mat-form-field-float {
     transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(.001px);
     -ms-transform: translateY(-1.28125em) scale(.75);
     width: 133.33333%
 }
 
-.mat-form-field-placeholder-wrapper {
+.mat-form-field-label-wrapper {
     top: -.84375em;
     padding-top: .84375em
 }
 
-.mat-form-field-placeholder {
+.mat-form-field-label {
     top: 1.28125em
 }
 
-.mat-focused .mat-form-field-placeholder.mat-form-field-float,
-.mat-form-field-placeholder.mat-form-field-float:not(.mat-form-field-empty) {
+.mat-focused .mat-form-field-label.mat-form-field-float,
+.mat-form-field-label.mat-form-field-float:not(.mat-form-field-empty) {
     transform: translateY(-1.28125em) scale(.75) perspective(100px) translateZ(.001px);
     -ms-transform: translateY(-1.28125em) scale(.75);
     width: 133.33333%
@@ -1299,7 +1299,7 @@ input.mat-input-element {
     width: 200px
 }
 
-.mat-form-field-placeholder {
+.mat-form-field-label {
     color: rgba(0, 0, 0, .54)
 }
 
@@ -1307,20 +1307,20 @@ input.mat-input-element {
     color: rgba(0, 0, 0, .54)
 }
 
-.mat-focused .mat-form-field-placeholder {
+.mat-focused .mat-form-field-label {
     color: #417a8e
 }
 
-.mat-focused .mat-form-field-placeholder.mat-accent {
+.mat-focused .mat-form-field-label.mat-accent {
     color: #ed7e28
 }
 
-.mat-focused .mat-form-field-placeholder.mat-warn {
+.mat-focused .mat-form-field-label.mat-warn {
     color: #f44336
 }
 
-.mat-focused .mat-form-field-placeholder.mat-form-field-float .mat-form-field-required-marker,
-.mat-form-field-autofill-control:-webkit-autofill+.mat-form-field-placeholder .mat-form-field-required-marker {
+.mat-focused .mat-form-field-label.mat-form-field-float .mat-form-field-required-marker,
+.mat-form-field-autofill-control:-webkit-autofill+.mat-form-field-label .mat-form-field-required-marker {
     color: #ed7e28
 }
 
@@ -1346,12 +1346,12 @@ input.mat-input-element {
     background-color: #f44336
 }
 
-.mat-form-field-invalid .mat-form-field-placeholder {
+.mat-form-field-invalid .mat-form-field-label {
     color: #f44336
 }
 
-.mat-form-field-invalid .mat-form-field-placeholder.mat-accent,
-.mat-form-field-invalid .mat-form-field-placeholder.mat-form-field-float .mat-form-field-required-marker {
+.mat-form-field-invalid .mat-form-field-label.mat-accent,
+.mat-form-field-invalid .mat-form-field-label.mat-form-field-float .mat-form-field-required-marker {
     color: #f44336
 }
 
