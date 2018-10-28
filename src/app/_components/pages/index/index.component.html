@@ -1,94 +1,196 @@
 <div *ngIf="!landing" class="back">
-    <div class="logo"></div>
-    <div class="content">
-        <mat-card class="intro flex-column">
-            <span class="title">
-                Добро Пожаловать!
-            </span>
-            <span class="sub-title" style="margin-top: 10px;">
-                Приветствуем Вас на портале "Scrawlless"!
-            </span>
-            <div class="video-content">
-                <iframe class="video" src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </mat-card>
-        <mat-tab-group class="auth">
-            <mat-tab [label]="language[lang].reg">
-                <mat-card>
-                    <form>
-                        <input [ngStyle]="{'border-bottom': invalidFirstName ? '1px solid red' : '' }" (focusout)="validForm('firstName')" [placeholder]="language[lang].name"
-                            [(ngModel)]="user.firstName" name="first" value="">
-                        <input [ngStyle]="{'border-bottom': invalidLastName ? '1px solid red' : '' }" (focusout)="validForm('lastName')" [placeholder]="language[lang].sname"
-                            [(ngModel)]="user.lastName" name="last" value="">
-                        <input [ngStyle]="{'border-bottom': invalidEmail ? '1px solid red' : '' }" type="email" (focusout)="validForm('email')" [placeholder]="language[lang].email"
-                            [(ngModel)]="user.email" name="mail" value="">
-                        <input [ngStyle]="{'border-bottom': invalidPassword ? '1px solid red' : '' }" type="password" (focusout)="validForm('pass')"
-                            [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
-                    </form>
-                    <p class="form-error" [innerHtml]="regValidationError"></p>
-                    <button *ngIf="!loading" class="auth-button" mat-fab [matTooltip]="language[lang].log" matTooltipPosition="left" (click)="register()">
-                        <mat-icon>create</mat-icon>
-                    </button>
-                    <mat-spinner *ngIf="loading"></mat-spinner>
-                </mat-card>
-            </mat-tab>
-            <mat-tab [label]="language[lang].sign">
-                <mat-card>
-                    <form>
-                        <input [ngStyle]="{'border-bottom': invalidEmail ? '1px solid red' : '' }" type="email" (focusout)="validForm('logEmail')"
-                            [placeholder]="language[lang].email" [(ngModel)]="user.email" name="mail" value="">
-                        <input [ngStyle]="{'border-bottom': invalidPassword ? '1px solid red' : '' }" type="password" (focusout)="validForm('logPass')"
-                            [placeholder]="language[lang].pass" [(ngModel)]="user.password" name="pass" value="">
-                    </form>
-                    <p class="form-error" [innerHtml]="validationError"></p>
-                    <p class="form-error">{{ loginError }}</p>
-                    <button id="loginForm" *ngIf="!loading" class="auth-button" mat-fab [matTooltip]="language[lang].sup" matTooltipPosition="left" (click)="login()">
-                        <mat-icon id="loginForm">forward</mat-icon>
-                    </button>
-                    <mat-spinner *ngIf="loading"></mat-spinner>
-                </mat-card>
-            </mat-tab>
-        </mat-tab-group>
-    </div>
-
-    <!--<mat-card class="second flex-row">
-        <div class="video-content">
-            <iframe class="video" src="https://www.youtube.com/embed/nNXGbQ_rubQ" frameborder="0" allowfullscreen></iframe>
-        </div>
-    </mat-card>-->
-
-    <mat-card class="second flex-row">
-        <div class="flex-column" style="flex: 2;">
-            <span class="title">
-                Полное погружение
-            </span>
-            <span class="sub-title">
-                Никаких калькуляторов! Без халявы! Отработка базовых вещей, таких как устный счёт, счёт в столбик и другое!
-            </span>
-        </div>
-        <div class="demo-column" style="flex: 1; display: flex; justify-content: center;">
-            <mat-card>
-                <mat-card class="absLabel">
-                    Попробуй сам!
-                </mat-card>
-                <mul-column [terms]="[789,56]" [parentPage]="'index'" [setOperation]="'mul'"></mul-column>
+    <div class="header flex-row">
+        <div class="header-left">
+            <mat-card class="header-body">
+                <div class="logo"></div>
             </mat-card>
         </div>
+        <div class="header-right">
+            <mat-card class="login-card flex-column">
+                <span class="title">
+                    {{language[lang].sign}}
+                </span>
+                <form class="login-form flex-row form-body">
+                    <mat-form-field>
+                        <input matInput type="email" name="email" [(ngModel)]="loginData.email" [placeholder]="language[lang].email"
+                            [formControl]="emailFormControl" [errorStateMatcher]="matcher">
+                        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                            {{language[lang].validEmail}}
+                        </mat-error>
+                        <mat-error *ngIf="emailFormControl.hasError('required')">
+                            {{language[lang].emailRequired}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="password" name="password" [(ngModel)]="loginData.password" [placeholder]="language[lang].pass"
+                            [formControl]="passwordFormControl" [errorStateMatcher]="matcher">
+                        <mat-error *ngIf="passwordFormControl.hasError('minlength') && !passwordFormControl.hasError('required')">
+                            {{language[lang].validPassword}}
+                        </mat-error>
+                        <mat-error *ngIf="passwordFormControl.hasError('required')">
+                            {{language[lang].passwordRequired}}
+                        </mat-error>
+                    </mat-form-field>
+                    <button mat-fab (click)="login()" *ngIf="!loading" type="submit" color="accent">
+                        <mat-icon aria-label="Log in">check</mat-icon>
+                    </button>
+                    <mat-spinner class="formSpinner" *ngIf="loading"></mat-spinner>
+                </form>
+                <mat-error *ngIf="loginError.length != 0">{{loginError}}</mat-error>
+            </mat-card>
+        </div>
+    </div>
+
+    <mat-card class="block flex-column">
+        <div class="flex-row parent content">
+            <div class="flex-column left content">
+                <span class="title">
+                    {{language[lang].landingWelcome}}
+                </span>
+                <span class="sub-title">
+                    {{language[lang].landingWelcomeSub1}}<br>
+                    {{language[lang].landingWelcomeSub2}}
+                </span>
+            </div>
+            <div class="flex-column right content">
+                <mat-card class="reg-card flex-column">
+                    <span class="title">
+                        {{language[lang].reg}}
+                    </span>
+                    <form class="flex-column form-body">
+                        <mat-form-field>
+                            <input matInput type="text" name="firstName" [(ngModel)]="user.firstName" [placeholder]="language[lang].name"
+                                [formControl]="nameFormControl" [errorStateMatcher]="matcher">
+                            <mat-error *ngIf="nameFormControl.hasError('minlength') && !nameFormControl.hasError('required')">
+                                {{language[lang].validFirstName}}
+                            </mat-error>
+                            <mat-error *ngIf="nameFormControl.hasError('required')">
+                                {{language[lang].firstNameRequired}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput type="text" name="lastName" [(ngModel)]="user.lastName" [placeholder]="language[lang].sname"
+                                [formControl]="snameFormControl" [errorStateMatcher]="matcher">
+                            <mat-error *ngIf="snameFormControl.hasError('minlength') && !snameFormControl.hasError('required')">
+                                {{language[lang].validLastName}}
+                            </mat-error>
+                            <mat-error *ngIf="snameFormControl.hasError('required')">
+                                {{language[lang].lastNameRequired}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput type="email" name="email" [(ngModel)]="user.email" [placeholder]="language[lang].email"
+                                [formControl]="regEmailFormControl" [errorStateMatcher]="matcher">
+                            <mat-error *ngIf="regEmailFormControl.hasError('email') && !regEmailFormControl.hasError('required')">
+                                {{language[lang].validEmail}}
+                            </mat-error>
+                            <mat-error *ngIf="regEmailFormControl.hasError('required')">
+                                {{language[lang].emailRequired}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput type="password" name="password" [(ngModel)]="user.password" [placeholder]="language[lang].pass"
+                                [formControl]="regPasswordFormControl" [errorStateMatcher]="matcher">
+                            <mat-error *ngIf="regPasswordFormControl.hasError('minlength') && !regPasswordFormControl.hasError('required')">
+                                {{language[lang].validPassword}}
+                            </mat-error>
+                            <mat-error *ngIf="regPasswordFormControl.hasError('required')">
+                                {{language[lang].passwordRequired}}
+                            </mat-error>
+                        </mat-form-field>
+                        <button mat-fab (click)="register()" *ngIf="!regloading" type="submit" color="accent">
+                            <mat-icon aria-label="Register">person_add</mat-icon>
+                        </button>
+                        <mat-spinner class="formSpinner" *ngIf="regloading"></mat-spinner>
+                    </form>
+                    <mat-error *ngIf="registerError.length != 0">{{registerError}}</mat-error>
+                </mat-card>
+            </div>
+        </div>
     </mat-card>
 
-    <mat-card class="second flex-row">
-        <div class="flex-column">
-            <span class="title">
-                Всегда под рукой
-            </span>
-            <span class="sub-title">
-                Работа нон-стоп с различных устройств. Не требует установки или настройки. Просто войди в свой аккаунт и вперёд!
-            </span>
+    <mat-card class="block flex-column">
+        <div class="flex-row parent content">
+            <div class="flex-column left content">
+                <span class="title">
+                    {{language[lang].landing}}
+                </span>
+                <span class="sub-title">
+                    {{language[lang].landingSub1}}<br>
+                    {{language[lang].landingSub2}}
+                </span>
+            </div>
+            <div class="flex-column right content">
+                <mat-card class="column-demo">
+                    <mat-card class="absLabel">
+                        {{language[lang].landingSub3}}
+                    </mat-card>
+                    <mul-column [terms]="[789,56]" [parentPage]="'index'" [setOperation]="'mul'"></mul-column>
+                </mat-card>
+            </div>
         </div>
-        <img class="devices-img" src="../../../assets/img/landing_devices.png">
     </mat-card>
-    <mat-card class="footer">
-        <div class="social">
+
+    <mat-card class="block flex-column">
+        <div class="flex-row parent content">
+            <div class="flex-column left content narrow">
+                <span class="title">
+                    {{language[lang].landing1}}
+                </span>
+                <span class="sub-title">
+                    {{language[lang].landing1Sub1}}<br>
+                    {{language[lang].landing1Sub2}}
+                </span>
+            </div>
+            <div class="flex-column right content wide">
+                <mat-card>
+                    <img class="devices-img" src="../../../assets/img/exprDemo.png">
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="block flex-column">
+        <div class="flex-row parent content">
+            <div class="flex-column left content narrow">
+                <span class="title">
+                    {{language[lang].landing2}}
+                </span>
+                <span class="sub-title">
+                    {{language[lang].landing2Sub1}}<br>
+                    {{language[lang].landing2Sub2}}
+                </span>
+            </div>
+            <div class="flex-column right content wide">
+                <mat-card>
+                    <img class="devices-img" src="../../../assets/img/geoDemo.png">
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="block flex-column">
+        <div class="flex-row parent content">
+            <div class="flex-column left content narrow">
+                <span class="title">
+                    {{language[lang].landing3}}
+                </span>
+                <span class="sub-title">
+                    {{language[lang].landing3Sub1}}<br>
+                    {{language[lang].landing3Sub2}}
+                </span>
+            </div>
+            <div class="flex-column right content wide">
+                <mat-card>
+                    <img class="devices-img" src="../../../assets/img/landing_devices.png">
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+
+
+    <mat-card class="block flex-row footer">
+        <div class="social flex-row">
             <a href="https://vk.com/scrawlless" target="_blank">
                 <button mat-button>
                     <img class="icon" src="../../../assets/img/vk.svg" alt="VK">

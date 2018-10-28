@@ -224,55 +224,55 @@
     <mat-card #numbers id="numbers" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-raised-button (click)="undoLast();">
+                <button mat-stroked-button (click)="undoLast();">
                     <mat-icon>undo</mat-icon>
                 </button>
-                <button mat-raised-button (click)="redoLast();">
+                <button mat-stroked-button (click)="redoLast();">
                     <mat-icon>redo</mat-icon>
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-raised-button (click)="write(7, 'di');">
+                <button mat-stroked-button (click)="write(7, 'di');">
                     <span class="i-font i-seven"></span>
                 </button>
-                <button mat-raised-button (click)="write(8, 'di');">
+                <button mat-stroked-button (click)="write(8, 'di');">
                     <span class="i-font i-eight"></span>
                 </button>
-                <button mat-raised-button (click)="write(9, 'di');">
+                <button mat-stroked-button (click)="write(9, 'di');">
                     <span class="i-font i-nine"></span>
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-raised-button (click)="write(4, 'di');">
+                <button mat-stroked-button (click)="write(4, 'di');">
                     <span class="i-font i-four"></span>
                 </button>
-                <button mat-raised-button (click)="write(5, 'di');">
+                <button mat-stroked-button (click)="write(5, 'di');">
                     <span class="i-font i-five"></span>
                 </button>
-                <button mat-raised-button (click)="write(6, 'di');">
+                <button mat-stroked-button (click)="write(6, 'di');">
                     <span class="i-font i-six"></span>
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-raised-button (click)="write(1, 'di');">
+                <button mat-stroked-button (click)="write(1, 'di');">
                     <span class="i-font i-one"></span>
                 </button>
-                <button mat-raised-button (click)="write(2, 'di');">
+                <button mat-stroked-button (click)="write(2, 'di');">
                     <span class="i-font i-two"></span>
                 </button>
-                <button mat-raised-button (click)="write(3, 'di');">
+                <button mat-stroked-button (click)="write(3, 'di');">
                     <span class="i-font i-three"></span>
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-raised-button style="visibility: hidden;">
-                    <span class="i-font i-dot"></span>
+                <button mat-stroked-button (click)="write('.', 'di');">
+                    <span>.</span>
                 </button>
-                <button mat-raised-button (click)="write(0, 'di');">
+                <button mat-stroked-button (click)="write(0, 'di');">
                     <span class="i-font i-zero"></span>
                 </button>
-                <button mat-raised-button style="visibility: hidden;">
-                    <span class="i-font i-comma"></span>
+                <button mat-stroked-button (click)="write(',', 'di');">
+                    <span>,</span>
                 </button>
             </div>
         </div>
@@ -281,23 +281,23 @@
     <mat-card #operators id="operators" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-raised-button (click)="write('×', 'op');">
+                <button mat-stroked-button (click)="write('×', 'op');">
                     <span class="i-font i-mult"></span>
                 </button>
-                <button mat-raised-button (click)="write('/', 'op');">
+                <button mat-stroked-button (click)="write('/', 'op');">
                     <span class="i-font i-divide"></span>
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-raised-button (click)="write('+', 'op');">
+                <button mat-stroked-button (click)="write('+', 'op');">
                     <span class="i-font i-plus"></span>
                 </button>
-                <button mat-raised-button (click)="write('-', 'op');">
+                <button mat-stroked-button (click)="write('-', 'op');">
                     <span class="i-font i-minus"></span>
                 </button>
             </div>
         </div>
-        <button mat-raised-button (click)="write('=', 'op');">
+        <button mat-stroked-button (click)="write('=', 'op');">
             <span class="i-font i-equal"></span>
         </button>
     </mat-card>
@@ -305,17 +305,17 @@
     <mat-card #advOperators id="advOperators" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-raised-button (click)="write(null, 'br');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-brackets"></span>
+                <button mat-stroked-button (click)="write(null, 'br');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/brackets.svg">
                 </button>
-                <button mat-raised-button (click)="write(null, 'fr');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-fraction"></span>
+                <button mat-stroked-button (click)="write(null, 'fr');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/fraction.svg">
                 </button>
-                <button mat-raised-button (click)="write(null, 'pw');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-power"></span>
+                <button mat-stroked-button (click)="write(null, 'pw');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/power.svg">
                 </button>
-                <button mat-raised-button (click)="write(null, 'rt');" style="min-height: 7vw !important; min-width: 5vw !important;">
-                    <span class="i-font i-root" style="font-size: 2vw !important;"></span>
+                <button mat-stroked-button (click)="write(null, 'rt');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
+                    <img src="../../../../assets/img/keys/root.svg">
                 </button>
             </div>
         </div>
@@ -324,35 +324,35 @@
     <mat-card #geoElements id="geoElements" class="ui keyboard" *ngIf="mode === 'geo'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'select'" (click)="switchModeType('select');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'select'" (click)="switchModeType('select');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/select.svg">
                 </button>
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'dot'" (click)="switchModeType('dot');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'dot'" (click)="switchModeType('dot');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/dot.svg">
                 </button>
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'line'" (click)="switchModeType('line');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'line'" (click)="switchModeType('line');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/line.svg">
                 </button>
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'multiline'" (click)="switchModeType('multiline');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'multiline'" (click)="switchModeType('multiline');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/multiline.svg">
                 </button>
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'circle'" (click)="switchModeType('circle');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'circle'" (click)="switchModeType('circle');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/circle.svg">
                 </button>
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'rectangle'" (click)="switchModeType('');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'rectangle'" (click)="switchModeType('');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/rectangle.svg">
                 </button>
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'triangle'" (click)="switchModeType('');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'triangle'" (click)="switchModeType('');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/triangle.svg">
                 </button>
-                <button mat-raised-button [class.selectedGeoTool]="modeType == 'letters'" (click)="switchModeType('letters');"
+                <button mat-stroked-button [class.selectedGeoTool]="modeType == 'letters'" (click)="switchModeType('letters');"
                     style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
                     <img src="../../../../assets/img/keys/letters.svg">
                 </button>
@@ -363,10 +363,10 @@
     <mat-card #addRisk id="addRisk" class="ui keyboard" *ngIf="mode === 'geo' && modeType != 'select' && modeType != ''">
         <div class="flex-column">
             <div class="flex-row" style="flex-wrap: wrap; justify-content: flex=start;">
-                <button mat-raised-button (click)="changeGen(-1);" style="font-family: 'Times New Roman', Times, serif; font-weight: bold; margin: 0.1vw; display: flex; font-size: 2vw; color: #404040; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important;">
+                <button mat-stroked-button (click)="changeGen(-1);" style="margin: 0.1vw; display: flex; font-size: 2vw; color: black; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important; display: flex; justify-content: center; align-items: center;">
                     -1
                 </button>
-                <button mat-raised-button (click)="changeGen(1);" style="font-family: 'Times New Roman', Times, serif; font-weight: bold; margin: 0.1vw; display: flex; font-size: 2vw; color: #404040; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important;">
+                <button mat-stroked-button (click)="changeGen(1);" style="margin: 0.1vw; display: flex; font-size: 2vw; color: black; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important; display: flex; justify-content: center; align-items: center;">
                     +1
                 </button>
             </div>
@@ -376,8 +376,8 @@
     <mat-card #letters id="letters" class="ui keyboard" *ngIf="mode === 'geo' && modeType != 'select' && modeType != ''">
         <div class="flex-column">
             <div class="flex-row" style="flex-wrap: wrap; justify-content: space-between;">
-                <button mat-raised-button *ngFor="let key of lettersKeyboard; let i = index;" (click)="addLetter(i);"
-                    style="margin: 0.1vw; display: flex; font-size: 2vw; color: #404040; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important;">
+                <button mat-stroked-button *ngFor="let key of lettersKeyboard; let i = index;" (click)="addLetter(i);"
+                    style="margin: 0.1vw; display: flex; font-size: 2vw; color: black; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important; display: flex; justify-content: center; align-items: center;">
                     {{key.name}}<sub *ngIf="key.gen > 0">{{key.gen}}</sub>
                 </button>
             </div>
@@ -386,15 +386,15 @@
 
     <mat-card #selectLetters id="selectLetters" class="ui keyboard" *ngIf="mode === 'geo' && modeType != 'select' && modeType != ''">
         <div class="flex-column" style="flex-wrap: wrap; justify-content: space-between;">
-            <button mat-raised-button *ngFor="let key of selectedLetters; let i = index;" (click)="removeLetter(i);"
-                style="margin: 0.1vw; display: flex; font-size: 2vw; color: #404040; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important;">
+            <button mat-stroked-button *ngFor="let key of selectedLetters; let i = index;" (click)="removeLetter(i);"
+                style="margin: 0.1vw; display: flex; font-size: 2vw; color: black; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important; display: flex; justify-content: center; align-items: center;">
                 {{key.name}}<sub *ngIf="key.gen > 0">{{key.gen}}</sub>
             </button>
         </div>
     </mat-card>
 
     <mat-card class="ui tools">
-        <!--<button mat-raised-button color="accent" [class.selectedTool]="mode == 'remove'" (click)="switchMode('remove')">
+        <!--<button mat-stroked-button color="accent" [class.selectedTool]="mode == 'remove'" (click)="switchMode('remove')">
             <mat-icon>remove_circle_outline</mat-icon>
         </button>-->
         <button mat-raised-button color="accent" [class.selectedTool]="mode == 'math'" (click)="switchMode('math')">

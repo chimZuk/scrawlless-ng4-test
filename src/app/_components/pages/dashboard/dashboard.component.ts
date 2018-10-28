@@ -203,6 +203,7 @@ export class DashboardComponent implements OnInit {
     this.userService.getUserInfo(data)
       .subscribe(result => {
         this.user = result;
+        this.user.img = "../../../../assets/img/load.gif";
         this.loading = false;
       });
   }

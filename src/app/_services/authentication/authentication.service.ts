@@ -1,8 +1,11 @@
+
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import { Injectable } from '@angular/core';
-import { Http, Headers, Response } from '@angular/http';
+import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map'
-import 'rxjs/add/operator/catch';
+
+
 
 import { BaseHrefModule } from '../../_modules/base-href/base-href.module';
 
@@ -18,7 +21,7 @@ export class AuthenticationService {
   mode = "user";
   subjects: any[];
   href: string = this.basehref.base;
-  
+
 
 
   patterns = {
@@ -26,8 +29,8 @@ export class AuthenticationService {
   };
 
   register(data: any): Observable<boolean> {
-    return this.http.post(this.href + 'api/register', { data })
-      .map((response: Response) => {
+    return this.http.post(this.href + 'api/register', { data }).pipe(
+      map((response: Response) => {
         let token = response.json().token;
         if (token) {
           this.token = token;
@@ -43,12 +46,12 @@ export class AuthenticationService {
         } else {
           return false;
         }
-      });
+      }));
   }
 
-  login(data: any): Observable<boolean> {
-    return this.http.post(this.href + 'api/authenticate', { data })
-      .map((response: Response) => {
+  login(data: any): Observable<any> {
+    return this.http.post(this.href + 'api/authenticate', { data }).pipe(
+      map((response: Response) => {
         let token = response.json().token;
         console.log(response.json());
         if (token) {
@@ -60,10 +63,8 @@ export class AuthenticationService {
         } else {
           return false;
         }
-      })
-      .catch((error: Response) => {
-        return Observable.of(false)
-      });
+      }),
+      catchError(err => of(err)));
   }
 
   logout(): void {

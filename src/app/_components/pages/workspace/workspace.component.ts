@@ -1974,7 +1974,6 @@ export class WorkspaceComponent implements OnInit {
   }
 
   onMouseUp(ev) {
-    console.log(this.wasSelMoving)
     if (this.modeType == "select" && this.wasSelMoving) {
       this.tempSelection = {
         type: "none"

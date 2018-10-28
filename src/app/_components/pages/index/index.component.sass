@@ -1,146 +1,10 @@
 @import "../../../../assets/css/index.css"
-@import "../../../../../sass/variables.sass"
 
-.back 
-    position: absolute
-    background-image: url(../../../../assets/img/back.png)
-    background-size: cover
-    z-index: 2
-    width: 84%
-    min-height: 100%
-    padding: 0 8%
-    background-position-x: center
+$b-tiny: 550px
+$b-small: 640px
+$b-medium: 950px
+$b-large: 1170px
 
-
-.logo 
-    background-image: url(../../../../assets/img/back.gif)
-    background-size: cover
-    z-index: 1
-    width: 318px
-    height: 108px
-    float: right
-
-.content
-    width: 100%
-    position: relative
-    display: flex
-    align-items: flex-start
-    @media screen and (max-width: $b-small)
-    @media screen and (max-width: $b-medium)
-        flex-direction: column
-        align-items: center     
-    @media screen and (min-width: $b-large)
-    
-
-@mixin absolute-width($width)
-    width: $width
-    height: ($width / 16) * 9
-
-.video
-    width: 100%
-    height: 100%
-
-.video-content
-    @include absolute-width(55vw)
-    flex: 2
-    margin-top: 20px
-    @media screen and (max-width: $b-small)
-        @include absolute-width(80vw)
-    @media screen and (max-width: $b-medium)     
-    @media screen and (min-width: $b-large)
-
-.intro
-    margin-right: 20px
-    margin-right: 20px
-    margin-bottom: 20px
-    @media screen and (max-width: $b-medium)
-        margin: 0 0 20px 0
-
-.auth
-    flex: 1
-    min-width: 248px
-    max-width: 340px
-    min-height: 396.5px
-    margin-bottom: 20px
-    @media screen and (max-width: $b-small)
-        width: 100%
-        min-width: none
-        max-width: none
-    @media screen and (min-width: $b-medium)     
-    @media screen and (min-width: $b-large) 
-    .mat-card
-        @include c-flex()
-        box-shadow: none $i
-        flex-direction: column
-
-.auth-button
-    margin: 2.5px auto
-
-.footer
-    height: 100%
-    padding: 10px $i
-
-
-.icon
-    width: 40px
-    height: 40px
-
-.social
-    display: flex
-    align-items: center
-    justify-content: center
-
-img
-    height: 100%
-
-.title
-    user-select: none
-    font-size: 40px
-    @media screen and (max-width: $b-small)
-        font-size: 30px
-    @media screen and (max-width: $b-tiny)
-        font-size: 25px
-
-.sub-title
-    user-select: none
-    font-size: 18px
-    @media screen and (max-width: $b-tiny)
-        font-size: 16px
-
-.second>.flex-column
-    padding: 0 20px
-    justify-content: center
-
-.second
-    margin-bottom: 20px
-    justify-content: space-between
-    @media screen and (max-width: $b-medium)
-        flex-direction: column $i
-        align-items: center $i
-
-.second .sub-title
-    margin-top: 10px
-    @media screen and (max-width: $b-medium)
-        margin-bottom: 10px
-
-.absLabel
-    position: absolute
-    top: -32px
-    left: -20px
-    transform: rotate(-20deg)
-    user-select: none
-    background-color: #ed7e28
-    color: white
-    text-shadow: 0px 0px 10px rgba(150, 150, 150, 1)
-
-.demo-column
-    @media screen and (max-width: $b-medium)
-        margin-top: 55px
-
-.devices-img
-    width: 60%
-    @media screen and (max-width: $b-medium)
-        width: 100%
 
 .flex-row
     display: flex
@@ -150,11 +14,165 @@ img
     display: flex
     flex-direction: column
 
-.flex-space
-    flex: 1
 
-.flex-half
-    flex: 5
+.formSpinner
+    height: 56px !important
+    width: 56px !important
 
-.mat-card
-    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12) $i
+.back 
+    position: absolute
+    background-image: url(../../../../assets/img/back.png)
+    background-size: cover
+    background-position-x: center
+    display: flex
+    flex-direction: column
+    align-items: center
+    width: 100%
+
+.header
+    margin: 20px 0 10px 0
+    width: calc(80% + 40px)
+    max-width: 1240px
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: center
+    z-index: 9998
+    @media screen and (max-width: $b-large)
+        justify-content: space-around
+    @media screen and (max-width: $b-medium)
+        flex-direction: column
+
+.header-right
+    @media screen and (max-width: $b-medium)
+        margin-top: 20px
+
+.logo 
+    background-image: url(../../../../assets/img/back.gif)
+    background-size: cover
+    z-index: 1
+    width: 318px
+    height: 108px
+    float: right
+    @media screen and (max-width: $b-large)
+        background-image: url(../../../../assets/img/logo.gif)
+        width: 100px
+        height: 130px
+    @media screen and (max-width: $b-medium)
+        background-image: url(../../../../assets/img/back.gif)
+        width: 218px
+        height: 70px
+
+.header-body
+    background-color: #427a8d !important
+    padding: 15px 35px 15px 15px !important
+    display: flex
+    flex-direction: column
+    align-items: baseline
+    @media screen and (max-width: $b-large)
+        padding: 10px !important
+
+.column-demo
+    @media screen and (max-width: $b-large)
+        margin-top: 40px
+
+
+.reg-card
+    min-width: 250px !important
+    padding: 20px 35px !important
+    @media screen and (max-width: $b-tiny)        
+        padding: 20px 20px !important
+        min-width: 230px !important
+
+.reg-card mat-form-field
+    width: 100%
+    margin: 0px
+
+.form-body
+    align-items: center
+
+.form-header
+    margin-bottom: 10px
+    padding: 15px !important
+
+.title
+    font-size: 30px
+    margin-bottom: 10px
+
+.sub-title
+    font-size: 18px
+
+.block
+    max-width: 1200px
+    width: 80%
+    margin: 10px 0
+    @media screen and (max-width: $b-tiny)
+        padding: 20px 10px !important
+        width: calc(100% - 20px)
+
+.parent.content
+    @media screen and (max-width: $b-medium)
+        flex-direction: column
+
+.content
+    justify-content: center
+
+.left.content
+    flex: 4
+    padding: 20px 40px
+    @media screen and (max-width: $b-medium)
+        padding: 20px 20px
+
+.left.content.narrow
+    flex: 2
+
+.right.content
+    flex: 2
+    align-items: center
+
+.right.content.wide
+    flex: 4
+    align-items: center
+
+
+img
+    width: 100%
+
+
+.login-form
+    align-items: center
+    @media screen and (max-width: $b-tiny)
+        flex-direction: column
+        padding: 0px 0px !important
+
+.login-card
+    min-width: 270px
+    mat-form-field
+        @media screen and (max-width: $b-tiny)
+            margin: 0px
+            width: 100%
+
+.absLabel
+    position: absolute
+    z-index: 9999
+    top: -32px
+    left: -20px
+    transform: rotate(-20deg)
+    user-select: none
+    background-color: #ed7e28
+    color: white
+    text-shadow: 0px 0px 10px rgba(150, 150, 150, 1)
+
+mat-form-field
+    margin-right: 10px
+
+.footer
+    justify-content: center
+    padding: 10px 20px !important
+    @media screen and (max-width: $b-tiny)
+        padding: 10px !important
+
+.social    
+    a
+        width: 50px
+        height: 50px

@@ -9,11 +9,18 @@ import { AuthGuard } from './_guards/auth.guard';
 
 import { SharedModule } from './_modules/shared/shared.module'
 import { BaseHrefModule } from './_modules/base-href/base-href.module'
-
-import { RouterModule, Routes } from '@angular/router';
 import { appRouter } from './app-routing.module';
 
 import { AppComponent } from './app.component';
+
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
+
+import { FormsModule } from '@angular/forms';
+import { MatInputModule, MatTableModule, MatPaginatorModule, MatSortModule }
+  from '@angular/material';
+
+registerLocaleData(localeRu, 'ru');
 
 @NgModule({
   declarations: [

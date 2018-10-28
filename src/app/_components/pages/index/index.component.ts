@@ -4,12 +4,44 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../_services/authentication/authentication.service';
 import { LanguageService } from '../../../_services/language/language.service';
 
+import { FormControl, Validators } from '@angular/forms';
+
 @Component({
   selector: 'index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
 export class IndexComponent implements OnInit {
+
+  emailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email
+  ]);
+
+  regEmailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email
+  ]);
+
+  nameFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(3)
+  ]);
+
+  snameFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(3)
+  ]);
+
+  passwordFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8)
+  ]);
+
+  regPasswordFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8)
+  ]);
 
   constructor(
     private router: Router,
@@ -23,7 +55,9 @@ export class IndexComponent implements OnInit {
   //region Variables
 
   loading = false;
-  loginError: String;
+  regloading = false;
+  loginError: String = "";
+  registerError: String = "";
   language: any = this.languageService.language;
   lang: number = this.languageService.lang;
   data: any;
@@ -31,6 +65,10 @@ export class IndexComponent implements OnInit {
     firstName: '',
     lastName: '',
     type: '1',
+    email: '',
+    password: ''
+  }
+  loginData: any = {
     email: '',
     password: ''
   }
@@ -227,42 +265,42 @@ export class IndexComponent implements OnInit {
   //region HTTP requests
 
   register() {
-    this.loading = true;
+    this.regloading = true;
     if (this.isRegFormValid()) {
       this.authenticationService.register(this.user)
         .subscribe(result => {
           if (result === true) {
             this.router.navigate(['/dashboard']);
           } else {
-            this.loading = false;
+            this.regloading = false;
           }
         });
     } else {
-      this.loading = false;
+      this.regloading = false;
     }
 
   }
 
   login() {
+    this.loginError = "";
     var data = {
-      email: this.user.email,
-      password: this.user.password
+      email: this.loginData.email,
+      password: this.loginData.password
     };
     this.loading = true;
-    if (this.isLogFormValid()) {
-      this.authenticationService.login(data)
-        .subscribe(result => {
-          if (result === true) {
-            this.router.navigate(['/dashboard']);
-          } else {
-            this.validationError = this.language[this.lang].incorrectData;
-            this.loading = false;
+    this.authenticationService.login(data)
+      .subscribe(result => {
+        console.log(result);
+        if (result === true) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          if(result._body.indexOf("Wrong")) {
+            this.loginError = this.language[this.lang].incorrectData;
+            console.log(this.loginError)
           }
-        });
-    } else {
-      this.loading = false;
-    }
-
+          this.loading = false;
+        }
+      });
   }
 
   //endregion HTTP requests
