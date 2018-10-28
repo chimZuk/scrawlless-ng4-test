@@ -1,36 +1,55 @@
 @import "../../../../assets/css/index.css";
-@import url("https://fonts.googleapis.com/css?family=Exo+2");
-@import url("https://fonts.googleapis.com/css?family=Itim");
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.formSpinner {
+  height: 56px !important;
+  width: 56px !important;
+}
+
 .back {
   position: absolute;
   background-image: url(../../../../assets/img/back.png);
   background-size: cover;
-  z-index: 2;
-  width: 84%;
-  min-height: 100%;
-  padding: 0 8%;
   background-position-x: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  width: 100%;
 }
 
 .header {
-  background-color: #427a8d;
-  top: 20px;
-  width: 80%;
-  max-width: 1300px;
-  position: fixed;
+  margin: 20px 0 10px 0;
+  width: calc(80% + 40px);
+  max-width: 1240px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   z-index: 9998;
-  padding: 20px;
+}
+@media screen and (max-width: 1170px) {
+  .header {
+    justify-content: space-around;
+  }
+}
+@media screen and (max-width: 950px) {
+  .header {
+    flex-direction: column;
+  }
 }
 
-.login-card {
-  margin: 0px;
+@media screen and (max-width: 950px) {
+  .header-right {
+    margin-top: 20px;
+  }
 }
 
 .logo {
@@ -41,148 +60,141 @@
   height: 108px;
   float: right;
 }
-
-.first {
-  margin-top: 190px;
+@media screen and (max-width: 1170px) {
+  .logo {
+    background-image: url(../../../../assets/img/logo.gif);
+    width: 100px;
+    height: 130px;
+  }
+}
+@media screen and (max-width: 950px) {
+  .logo {
+    background-image: url(../../../../assets/img/back.gif);
+    width: 218px;
+    height: 70px;
+  }
 }
 
-.content {
-  width: 100%;
-  max-width: 1200px;
-  position: relative;
+.header-body {
+  background-color: #427a8d !important;
+  padding: 15px 35px 15px 15px !important;
   display: flex;
-  align-items: flex-start;
-}
-@media screen and (max-width: 920px) {
-  .content {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-.video {
-  width: 100%;
-  height: 100%;
-}
-
-.video-content {
-  max-width: 900px;
-  width: 55vw;
-  height: 30.9375vw;
-  flex: 2;
-  margin-top: 20px;
-}
-@media screen and (max-width: 640px) {
-  .video-content {
-    width: 80vw;
-    height: 45vw;
-  }
-}
-.intro {
-  margin-right: 20px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-}
-@media screen and (max-width: 920px) {
-  .intro {
-    margin: 0 0 20px 0;
-  }
-}
-
-.auth {
-  flex: 1;
-  min-width: 248px;
-  max-width: 340px;
-  min-height: 396.5px;
-  margin-bottom: 20px;
-}
-@media screen and (max-width: 640px) {
-  .auth {
-    width: 100%;
-    min-width: none;
-    max-width: none;
-  }
-}
-.auth .mat-card {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  box-shadow: none !important;
   flex-direction: column;
+  align-items: baseline;
+}
+@media screen and (max-width: 1170px) {
+  .header-body {
+    padding: 10px !important;
+  }
 }
 
-.auth-button {
-  margin: 2.5px auto;
+@media screen and (max-width: 1170px) {
+  .column-demo {
+    margin-top: 40px;
+  }
 }
 
-.footer {
-  max-width: 1220px;
-  height: 100%;
-  padding: 10px !important;
+.reg-card {
+  min-width: 250px !important;
+  padding: 20px 35px !important;
+}
+@media screen and (max-width: 550px) {
+  .reg-card {
+    padding: 20px 20px !important;
+    min-width: 230px !important;
+  }
 }
 
-.icon {
-  width: 40px;
-  height: 40px;
+.reg-card mat-form-field {
+  width: 100%;
+  margin: 0px;
 }
 
-.social {
-  display: flex;
+.form-body {
   align-items: center;
-  justify-content: center;
 }
 
-img {
-  height: 100%;
+.form-header {
+  margin-bottom: 10px;
+  padding: 15px !important;
 }
 
 .title {
-  user-select: none;
-  font-size: 45px;
-}
-@media screen and (max-width: 640px) {
-  .title {
-    font-size: 35px;
-  }
-}
-@media screen and (max-width: 400px) {
-  .title {
-    font-size: 30px;
-  }
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
 .sub-title {
-  user-select: none;
-  font-size: 20px;
+  font-size: 18px;
 }
-@media screen and (max-width: 400px) {
-  .sub-title {
-    font-size: 16px;
+
+.block {
+  max-width: 1200px;
+  width: 80%;
+  margin: 10px 0;
+}
+@media screen and (max-width: 550px) {
+  .block {
+    padding: 20px 10px !important;
+    width: calc(100% - 20px);
   }
 }
 
-.second > .flex-column {
-  padding: 0 20px;
+@media screen and (max-width: 950px) {
+  .parent.content {
+    flex-direction: column;
+  }
+}
+
+.content {
   justify-content: center;
 }
 
-.second {
-  margin-bottom: 20px;
-  max-width: 1200px;
-  justify-content: space-between;
+.left.content {
+  flex: 4;
+  padding: 20px 40px;
 }
-@media screen and (max-width: 920px) {
-  .second {
-    flex-direction: column !important;
-    align-items: center !important;
+@media screen and (max-width: 950px) {
+  .left.content {
+    padding: 20px 20px;
   }
 }
 
-.second .sub-title {
-  margin-top: 10px;
+.left.content.narrow {
+  flex: 2;
 }
-@media screen and (max-width: 920px) {
-  .second .sub-title {
-    margin-bottom: 10px;
+
+.right.content {
+  flex: 2;
+  align-items: center;
+}
+
+.right.content.wide {
+  flex: 4;
+  align-items: center;
+}
+
+img {
+  width: 100%;
+}
+
+.login-form {
+  align-items: center;
+}
+@media screen and (max-width: 550px) {
+  .login-form {
+    flex-direction: column;
+    padding: 0px 0px !important;
+  }
+}
+
+.login-card {
+  min-width: 270px;
+}
+@media screen and (max-width: 550px) {
+  .login-card mat-form-field {
+    margin: 0px;
+    width: 100%;
   }
 }
 
@@ -198,41 +210,23 @@ img {
   text-shadow: 0px 0px 10px #969696;
 }
 
-@media screen and (max-width: 920px) {
-  .demo-column {
-    margin-top: 55px;
+mat-form-field {
+  margin-right: 10px;
+}
+
+.footer {
+  justify-content: center;
+  padding: 10px 20px !important;
+}
+@media screen and (max-width: 550px) {
+  .footer {
+    padding: 10px !important;
   }
 }
 
-.devices-img {
-  width: 60%;
-}
-@media screen and (max-width: 920px) {
-  .devices-img {
-    width: 100%;
-  }
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.flex-space {
-  flex: 1;
-}
-
-.flex-half {
-  flex: 5;
-}
-
-.mat-card {
-  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
+.social a {
+  width: 50px;
+  height: 50px;
 }
 
 /*# sourceMappingURL=index.component.css.map */

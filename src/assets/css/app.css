@@ -50,10 +50,19 @@
 /deep/ .mat-card {
   border-radius: 5px !important;
   padding: 20px !important;
-  box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 !important;
+  /*box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8 !important;*/
 }
 
 /* End of card reset */
+
+/deep/ .formSpinner {
+  position: relative;
+}
+
+/deep/ .formSpinner svg {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 /* Begining of button reset */
 
@@ -67,9 +76,15 @@
 /deep/ .mat-raised-button {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
 }
+
 /deep/ .mat-fab {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
 }
+
+/deep/ .mat-icon-button {
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+}
+
 /deep/ .mat-mini-fab {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
 }
@@ -111,7 +126,7 @@
 
 /* Begining of button reset */
 
-/deep/ .mat-fab .mat-button-wrapper {
+/deep/ .mat-fab .mat-button-wrapper, .mat-button-wrapper {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -121,7 +136,7 @@
 
 /* End of button reset */
 
-/deep/ input {
+/*/deep/ input {
   font: inherit;
   background: 0 0;
   border: none;
@@ -131,13 +146,9 @@
   margin: 0;
   width: calc(100% - 20px);
   font-family: "Exo 2", sans-serif !important;
-}
+}*/
 
-/deep/ input:focus {
-  border-bottom: 1px solid #ed7e28;
-}
-
-/deep/ form {
+/*/deep/ form {
   position: relative;
 }
 
@@ -147,7 +158,7 @@
 
 /deep/ form select {
   margin-bottom: 20px;
-}
+}*/
 
 /deep/ input, input:before, input:after {
   -webkit-user-select: initial !important;

@@ -1,5 +1,6 @@
 
 import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs';
@@ -62,7 +63,8 @@ export class AuthenticationService {
         } else {
           return false;
         }
-      }));
+      }),
+      catchError(err => of(err)));
   }
 
   logout(): void {
