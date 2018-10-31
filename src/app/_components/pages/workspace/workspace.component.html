@@ -24,6 +24,8 @@
         stroke-linecap: round;
         stroke-linejoin: round;
         stroke-miterlimit: 10;
+        touch-action: none !important;
+        user-select: none !important;
     }
 
     /deep/ .arrow {
@@ -33,6 +35,13 @@
         stroke-linejoin: round;
         stroke-miterlimit: 10;
         cursor: move;
+        touch-action: none !important;
+        user-select: none !important;
+    }
+
+    /deep/ .drag-handler {
+        touch-action: none !important;
+        user-select: none !important;
     }
 
     /deep/ .textForSave * {
@@ -45,10 +54,40 @@
 
     /deep/ .regularText {
         font-family: scwlsWorkspace !important;
+        visibility: visible !important;
     }
 
     /deep/ .zeroFont {
         font-size: 0px !important;
+    }
+
+    #zoom-body {
+        width: 30vw;
+        height: 30vw;
+        top: 0;
+        right: 0;
+        position: absolute;
+        z-index: 9999;
+    }
+
+    .zoom-content {
+        width: 78.989%;
+        height: 78.989%;
+        border-radius: 50%;
+    }
+
+    .zoomed {
+        background-image: url(../../../../assets/img/zoomed.png);
+        background-size: contain;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        right: 0;
+    }
+
+    #cover {
+        user-select: none !important;
     }
 </style>
 
@@ -149,6 +188,14 @@
 
     </svg>
 
+    <div id="zoom-body" *ngIf="isZooming">
+        <canvas class="zoom-content" id="zoomcanvas" width="250px" height="250px">
+            This text is displayed if your browser does not support HTML5 Canvas.
+        </canvas>
+        <div class="zoomed">
+
+        </div>
+    </div>
 
 
 
@@ -409,4 +456,4 @@
 <div style="width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center;" *ngIf="loading">
     <mat-spinner></mat-spinner>
 </div>
-<canvas width="1920" height="2715" style="display: none;"></canvas>
+<canvas width="1920" height="2715" style="display: none;" id="save-canvas"></canvas>

@@ -254,7 +254,7 @@ export class AlgebraComponent {
         case "powerWbrackets": {
           html = html + '<g data-transformX="' + (width) * 20 + '" data-transformY="' + (top - expr[i].chi.height - (expr[i].zni.height / 2) + 2 * cst.hdc) * 10 + '" transform="translate(' + (width) * 20 + ',' + (top - expr[i].chi.height - (expr[i].zni.height / 2) + 2 * cst.hdc) * 10 + ')">' + expr[i].chtml + expr[i].zhtml + '</g>';
           if (expr[i].chi.width < 1 * cst.wdc) {
-            width += expr[i].zni.width + expr[i].chi.width  + 1 * cst.wdc;
+            width += expr[i].zni.width + expr[i].chi.width + 1 * cst.wdc;
           } else {
             width += expr[i].zni.width + expr[i].chi.width;
           }
@@ -271,12 +271,12 @@ export class AlgebraComponent {
         }
         case "digit":
           html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="textForSave" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "' + cst.fc * 1.25 + '">' + expr[i].value + '</text>';
-          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" class="element regularText" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "' + cst.fc + '">' + expr[i].text + '</text>';
+          html += '<text data-type="di" data-lineid="' + this.line.id + '" data-digitid="' + expr[i].id + '" x="' + (width * 20 + expr[i].s * cst.hdc * 3) + '" style="visibility: hidden;" class="element regularText" y = "' + (top * 10 + ((17 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "' + cst.fc + '">' + expr[i].text + '</text>';
           width += expr[i].s * cst.hdc;
           break;
         case "operator":
           html += '<text x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="textForSave" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "Comic Sans MS" font-size = "' + cst.fc * 1.25 + '">' + expr[i].value + '</text>';
-          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" class="element regularText" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "' + cst.fc + '">' + expr[i].text + '</text>';
+          html += '<text data-type="op" x="' + (width * 20 + expr[i].s * cst.hdc * 2) + '" style="visibility: hidden;" class="element regularText" y = "' + (top * 10 + ((17.5 / 10) * cst.hdc) * 10) + '" font-family = "scwlsWorkspace" font-size = "' + cst.fc + '">' + expr[i].text + '</text>';
           width += expr[i].s * cst.hdc;
           break;
 
@@ -305,17 +305,17 @@ export class AlgebraComponent {
     this.pw = this.line.pw;
     this.rt = this.line.rt;
     this.br = this.line.br;
-    let dragHandler = `<g transform="translate(-20, -20)" class="drag-handler" data-lineID="` + this.line.id + `"><path data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="handler" d="M20,12.5c0,2,0,7.5,0,7.5s-5.4,0-7.5,0C8.4,20,5,16.6,5,12.5S8.4,5,12.5,5S20,8.4,20,12.5z"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="12.5" y1="7.5" x2="12.5" y2="17.5"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="7.5" y1="12.5" x2="17.5" y2="12.5"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="12.5" y1="7.5" x2="11.2" y2="10"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="13.7" y1="10" x2="12.5" y2="7.5"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="7.5" y1="12.5" x2="10" y2="11.2"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="10.1" y1="13.7" x2="7.5" y2="12.5"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="12.5" y1="17.5" x2="11.2" y2="15"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="13.7" y1="15" x2="12.5" y2="17.5"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="17.5" y1="12.5" x2="15" y2="11.2"/>
-    <line data-lineID="` + this.line.id + `" fill="none" stroke = "none" class="arrow" x1="15" y1="13.7" x2="17.5" y2="12.5"/></g>`;
+    let dragHandler = `<g transform="translate(-20, -20)" class="drag-handler" data-lineID="` + this.line.id + `"><path data-lineID="` + this.line.id + `" fill="#FFFFFF" stroke = "#F15A24" stroke-width="1.5" class="handler" d="M20,12.5c0,2,0,7.5,0,7.5s-5.4,0-7.5,0C8.4,20,5,16.6,5,12.5S8.4,5,12.5,5S20,8.4,20,12.5z"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="12.5" y1="7.5" x2="12.5" y2="17.5"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="7.5" y1="12.5" x2="17.5" y2="12.5"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="12.5" y1="7.5" x2="11.2" y2="10"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="13.7" y1="10" x2="12.5" y2="7.5"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="7.5" y1="12.5" x2="10" y2="11.2"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="10.1" y1="13.7" x2="7.5" y2="12.5"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="12.5" y1="17.5" x2="11.2" y2="15"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="13.7" y1="15" x2="12.5" y2="17.5"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="17.5" y1="12.5" x2="15" y2="11.2"/>
+    <line data-lineID="` + this.line.id + `" fill="none" stroke = "#000000" class="arrow" x1="15" y1="13.7" x2="17.5" y2="12.5"/></g>`;
 
     let zhtml = '<g class="line-element" data-transformX="' + this.line.x + '" data-transformY="' + this.line.y + '" transform="translate(' + this.line.x + ',' + this.line.y + ')">' + dragHandler + this.expression(this.ex[this.ex[0].ce[0]], this.ex[0].ce[0], 0).html + '</g>';
     return zhtml;

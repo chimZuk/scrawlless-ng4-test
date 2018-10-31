@@ -73,6 +73,8 @@ export class WorkspaceComponent implements OnInit {
   wasMoving = false;
   wasSelMoving = false;
 
+  isZooming = false;
+
   lines: any;
   elements: any;
 
@@ -343,6 +345,17 @@ export class WorkspaceComponent implements OnInit {
     for (var i = 0; i < document.getElementsByClassName("regularText").length; i++) {
       document.getElementsByClassName("regularText")[i].setAttribute("style", "font-size: 0px !important;");
     }
+    for (var i = 0; i < document.getElementsByClassName("arrow").length; i++) {
+      document.getElementsByClassName("arrow")[i].setAttribute("stroke", "none");
+    }
+    for (var i = 0; i < document.getElementsByClassName("drag-handler").length; i++) {
+      document.getElementsByClassName("drag-handler")[i].setAttribute("stroke", "none");
+      document.getElementsByClassName("drag-handler")[i].setAttribute("fill", "none");
+    }
+    for (var i = 0; i < document.getElementsByClassName("handler").length; i++) {
+      document.getElementsByClassName("handler")[i].setAttribute("stroke", "none");
+      document.getElementsByClassName("handler")[i].setAttribute("fill", "none");
+    }
 
     document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
     document.getElementById("cell").setAttribute("stroke-width", "2");
@@ -355,7 +368,7 @@ export class WorkspaceComponent implements OnInit {
     var downloadLink = document.createElement("a");
     downloadLink.href = svgUrl;
 
-    var canvas = document.querySelector("canvas"),
+    var canvas = <HTMLCanvasElement>document.getElementById('save-canvas'),
       context = canvas.getContext("2d");
 
     var image = new Image;
@@ -390,6 +403,17 @@ export class WorkspaceComponent implements OnInit {
 
     for (var i = 0; i < document.getElementsByClassName("regularText").length; i++) {
       document.getElementsByClassName("regularText")[i].setAttribute("style", "");
+    }
+    for (var i = 0; i < document.getElementsByClassName("arrow").length; i++) {
+      document.getElementsByClassName("arrow")[i].setAttribute("stroke", "#000000");
+    }
+    for (var i = 0; i < document.getElementsByClassName("drag-handler").length; i++) {
+      document.getElementsByClassName("drag-handler")[i].setAttribute("stroke", "#F15A24");
+      document.getElementsByClassName("drag-handler")[i].setAttribute("fill", "#FFFFFF");
+    }
+    for (var i = 0; i < document.getElementsByClassName("handler").length; i++) {
+      document.getElementsByClassName("handler")[i].setAttribute("stroke", "#F15A24");
+      document.getElementsByClassName("handler")[i].setAttribute("fill", "#FFFFFF");
     }
   }
 
@@ -514,7 +538,6 @@ export class WorkspaceComponent implements OnInit {
     switch (this.modeType) {
       case "select": {
         if (this.tempSelection.type == "select" && !this.wasSelMoving) {
-          console.log("lol")
           this.wasSelMoving = false;
           if (this.setSX(geoPoint.x) > this.tempSelection.sx) {
             this.tempSelection.x = this.tempSelection.sx;
@@ -2218,8 +2241,6 @@ export class WorkspaceComponent implements OnInit {
   zoom(scale) {
     this.container.nativeElement.attributes.width.value *= scale;
     this.container.nativeElement.attributes.height.value *= scale;
-
-    this.setGrid();
   }
 
   //endregion Workspace Buttons //
@@ -2351,6 +2372,7 @@ export class WorkspaceComponent implements OnInit {
   //ngOnInit(), getUserInfo(), initUI(scale)
   //region Init Center //
 
+
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
@@ -2438,158 +2460,206 @@ export class WorkspaceComponent implements OnInit {
     container.attributes.class.value = "";
   }
 
+  lupa(x, y) {
+    let tempWidth = this.container.nativeElement.attributes.width.value;
+    let tempHeight = this.container.nativeElement.attributes.height.value;
+    this.container.nativeElement.attributes.width.value = 1600;
+    this.container.nativeElement.attributes.height.value = 2262;
+
+    document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
+    document.getElementById("cover").setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    var svgData = document.getElementById("cover").outerHTML;
+    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+    var svgBlob = new Blob([preface, svgData], { type: "image/svg+xml;charset=utf-8" });
+    var svgUrl = URL.createObjectURL(svgBlob);
+
+
+    var canvas = <HTMLCanvasElement>document.getElementById('zoomcanvas'),
+      context = canvas.getContext("2d");
+
+    var image = new Image;
+    image.src = svgUrl;
+
+    var newX = -1 * x * 2 + 125;
+    var newY = -1 * y * 2 + 125;
+    image.onload = function () {
+      context.beginPath();
+      context.rect(0, 0, 250, 250);
+      context.fillStyle = "#427a8d";
+      context.fill();
+      context.drawImage(image, newX, newY);
+    };
+
+    document.getElementById("list").setAttribute("fill", "url(" + window.location.href + "#smallGrid)");
+    this.container.nativeElement.attributes.width.value = tempWidth;
+    this.container.nativeElement.attributes.height.value = tempHeight;
+  }
+
   initUI(scale) {
     if (this.container) {
       var container = this.container.nativeElement;
-      var selected = this.selected;
-      var notSaved = this.notSaved;
-      var browser = this.brows();
 
       this.zoom(scale);
 
-      interact('.svgDraggable')
-        .draggable({
-          autoScroll: true,
-          onstart: function (event) {
-            this.isDragging = true;
-          }.bind(this),
-          onmove: dragMoveListener.bind(this),
-          onend: function (event) {
-            setTimeout(function () {
-              this.deselectAll();
-              this.ref.detectChanges();
-              this.isDragging = false;
-              this.isResizing = false;
-            }.bind(this), 1);
-          }.bind(this)
-        }).on("tap", function (event) {
-          /*if (browser.name === "Safari") {
-            let id = event.target.getAttribute("data-id");
-            let el = this.geo[id];
-            if (!notSaved(selected, id)) {
-              el.selected = 0;
-              el.strokeW = 1;
-              if (el.type == "dot" || el.type == "circle") {
-                el.r -= 2;
-              }
-              selected.splice(selected.indexOf(id), 1);
-              if (selected.length == 0) {
-                container.attributes.class.value = "";
-              }
-            }
-          }*/
-        });
-
       interact('.drag-handler')
         .draggable({
+          inertia: true,
           autoScroll: true,
           onstart: function (event) {
-          }.bind(this),
-          onmove: expressionDrag.bind(this),
-          onend: function (event) { }
-        }).on("tap", function (event) {
+            event.preventDefault();
+          },
+          onmove: exDragListener.bind(this),
+          onend: function (event) {
+            this.isZooming = false;
+            event.preventDefault();
+          }.bind(this)
+        });
 
-          let id = event.target.getAttribute('data-lineid');
-          let el = this.lines[id];
+      interact('.drag-handler').on('down', function (event) {
+        this.isZooming = true;
+        console.log(event);
+        document.getElementById("cover").setAttribute("style", "touch-action: none !important; user-select: none !important;");
+        this.ref.detectChanges();
+        var lupax = 0;
+        var lupay = 0;
+        var docHeight = window.innerHeight || document.body.clientHeight;
+        var docWidth = window.innerWidth || document.body.clientWidth;
+        if (event.pageX > docWidth / 2) {
+          lupax = event.pageX - Number(document.getElementById('zoom-body').offsetWidth + 20);
+        } else {
+          lupax = event.pageX + 20;
+        }
+        if (event.pageY > docHeight / 2) {
+          lupay = event.pageY - Number(document.getElementById('zoom-body').offsetHeight + 20);
+        } else {
+          lupay = event.pageY + 20;
+        }
+        document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
+        event.preventDefault();
+      }.bind(this));
 
-          if (this.notSaved(this.selectedEx, id)) {
-            this.selectedEx.push(id);
-            this.container.nativeElement.attributes.class.value = "touch";
-          } else {
-            if (!notSaved(this.selectedEx, id)) {
-              this.selectedEx.splice(this.selectedEx.indexOf(id), 1);
-              if (this.selectedEx.length == 0) {
-                container.attributes.class.value = "";
-              }
-            }
+      interact('.drag-handler').on('up', function (event) {
+        this.isZooming = false;
+        document.getElementById("cover").setAttribute("style", "");
+        this.ref.detectChanges();
+        event.preventDefault();
+      }.bind(this));
+
+
+      interact('.touch')
+        .draggable({
+          inertia: true,
+          autoScroll: true,
+          onstart: function (event) {
+            event.preventDefault();
+          },
+          onmove: geoDragListener.bind(this),
+          onend: function (event) {
+            event.preventDefault();
           }
-        }.bind(this));
+        });
+
+      interact('#cover').on('down', function (event) {
+        if (this.modeType == "select") {
+          this.container.nativeElement.attributes.class.value = "touch";
+          this.tempSelection.type = "select";
+          this.tempSelection.sx = this.setSX(event.offsetX);
+          this.tempSelection.sy = this.setSY(event.offsetY);
+          this.tempSelection.dx = event.offsetX;
+          this.tempSelection.dy = event.offsetY;
+          this.tempSelection.x = this.setSX(event.offsetX);
+          this.tempSelection.y = this.setSY(event.offsetY);
+          this.tempSelection.width = 20;
+          this.tempSelection.height = 20;
+        }
+        this.ref.detectChanges();
+        event.preventDefault();
+      }.bind(this));
+
+      interact('#cover').on('up', function (event) {
+        if (this.modeType == "select" && this.wasSelMoving) {
+          this.tempSelection = {
+            type: "none"
+          }
+          this.modeType = "";
+        }
+        this.container.nativeElement.attributes.class.value = "";
+        this.ref.detectChanges();
+        event.preventDefault();
+      }.bind(this));
     }
 
-    function expressionDrag(event) {
+    function exDragListener(event) {
       var target = event.target
 
       var cW = Number(container.attributes.width.value);
       var cH = Number(container.attributes.height.value);
       var cA = container.attributes.viewBox.value.split(' ');
+      var id = Number(target.getAttribute('data-lineid'));
+      var lupax = 0;
+      var lupay = 0;
+      var docHeight = window.innerHeight || document.body.clientHeight;
+      var docWidth = window.innerWidth || document.body.clientWidth;
 
-
-      for (var i = 0; i < this.selectedEx.length; i++) {
-        this.lines[this.selectedEx[i]].dx += Number(event.dx) * (cA[2] / cW);
-        this.lines[this.selectedEx[i]].x = Math.ceil((this.lines[this.selectedEx[i]].dx - 5) / 10) * 10;
-        this.lines[this.selectedEx[i]].dy += Number(event.dy) * (cA[3] / cH);
-        this.lines[this.selectedEx[i]].y = Math.ceil((this.lines[this.selectedEx[i]].dy - 5) / 10) * 10;
-      }
-
-      this.onClick({
-        target: document.querySelectorAll('[data-expressionid="' + this.selection.ex + '"]')[0]
-      });
-      this.ref.detectChanges();
-    }
-
-    function dragMoveListener(event) {
-      let id = event.target.getAttribute("data-id");
-
-      var cW = Number(container.attributes.width.value);
-      var cH = Number(container.attributes.height.value);
-      var cA = container.attributes.viewBox.value.split(' ');
-      if (event.target.getAttribute("data-type") != "radius") {
-        for (var i = 0; i < this.selected.length; i++) {
-          this.geo[this.selected[i].type][this.selected[i].id].dx += Number(event.dx) * (cA[2] / cW);
-          this.geo[this.selected[i].type][this.selected[i].id].x = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dx - 5) / 10) * 10;
-          this.geo[this.selected[i].type][this.selected[i].id].dy += Number(event.dy) * (cA[3] / cH);
-          this.geo[this.selected[i].type][this.selected[i].id].y = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dy - 5) / 10) * 10;
-        }
+      if (event.page.x > docWidth / 2) {
+        lupax = event.page.x - Number(document.getElementById('zoom-body').offsetWidth + 20);
       } else {
-        if (event.target.getAttribute("data-dType") == "w") {
-          this.isResizing = 1;
-          this.geo.circles[id].dr += Number(event.dx) * (cA[2] / cW) * Number(event.target.getAttribute("data-direction"));
-          this.geo.circles[id].r = Math.ceil((this.geo.circles[id].dr - 5) / 10) * 10;
-        } else {
-          this.isResizing = 2;
-          this.geo.circles[id].dr += Number(event.dy) * (cA[3] / cH) * Number(event.target.getAttribute("data-direction"));
-          this.geo.circles[id].r = Math.ceil((this.geo.circles[id].dr - 5) / 10) * 10;
+        lupax = event.page.x + 20;
+      }
+      if (event.page.y > docHeight / 2) {
+        lupay = event.page.y - Number(document.getElementById('zoom-body').offsetHeight + 20);
+      } else {
+        lupay = event.page.y + 20;
+      }
+      document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
+
+      this.lines[id].dx += Number(event.dx) * (cA[2] / cW);
+      this.lines[id].x = Math.ceil((this.lines[id].dx - 5) / 10) * 10;
+      this.lines[id].dy += Number(event.dy) * (cA[3] / cH);
+      this.lines[id].y = Math.ceil((this.lines[id].dy - 5) / 10) * 10;
+      this.lupa(this.lines[id].dx, this.lines[id].dy);
+      this.ref.detectChanges();
+      event.preventDefault();
+    }
+
+    function geoDragListener(event) {
+      switch (this.modeType) {
+        case "select": {
+          if (this.tempSelection.type == "select") {
+            this.wasSelMoving = true;
+            this.tempSelection.dx += event.dx;
+            this.tempSelection.dy += event.dy;
+            if (this.setSX(this.tempSelection.dx) > this.tempSelection.sx) {
+              this.tempSelection.x = this.tempSelection.sx;
+              this.tempSelection.width = this.setSX(this.tempSelection.dx) - this.tempSelection.x;
+            } else {
+              this.tempSelection.x = this.setSX(this.tempSelection.dx);
+              this.tempSelection.width = this.tempSelection.sx - this.tempSelection.x;
+            }
+            if (this.setSY(this.tempSelection.dy) > this.tempSelection.sy) {
+              this.tempSelection.y = this.tempSelection.sy;
+              this.tempSelection.height = this.setSY(this.tempSelection.dy) - this.tempSelection.y;
+            } else {
+              this.tempSelection.y = this.setSY(this.tempSelection.dy);
+              this.tempSelection.height = this.tempSelection.sy - this.tempSelection.y;
+            }
+            for (var i = 0; i < this.geoElements.dots.length; i++) {
+              var dot = this.geo.dots[this.geoElements.dots[i]];
+              if (dot.x >= this.tempSelection.x && dot.x <= (this.tempSelection.x + this.tempSelection.width) && dot.y >= this.tempSelection.y && dot.y <= (this.tempSelection.y + this.tempSelection.height)) {
+                if (!this.geo.dots[this.geoElements.dots[i]].selected) {
+                  this.select(this.geoElements.dots[i], "dots");
+                }
+              }
+            }
+          }
+          break;
         }
+        default: break;
       }
 
       this.ref.detectChanges();
+      event.preventDefault();
     }
-  }
-
-  setGrid() {
-    /*var container = this.container.nativeElement;
-    var cW = Number(container.attributes.width.value);
-    var cH = Number(container.attributes.height.value);
-    var cA = container.attributes.viewBox.value.split(' ');
-
-    interact('.svgDraggable').draggable({
-      snap: {
-        targets: [
-          interact.createSnapGrid({
-            x: 10 * (cW / cA[2]),
-            y: 10 / (cA[3] / cH),
-            range: Infinity
-          })
-        ]
-      }
-    });
-
-
-    interact('.drag-handler')
-      .draggable({
-        snap: {
-          targets: [
-            interact.createSnapGrid({
-              x: 10 * (cW / cA[2]),
-              y: 10 / (cA[3] / cH),
-              range: Infinity
-            })
-          ],
-          relativePoints: [{ x: 1, y: 1 }]
-        }
-      });
-    console.log(15 * (cW / cA[2]))
-    console.log(15 * (cH / cA[3]))*/
   }
 
   //endregion Init Center //
