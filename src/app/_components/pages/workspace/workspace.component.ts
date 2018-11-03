@@ -2506,12 +2506,10 @@ export class WorkspaceComponent implements OnInit {
           inertia: true,
           autoScroll: true,
           onstart: function (event) {
-            event.preventDefault();
           },
           onmove: exDragListener.bind(this),
           onend: function (event) {
             this.isZooming = false;
-            event.preventDefault();
           }.bind(this)
         });
 
@@ -2535,14 +2533,14 @@ export class WorkspaceComponent implements OnInit {
           lupay = event.pageY + 20;
         }
         document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
-        event.preventDefault();
+
       }.bind(this));
 
       interact('.drag-handler').on('up', function (event) {
         this.isZooming = false;
         document.getElementById("cover").setAttribute("style", "");
         this.ref.detectChanges();
-        event.preventDefault();
+
       }.bind(this));
 
 
@@ -2551,11 +2549,9 @@ export class WorkspaceComponent implements OnInit {
           inertia: true,
           autoScroll: true,
           onstart: function (event) {
-            event.preventDefault();
           },
           onmove: geoDragListener.bind(this),
           onend: function (event) {
-            event.preventDefault();
           }
         });
 
@@ -2573,7 +2569,6 @@ export class WorkspaceComponent implements OnInit {
           this.tempSelection.height = 20;
         }
         this.ref.detectChanges();
-        event.preventDefault();
       }.bind(this));
 
       interact('#cover').on('up', function (event) {
@@ -2585,7 +2580,6 @@ export class WorkspaceComponent implements OnInit {
         }
         this.container.nativeElement.attributes.class.value = "";
         this.ref.detectChanges();
-        event.preventDefault();
       }.bind(this));
     }
 
@@ -2619,7 +2613,6 @@ export class WorkspaceComponent implements OnInit {
       this.lines[id].y = Math.ceil((this.lines[id].dy - 5) / 10) * 10;
       this.lupa(this.lines[id].dx, this.lines[id].dy);
       this.ref.detectChanges();
-      event.preventDefault();
     }
 
     function geoDragListener(event) {
@@ -2658,7 +2651,6 @@ export class WorkspaceComponent implements OnInit {
       }
 
       this.ref.detectChanges();
-      event.preventDefault();
     }
   }
 
