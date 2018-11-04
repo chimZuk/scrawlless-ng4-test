@@ -11,6 +11,7 @@ import { AlgebraComponent } from '../../workspace-elements/algebra/algebra.compo
 import { MatDialog } from '@angular/material';
 
 import { ColumnCountDialog } from './../../dialogs/workspace-dialogs/column-count-dialog/column-count-dialog.component';
+import { bind } from '@angular/core/src/render3';
 
 @Component({
   selector: 'workspace',
@@ -42,6 +43,24 @@ export class WorkspaceComponent implements OnInit {
   absUrl = window.location.href;
   loading = true;
 
+
+  debug: any = {
+    msg: ["0 | Clear"],
+    count: 0
+  };
+
+  deb(msg) {
+    this.debug.count++;
+    this.debug.msg.unshift(this.debug.count + " | " + msg)
+    console.log(msg);
+  }
+
+  clearDeb() {
+    this.debug.count = 0;
+    this.debug.msg = ["0 | Clear"];
+    console.log("Cleared");
+  }
+
   user: any;
 
   vw: any;
@@ -66,9 +85,11 @@ export class WorkspaceComponent implements OnInit {
 
   mode: string = "";
   modeType: string = "";
+  lineType: number = 0;
   description: string = "";
 
   isDragging = false;
+  isDotDragging = false;
   isResizing = false;
   wasMoving = false;
   wasSelMoving = false;
@@ -535,9 +556,10 @@ export class WorkspaceComponent implements OnInit {
 
   draw(element, geoPoint) {
     this.redoHistory = [];
+    this.deb(geoPoint.x + " draw " + geoPoint.y);
     switch (this.modeType) {
       case "select": {
-        if (this.tempSelection.type == "select" && !this.wasSelMoving) {
+        if (this.tempSelection.type == "select") {
           this.wasSelMoving = false;
           if (this.setSX(geoPoint.x) > this.tempSelection.sx) {
             this.tempSelection.x = this.tempSelection.sx;
@@ -578,6 +600,7 @@ export class WorkspaceComponent implements OnInit {
             type: "dot",
             name: name,
             gen: gen,
+            lineType: this.lineType,
             x: geoPoint.x,
             y: geoPoint.y,
             dx: geoPoint.x,
@@ -619,6 +642,7 @@ export class WorkspaceComponent implements OnInit {
                 type: "dot",
                 name: name,
                 gen: gen,
+                lineType: this.lineType,
                 x: geoPoint.x,
                 y: geoPoint.y,
                 dx: geoPoint.x,
@@ -639,6 +663,7 @@ export class WorkspaceComponent implements OnInit {
             if (this.lastDraw.sDot != newDotID) {
               var newLine = {
                 type: "line",
+                lineType: this.lineType,
                 sDot: this.lastDraw.sDot,
                 eDot: newDotID,
                 strokeW: 1,
@@ -675,6 +700,7 @@ export class WorkspaceComponent implements OnInit {
                 type: "dot",
                 name: name,
                 gen: gen,
+                lineType: this.lineType,
                 x: geoPoint.x,
                 y: geoPoint.y,
                 dx: geoPoint.x,
@@ -719,6 +745,7 @@ export class WorkspaceComponent implements OnInit {
                 type: "dot",
                 name: name,
                 gen: gen,
+                lineType: this.lineType,
                 x: geoPoint.x,
                 y: geoPoint.y,
                 dx: geoPoint.x,
@@ -739,6 +766,7 @@ export class WorkspaceComponent implements OnInit {
             if (this.lastDraw.sDot != newDotID) {
               var newLine = {
                 type: "line",
+                lineType: this.lineType,
                 sDot: this.lastDraw.sDot,
                 eDot: newDotID,
                 strokeW: 1,
@@ -785,6 +813,7 @@ export class WorkspaceComponent implements OnInit {
                 type: "dot",
                 name: name,
                 gen: gen,
+                lineType: this.lineType,
                 x: geoPoint.x,
                 y: geoPoint.y,
                 dx: geoPoint.x,
@@ -817,6 +846,7 @@ export class WorkspaceComponent implements OnInit {
           if (this.lastDraw.step == 1) {
             var newCircle = {
               type: "circle",
+              lineType: this.lineType,
               cDot: this.lastDraw.sDot,
               r: Math.abs(this.geo.dots[this.lastDraw.sDot].x - geoPoint.x),
               dr: Math.abs(this.geo.dots[this.lastDraw.sDot].x - geoPoint.x),
@@ -854,6 +884,7 @@ export class WorkspaceComponent implements OnInit {
                 type: "dot",
                 name: name,
                 gen: gen,
+                lineType: this.lineType,
                 x: geoPoint.x,
                 y: geoPoint.y,
                 dx: geoPoint.x,
@@ -888,6 +919,7 @@ export class WorkspaceComponent implements OnInit {
         if (checked.exist) {
           this.geo.dots[checked.id].name = this.selectedLetters[0].name;
           this.geo.dots[checked.id].gen = this.selectedLetters[0].gen;
+          this.geo.dots[checked.id].lineType = this.lineType;
           this.selectedLetters.splice(0, 1);
         }
         break;
@@ -1976,177 +2008,6 @@ export class WorkspaceComponent implements OnInit {
           break;
         }
       }
-    } else {
-      var geoPoint: any = {};
-      geoPoint.x = Math.round((this.setSX(ev.offsetX)) / 10) * 10;
-      geoPoint.y = Math.round((this.setSY(ev.offsetY)) / 10) * 10;
-      this.draw(element, geoPoint);
-    }
-  }
-
-  onMouseDown(ev) {
-    if (this.modeType == "select") {
-      this.tempSelection.type = "select";
-      this.tempSelection.sx = this.setSX(ev.offsetX);
-      this.tempSelection.sy = this.setSY(ev.offsetY);
-      this.tempSelection.x = this.setSX(ev.offsetX);
-      this.tempSelection.y = this.setSY(ev.offsetY);
-      this.tempSelection.width = 20;
-      this.tempSelection.height = 20;
-    }
-  }
-
-  onMouseUp(ev) {
-    if (this.modeType == "select" && this.wasSelMoving) {
-      this.tempSelection = {
-        type: "none"
-      }
-      this.modeType = "";
-    }
-  }
-
-  onMouseMove(ev) {
-    this.wasMoving = true;
-    if (this.modeType != "") {
-      switch (this.modeType) {
-        case "select": {
-          if (this.tempSelection.type == "select") {
-            this.wasSelMoving = true;
-            if (this.setSX(ev.offsetX) > this.tempSelection.sx) {
-              this.tempSelection.x = this.tempSelection.sx;
-              this.tempSelection.width = this.setSX(ev.offsetX) - this.tempSelection.x;
-            } else {
-              this.tempSelection.x = this.setSX(ev.offsetX);
-              this.tempSelection.width = this.tempSelection.sx - this.tempSelection.x;
-            }
-            if (this.setSY(ev.offsetY) > this.tempSelection.sy) {
-              this.tempSelection.y = this.tempSelection.sy;
-              this.tempSelection.height = this.setSY(ev.offsetY) - this.tempSelection.y;
-            } else {
-              this.tempSelection.y = this.setSY(ev.offsetY);
-              this.tempSelection.height = this.tempSelection.sy - this.tempSelection.y;
-            }
-            this.deselectAll();
-            for (var i = 0; i < this.geoElements.dots.length; i++) {
-              var dot = this.geo.dots[this.geoElements.dots[i]];
-              if (dot.x >= this.tempSelection.x && dot.x <= (this.tempSelection.x + this.tempSelection.width) && dot.y >= this.tempSelection.y && dot.y <= (this.tempSelection.y + this.tempSelection.height)) {
-                if (!this.geo.dots[this.geoElements.dots[i]].selected) {
-                  this.select(this.geoElements.dots[i], "dots");
-                }
-              }
-            }
-          }
-          break;
-        }
-        case "dot": {
-          this.tempDot.type = "dot";
-          this.tempDot.x = this.setSX(ev.offsetX);
-          this.tempDot.y = this.setSY(ev.offsetY);
-          this.tempDot.r = 4;
-          this.tempDot.fill = "gray";
-          if (this.selectedLetters[0]) {
-            this.tempDot.name = this.selectedLetters[0].name;
-            this.tempDot.gen = this.selectedLetters[0].gen;
-          } else {
-            this.tempDot.name = "";
-            this.tempDot.gen = 0;
-          }
-          break;
-        }
-        case "line": {
-          if (this.lastDraw.type == "none") {
-            this.tempDot.type = "dot";
-            this.tempDot.x = this.setSX(ev.offsetX);
-            this.tempDot.y = this.setSY(ev.offsetY);
-            this.tempDot.r = 4;
-            this.tempDot.fill = "gray";
-          } else {
-            if (this.lastDraw.type == "line") {
-              this.tempDot.type = "dot";
-              this.tempDot.x = this.setSX(ev.offsetX);
-              this.tempDot.y = this.setSY(ev.offsetY);
-              this.tempDot.r = 4;
-
-              this.tempLine.type = "line";
-              this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
-              this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
-              this.tempLine.x2 = this.setSX(ev.offsetX);
-              this.tempLine.y2 = this.setSY(ev.offsetY);
-            }
-          }
-          break;
-        }
-        case "multiline": {
-          if (this.lastDraw.type == "none") {
-            this.tempDot.type = "dot";
-            this.tempDot.x = this.setSX(ev.offsetX);
-            this.tempDot.y = this.setSY(ev.offsetY);
-            this.tempDot.r = 4;
-            this.tempDot.fill = "gray";
-          } else {
-            if (this.lastDraw.type == "line") {
-              this.tempDot.type = "dot";
-              this.tempDot.x = this.setSX(ev.offsetX);
-              this.tempDot.y = this.setSY(ev.offsetY);
-              this.tempDot.r = 4;
-
-              this.tempLine.type = "line";
-              this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
-              this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
-              this.tempLine.x2 = this.setSX(ev.offsetX);
-              this.tempLine.y2 = this.setSY(ev.offsetY);
-            }
-          }
-          break;
-        }
-        case "circle": {
-          if (this.lastDraw.type == "none") {
-            this.tempDot.type = "dot";
-            this.tempDot.x = this.setSX(ev.offsetX);
-            this.tempDot.y = this.setSY(ev.offsetY);
-            this.tempDot.r = 4;
-            this.tempDot.fill = "gray";
-          } else {
-            if (this.lastDraw.type == "circle") {
-              this.tempDot.type = "dot";
-              this.tempDot.x = this.setSX(ev.offsetX);
-              this.tempDot.y = this.geo.dots[this.lastDraw.sDot].y;
-              this.tempDot.r = 5;
-              this.tempDot.fill = "#ed7e28";
-
-              this.tempLine.type = "circle";
-              this.tempLine.cx = this.geo.dots[this.lastDraw.sDot].x;
-              this.tempLine.cy = this.geo.dots[this.lastDraw.sDot].y;
-              this.tempLine.r = Math.abs(this.geo.dots[this.lastDraw.sDot].x - this.setSX(ev.offsetX));
-            }
-          }
-          break;
-        }
-        case "rectangle": {
-          break;
-        }
-        case "letters": {
-          this.tempDot.type = "dot";
-          this.tempDot.x = this.setSX(ev.offsetX);
-          this.tempDot.y = this.setSY(ev.offsetY);
-          this.tempDot.r = 4;
-          this.tempDot.fill = "gray";
-          if (this.selectedLetters[0]) {
-            this.tempDot.name = this.selectedLetters[0].name;
-            this.tempDot.gen = this.selectedLetters[0].gen;
-          } else {
-            this.tempDot.name = "";
-            this.tempDot.gen = "";
-          }
-          break;
-        }
-        default: {
-          this.tempDot = { type: "none" };
-          this.tempLine = { type: "none" };
-          this.lastDraw = { type: "none" };
-          break;
-        }
-      }
     }
   }
 
@@ -2204,7 +2065,9 @@ export class WorkspaceComponent implements OnInit {
       type: "none"
     }
     this.changeGen(0);
+    this.deb("modeSwitch " + this.mode);
     this.deselectAll();
+    this.ref.detectChanges();
   }
 
   switchModeType(modeType) {
@@ -2217,13 +2080,18 @@ export class WorkspaceComponent implements OnInit {
     this.tempLine = { type: "none" };
     this.lastDraw = { type: "none" };
     this.selectedLetters = [];
-    this.wasMoving = false;
-    this.wasSelMoving = false;
+    this.isDragging = false;
     this.tempSelection = {
       type: "none"
     }
     this.changeGen(0);
+    this.deb("modeTypeSwitch " + this.modeType);
     this.deselectAll();
+    this.ref.detectChanges();
+  }
+
+  switchLineType(type) {
+    this.lineType = type;
   }
 
   setSX(n) {
@@ -2261,37 +2129,43 @@ export class WorkspaceComponent implements OnInit {
   selectedEx: any = [];
 
   select = function (id, type) {
-    let el = this.geo[type][id];
-    if (!this.isDragging && this.notSaved(this.selected, {
-      id: id,
-      type: type
-    })) {
-      el.selected = 1;
-      el.strokeW = 3;
-      if (el.type == "dot" || el.type == "circle") {
-        el.r += 2;
-      }
-      this.selected.push({
-        id: id,
-        type: type
-      });
-      this.container.nativeElement.attributes.class.value = "touch";
-    } else {
-      if (!this.isDragging && !this.notSaved(this.selected, {
+    this.deb("selType " + this.modeType);
+    if (this.modeType == "" || this.modeType == "select") {
+      this.deb(type + " inselect " + id)
+      let el = this.geo[type][id];
+      if (!this.isDotDragging && this.notSaved(this.selected, {
         id: id,
         type: type
       })) {
-        el.selected = 0;
-        el.strokeW = 1;
+        this.deb("notSaved")
+        el.selected = 1;
+        el.strokeW = 3;
         if (el.type == "dot" || el.type == "circle") {
-          el.r -= 2;
+          el.r += 2;
         }
-        this.selected.splice(this.selected.indexOf({
+        this.selected.push({
           id: id,
           type: type
-        }), 1);
-        if (this.selected.length == 0) {
-          this.container.nativeElement.attributes.class.value = "";
+        });
+        this.container.nativeElement.attributes.class.value = "draggableField";
+      } else {
+        if (!this.isDotDragging && !this.notSaved(this.selected, {
+          id: id,
+          type: type
+        })) {
+          this.deb("Saved")
+          el.selected = 0;
+          el.strokeW = 1;
+          if (el.type == "dot" || el.type == "circle") {
+            el.r -= 2;
+          }
+          this.selected.splice(this.selected.indexOf({
+            id: id,
+            type: type
+          }), 1);
+          if (this.selected.length == 0) {
+            this.container.nativeElement.attributes.class.value = "";
+          }
         }
       }
     }
@@ -2371,6 +2245,596 @@ export class WorkspaceComponent implements OnInit {
 
   //ngOnInit(), getUserInfo(), initUI(scale)
   //region Init Center //
+  circles: any = [{
+    cx: 50,
+    cy: 50,
+    dx: 50,
+    dy: 50
+  }];
+
+
+  initUI(scale) {
+    var container;
+
+    if (this.container) {
+      container = this.container.nativeElement
+      this.zoom(scale);
+
+
+      interact('.drag-handler')
+        .draggable({
+          inertia: false,
+          autoScroll: true,
+          onmove: exDragListener.bind(this),
+          onend: function (event) {
+            this.ref.detectChanges();
+          }.bind(this)
+        });
+
+      interact('.drag-handler').on('down', function (event) {
+        this.isZooming = true;
+        document.getElementById("cover").setAttribute("style", "touch-action: none !important; user-select: none !important;");
+        this.ref.detectChanges();
+        var lupax = 0;
+        var lupay = 0;
+        var docHeight = window.innerHeight || document.body.clientHeight;
+        var docWidth = window.innerWidth || document.body.clientWidth;
+        if (event.pageX > docWidth / 2) {
+          lupax = event.pageX - Number(document.getElementById('zoom-body').offsetWidth + 20);
+        } else {
+          lupax = event.pageX + 20;
+        }
+        if (event.pageY > docHeight / 2) {
+          lupay = event.pageY - Number(document.getElementById('zoom-body').offsetHeight + 20);
+        } else {
+          lupay = event.pageY + 20;
+        }
+        document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
+
+      }.bind(this));
+
+      interact('.drag-handler').on('up', function (event) {
+        this.isZooming = false;
+        document.getElementById("cover").setAttribute("style", "");
+        this.ref.detectChanges();
+      }.bind(this));
+
+      interact('.dragDot')
+        .draggable({
+          inertia: false,
+          autoScroll: true,
+          onstart: function (event) {
+            this.isDotDragging = true;
+            this.isDragging = true;
+          }.bind(this),
+          onmove: dotDragListener.bind(this),
+          onend: function (event) {
+            this.isDotDragging = false;
+            this.isDragging = false;
+            this.deb("Dot Drag End ");
+            this.deselectAll();
+            this.ref.detectChanges();
+          }.bind(this)
+        });
+
+      interact('.dragDot').on('down', function (event) {
+        this.isDotDragging = true;
+        this.isDragging = true;
+      }.bind(this));
+
+      interact('.dragDot').on('up', function (event) {
+        this.isDotDragging = false;
+        this.isDragging = false;
+        this.deb("dotUpEvent");
+        this.deselectAll();
+        this.ref.detectChanges();
+      }.bind(this));
+
+      interact('.touch')
+        .draggable({
+          inertia: false,
+          autoScroll: true,
+          onstart: function (event) {
+            this.isDragging = true;
+          }.bind(this),
+          onmove: geoDragListener.bind(this),
+          onend: function (event) {
+            this.isDragging = false;
+          }.bind(this)
+        });
+
+      interact('#cover').on('down', function (event) {
+        if (this.modeType != "") {
+          this.deb("DOWN WITH TOUCH");
+          this.container.nativeElement.attributes.class.value = "touch";
+          this.ref.detectChanges();
+          var target = event.target || event.srcElement,
+            rect = target.getBoundingClientRect(),
+            offsetX = event.clientX - rect.left,
+            offsetY = event.clientY - rect.top;
+
+          if (this.modeType != "" && this.modeType != "select") {
+            this.isZooming = true;
+            this.ref.detectChanges();
+          }
+          if (this.isZooming) {
+            var lupax = 0;
+            var lupay = 0;
+            var docHeight = window.innerHeight || document.body.clientHeight;
+            var docWidth = window.innerWidth || document.body.clientWidth;
+            if (event.pageX > docWidth / 2) {
+              lupax = (docWidth / 2) - Number(document.getElementById('zoom-body').offsetWidth + 20);
+            } else {
+              lupax = ((docWidth / 2) + (docWidth / 4)) - Number(document.getElementById('zoom-body').offsetWidth / 2 + 20);
+            }
+            lupay = (docHeight / 2) - Number(document.getElementById('zoom-body').offsetHeight / 2 + 20);
+            document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
+          }
+
+          switch (this.modeType) {
+            case "select": {
+              this.tempSelection.type = "select";
+              this.tempSelection.sx = this.setSX(offsetX);
+              this.tempSelection.sy = this.setSY(offsetY);
+              this.tempSelection.dx = offsetX;
+              this.tempSelection.dy = offsetY;
+              this.tempSelection.x = this.setSX(offsetX);
+              this.tempSelection.y = this.setSY(offsetY);
+              this.tempSelection.width = 20;
+              this.tempSelection.height = 20;
+              break;
+            }
+            case "dot": {
+              this.tempDot.type = "dot";
+              this.tempDot.dx = offsetX;
+              this.tempDot.dy = offsetY;
+              this.tempDot.x = this.setSX(offsetX);
+              this.tempDot.y = this.setSY(offsetY);
+              this.tempDot.r = 4;
+              this.tempDot.fill = "gray";
+              if (this.selectedLetters[0]) {
+                this.tempDot.name = this.selectedLetters[0].name;
+                this.tempDot.gen = this.selectedLetters[0].gen;
+              } else {
+                this.tempDot.name = "";
+                this.tempDot.gen = 0;
+              }
+              break;
+            }
+            case "line": {
+              if (this.lastDraw.type == "none") {
+                this.tempDot.type = "dot";
+                this.tempDot.dx = offsetX;
+                this.tempDot.dy = offsetY;
+                this.tempDot.x = this.setSX(offsetX);
+                this.tempDot.y = this.setSY(offsetY);
+                this.tempDot.r = 4;
+                this.tempDot.fill = "gray";
+              } else {
+                if (this.lastDraw.type == "line") {
+                  this.tempDot.type = "dot";
+                  this.tempDot.dx = offsetX;
+                  this.tempDot.dy = offsetY;
+                  this.tempDot.x = this.setSX(offsetX);
+                  this.tempDot.y = this.setSY(offsetY);
+                  this.tempDot.r = 4;
+
+                  this.tempLine.type = "line";
+                  this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
+                  this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
+                  this.tempLine.x2 = this.setSX(offsetX);
+                  this.tempLine.y2 = this.setSY(offsetY);
+                }
+              }
+              break;
+            }
+            case "multiline": {
+              if (this.lastDraw.type == "none") {
+                this.tempDot.type = "dot";
+                this.tempDot.dx = offsetX;
+                this.tempDot.dy = offsetY;
+                this.tempDot.x = this.setSX(offsetX);
+                this.tempDot.y = this.setSY(offsetY);
+                this.tempDot.r = 4;
+                this.tempDot.fill = "gray";
+              } else {
+                if (this.lastDraw.type == "line") {
+                  this.tempDot.type = "dot";
+                  this.tempDot.dx = offsetX;
+                  this.tempDot.dy = offsetY;
+                  this.tempDot.x = this.setSX(offsetX);
+                  this.tempDot.y = this.setSY(offsetY);
+                  this.tempDot.r = 4;
+
+                  this.tempLine.type = "line";
+                  this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
+                  this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
+                  this.tempLine.x2 = this.setSX(offsetX);
+                  this.tempLine.y2 = this.setSY(offsetY);
+                }
+              }
+              break;
+            }
+            case "circle": {
+              if (this.lastDraw.type == "none") {
+                this.tempDot.type = "dot";
+                this.tempDot.dx = offsetX;
+                this.tempDot.dy = offsetY;
+                this.tempDot.x = this.setSX(offsetX);
+                this.tempDot.y = this.setSY(offsetY);
+                this.tempDot.r = 4;
+                this.tempDot.fill = "gray";
+              } else {
+                if (this.lastDraw.type == "circle") {
+                  this.tempDot.type = "dot";
+                  this.tempDot.dx = offsetX;
+                  this.tempDot.dy = this.geo.dots[this.lastDraw.sDot].y;
+                  this.tempDot.x = this.setSX(offsetX);
+                  this.tempDot.y = this.geo.dots[this.lastDraw.sDot].y;
+                  this.tempDot.r = 5;
+                  this.tempDot.fill = "#ed7e28";
+
+                  this.tempLine.type = "circle";
+                  this.tempLine.cx = this.geo.dots[this.lastDraw.sDot].x;
+                  this.tempLine.cy = this.geo.dots[this.lastDraw.sDot].y;
+                  this.tempLine.r = Math.abs(this.geo.dots[this.lastDraw.sDot].x - this.setSX(offsetX));
+                }
+              }
+              break;
+            }
+            case "rectangle": {
+              break;
+            }
+            case "letters": {
+              this.tempDot.type = "dot";
+              this.tempDot.dx = offsetX;
+              this.tempDot.dy = offsetY;
+              this.tempDot.x = this.setSX(offsetX);
+              this.tempDot.y = this.setSY(offsetY);
+              this.tempDot.r = 4;
+              this.tempDot.fill = "gray";
+              if (this.selectedLetters[0]) {
+                this.tempDot.name = this.selectedLetters[0].name;
+                this.tempDot.gen = this.selectedLetters[0].gen;
+              } else {
+                this.tempDot.name = "";
+                this.tempDot.gen = "";
+              }
+              break;
+            }
+            default: {
+              this.tempDot = { type: "none" };
+              this.tempLine = { type: "none" };
+              this.lastDraw = { type: "none" };
+              break;
+            }
+          }
+
+
+          this.ref.detectChanges();
+        }
+        if (this.isZooming) {
+          this.ref.detectChanges();
+          this.lupa(this.setSX(offsetX), this.setSY(offsetY));
+        }
+        this.deb(offsetX + " downn " + offsetY);
+      }.bind(this));
+
+      interact('#cover').on('up', function (event) {
+        this.isDragging = false;
+        if (this.modeType != "") {
+          var target, rect, offsetX, offsetY;
+          if (!event.offsetX || !event.offsetX) {
+            target = event.target || event.srcElement,
+              rect = target.getBoundingClientRect(),
+              offsetX = event.clientX - rect.left,
+              offsetY = event.clientY - rect.top;
+          } else {
+            offsetX = event.offsetX,
+              offsetY = event.offsetY;
+          }
+
+
+          switch (this.modeType) {
+            case "select": {
+              this.tempSelection = {
+                type: "none"
+              }
+              this.modeType = "";
+              if (this.selected.length != 0) {
+                this.container.nativeElement.attributes.class.value = "draggableField";
+              }
+              break;
+            }
+            default: {
+              this.isZooming = false;
+              this.tempDot.type = "";
+              var geoPoint: any = {};
+              geoPoint.x = Math.round((this.setSX(offsetX)) / 10) * 10;
+              geoPoint.y = Math.round((this.setSY(offsetY)) / 10) * 10;
+              this.draw(this.modeType, geoPoint);
+              this.container.nativeElement.attributes.class.value = "";
+              break;
+            }
+          }
+
+
+
+          this.ref.detectChanges();
+          this.deb(offsetX + " upp " + offsetY);
+        }
+      }.bind(this));
+
+      interact('.dragDebug')
+        .draggable({
+          // enable inertial throwing
+          inertia: true,
+          // keep the element within the area of it's parent
+          restrict: {
+            restriction: "parent",
+            endOnly: true,
+            elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+          },
+          // enable autoScroll
+          autoScroll: true,
+
+          // call this function on every dragmove event
+          onmove: debugMoveListener,
+          // call this function on every dragend event
+          onend: function (event) {
+            var textEl = event.target.querySelector('p');
+
+            textEl && (textEl.textContent =
+              'moved a distance of '
+              + (Math.sqrt(Math.pow(event.pageX - event.x0, 2) +
+                Math.pow(event.pageY - event.y0, 2) | 0))
+                .toFixed(2) + 'px');
+          }
+        });
+    }
+
+    function exDragListener(event) {
+      var target = event.target
+      var parent = event.target.parentElement.parentElement;
+
+      var cW = Number(container.attributes.width.value);
+      var cH = Number(container.attributes.height.value);
+      var cA = container.attributes.viewBox.value.split(' ');
+      var id = Number(target.getAttribute('data-lineid'));
+
+      this.lines[id].dx += Number(event.dx) * (cA[2] / cW);
+      this.lines[id].x = Math.ceil((this.lines[id].dx - 5) / 10) * 10;
+      this.lines[id].dy += Number(event.dy) * (cA[3] / cH);
+      this.lines[id].y = Math.ceil((this.lines[id].dy - 5) / 10) * 10;
+
+      parent.setAttribute('transform', 'translate(' + this.lines[id].x + ', ' + this.lines[id].y + ')');
+      this.lupa(this.lines[id].dx, this.lines[id].dy);
+    }
+
+    function dotDragListener(event) {
+      let id = event.target.getAttribute("data-id");
+
+      var cW = Number(container.attributes.width.value);
+      var cH = Number(container.attributes.height.value);
+      var cA = container.attributes.viewBox.value.split(' ');
+      if (event.target.getAttribute("data-type") != "radius") {
+        for (var i = 0; i < this.selected.length; i++) {
+          this.geo[this.selected[i].type][this.selected[i].id].dx += Number(event.dx) * (cA[2] / cW);
+          this.geo[this.selected[i].type][this.selected[i].id].x = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dx - 5) / 10) * 10;
+          this.geo[this.selected[i].type][this.selected[i].id].dy += Number(event.dy) * (cA[3] / cH);
+          this.geo[this.selected[i].type][this.selected[i].id].y = Math.ceil((this.geo[this.selected[i].type][this.selected[i].id].dy - 5) / 10) * 10;
+        }
+      } else {
+        if (event.target.getAttribute("data-dType") == "w") {
+          this.isResizing = 1;
+          this.geo.circles[id].dr += Number(event.dx) * (cA[2] / cW) * Number(event.target.getAttribute("data-direction"));
+          this.geo.circles[id].r = Math.ceil((this.geo.circles[id].dr - 5) / 10) * 10;
+        } else {
+          this.isResizing = 2;
+          this.geo.circles[id].dr += Number(event.dy) * (cA[3] / cH) * Number(event.target.getAttribute("data-direction"));
+          this.geo.circles[id].r = Math.ceil((this.geo.circles[id].dr - 5) / 10) * 10;
+        }
+      }
+
+      this.ref.detectChanges();
+    }
+
+
+
+    function geoDragListener(event) {
+      this.deb("drag");
+
+      switch (this.modeType) {
+        case "select": {
+          this.deselectAll();
+          if (this.tempSelection.type == "select") {
+            this.tempSelection.dx += event.dx;
+            this.tempSelection.dy += event.dy;
+            if (this.setSX(this.tempSelection.dx) > this.tempSelection.sx) {
+              this.tempSelection.x = this.tempSelection.sx;
+              this.tempSelection.width = this.setSX(this.tempSelection.dx) - this.tempSelection.x;
+            } else {
+              this.tempSelection.x = this.setSX(this.tempSelection.dx);
+              this.tempSelection.width = this.tempSelection.sx - this.tempSelection.x;
+            }
+            if (this.setSY(this.tempSelection.dy) > this.tempSelection.sy) {
+              this.tempSelection.y = this.tempSelection.sy;
+              this.tempSelection.height = this.setSY(this.tempSelection.dy) - this.tempSelection.y;
+            } else {
+              this.tempSelection.y = this.setSY(this.tempSelection.dy);
+              this.tempSelection.height = this.tempSelection.sy - this.tempSelection.y;
+            }
+            for (var i = 0; i < this.geoElements.dots.length; i++) {
+              var dot = this.geo.dots[this.geoElements.dots[i]];
+              if (dot.x >= this.tempSelection.x && dot.x <= (this.tempSelection.x + this.tempSelection.width) && dot.y >= this.tempSelection.y && dot.y <= (this.tempSelection.y + this.tempSelection.height)) {
+                if (!this.geo.dots[this.geoElements.dots[i]].selected) {
+                  this.select(this.geoElements.dots[i], "dots");
+                  this.deb("select " + i)
+                }
+              }
+            }
+          }
+          break;
+        }
+        case "dot": {
+          this.tempDot.type = "dot";
+          this.tempDot.dx += event.dx;
+          this.tempDot.dy += event.dy;
+          this.tempDot.x = this.setSX(this.tempDot.dx);
+          this.tempDot.y = this.setSY(this.tempDot.dy);
+          this.tempDot.r = 4;
+          this.tempDot.fill = "gray";
+          if (this.selectedLetters[0]) {
+            this.tempDot.name = this.selectedLetters[0].name;
+            this.tempDot.gen = this.selectedLetters[0].gen;
+          } else {
+            this.tempDot.name = "";
+            this.tempDot.gen = 0;
+          }
+          this.lupa(this.tempDot.x, this.tempDot.y);
+          break;
+        }
+        case "line": {
+          if (this.lastDraw.type == "none") {
+            this.tempDot.type = "dot";
+            this.tempDot.dx += event.dx;
+            this.tempDot.dy += event.dy;
+            this.tempDot.x = this.setSX(this.tempDot.dx);
+            this.tempDot.y = this.setSY(this.tempDot.dy);
+            this.tempDot.r = 4;
+            this.tempDot.fill = "gray";
+          } else {
+            if (this.lastDraw.type == "line") {
+              this.tempDot.type = "dot";
+              this.tempDot.dx += event.dx;
+              this.tempDot.dy += event.dy;
+              this.tempDot.x = this.setSX(this.tempDot.dx);
+              this.tempDot.y = this.setSY(this.tempDot.dy);
+              this.tempDot.r = 4;
+
+              this.tempLine.type = "line";
+              this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
+              this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempLine.x2 = this.tempDot.x;
+              this.tempLine.y2 = this.tempDot.y;
+            }
+          }
+          this.lupa(this.tempDot.x, this.tempDot.y);
+          break;
+        }
+        case "multiline": {
+          if (this.lastDraw.type == "none") {
+            this.tempDot.type = "dot";
+            this.tempDot.dx += event.dx;
+            this.tempDot.dy += event.dy;
+            this.tempDot.x = this.setSX(this.tempDot.dx);
+            this.tempDot.y = this.setSY(this.tempDot.dy);
+            this.tempDot.r = 4;
+            this.tempDot.fill = "gray";
+          } else {
+            if (this.lastDraw.type == "line") {
+              this.tempDot.type = "dot";
+              this.tempDot.dx += event.dx;
+              this.tempDot.dy += event.dy;
+              this.tempDot.x = this.setSX(this.tempDot.dx);
+              this.tempDot.y = this.setSY(this.tempDot.dy);
+              this.tempDot.r = 4;
+
+              this.tempLine.type = "line";
+              this.tempLine.x1 = this.geo.dots[this.lastDraw.sDot].x;
+              this.tempLine.y1 = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempLine.x2 = this.tempDot.x;
+              this.tempLine.y2 = this.tempDot.y;
+            }
+          }
+          this.lupa(this.tempDot.x, this.tempDot.y);
+          break;
+        }
+        case "circle": {
+          if (this.lastDraw.type == "none") {
+            this.tempDot.type = "dot";
+            this.tempDot.dx += event.dx;
+            this.tempDot.dy += event.dy;
+            this.tempDot.x = this.setSX(this.tempDot.dx);
+            this.tempDot.y = this.setSY(this.tempDot.dy);
+            this.tempDot.r = 4;
+            this.tempDot.fill = "gray";
+          } else {
+            if (this.lastDraw.type == "circle") {
+              this.tempDot.type = "dot";
+              this.tempDot.dx += event.dx;
+              this.tempDot.dy += event.dy;
+              this.tempDot.x = this.setSX(this.tempDot.dx);
+              this.tempDot.y = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempDot.r = 5;
+              this.tempDot.fill = "#ed7e28";
+
+              this.tempLine.type = "circle";
+              this.tempLine.cx = this.geo.dots[this.lastDraw.sDot].x;
+              this.tempLine.cy = this.geo.dots[this.lastDraw.sDot].y;
+              this.tempLine.r = Math.abs(this.geo.dots[this.lastDraw.sDot].x - this.tempDot.x);
+            }
+          }
+          this.lupa(this.tempDot.x, this.tempDot.y);
+          break;
+        }
+        case "rectangle": {
+          break;
+        }
+        case "letters": {
+          this.tempDot.type = "dot";
+          this.tempDot.dx += event.dx;
+          this.tempDot.dy += event.dy;
+          this.tempDot.x = this.setSX(this.tempDot.dx);
+          this.tempDot.y = this.setSY(this.tempDot.dy);
+          this.tempDot.r = 4;
+          this.tempDot.fill = "gray";
+          if (this.selectedLetters[0]) {
+            this.tempDot.name = this.selectedLetters[0].name;
+            this.tempDot.gen = this.selectedLetters[0].gen;
+          } else {
+            this.tempDot.name = "";
+            this.tempDot.gen = "";
+          }
+          this.lupa(this.tempDot.x, this.tempDot.y);
+          break;
+        }
+        default: {
+          this.tempDot = { type: "none" };
+          this.tempLine = { type: "none" };
+          this.lastDraw = { type: "none" };
+          break;
+        }
+      }
+      if (this.isZooming) {
+        var lupax = 0;
+        var lupay = 0;
+        var docHeight = window.innerHeight || document.body.clientHeight;
+        var docWidth = window.innerWidth || document.body.clientWidth;
+        if (event.pageX > docWidth / 2) {
+          lupax = (docWidth / 2) - Number(document.getElementById('zoom-body').offsetWidth + 20);
+        } else {
+          lupax = ((docWidth / 2) + (docWidth / 4)) - Number(document.getElementById('zoom-body').offsetWidth / 2 + 20);
+        }
+        lupay = (docHeight / 2) - Number(document.getElementById('zoom-body').offsetHeight / 2 + 20);
+        document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
+      }
+      this.ref.detectChanges();
+    }
+
+    function debugMoveListener(event) {
+      var target = document.getElementById("debug"),
+        x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
+        y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+      target.style.webkitTransform =
+        target.style.transform =
+        'translate(' + x + 'px, ' + y + 'px)';
+
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    }
+  }
 
 
   ngOnInit() {
@@ -2448,6 +2912,7 @@ export class WorkspaceComponent implements OnInit {
   }
 
   deselectAll() {
+    this.deb("deselectAll")
     var container = this.container.nativeElement;
     for (var i = 0; i < this.selected.length; i++) {
       this.geo[this.selected[i].type][this.selected[i].id].selected = 0;
@@ -2457,200 +2922,51 @@ export class WorkspaceComponent implements OnInit {
       }
     }
     this.selected = [];
-    container.attributes.class.value = "";
+    if (this.isDotDragging) {
+      this.deb("e,pty class")
+      container.attributes.class.value = "";
+    }
+
   }
 
   lupa(x, y) {
-    let tempWidth = this.container.nativeElement.attributes.width.value;
-    let tempHeight = this.container.nativeElement.attributes.height.value;
-    this.container.nativeElement.attributes.width.value = 1600;
-    this.container.nativeElement.attributes.height.value = 2262;
+    if (<HTMLCanvasElement>document.getElementById('zoomcanvas')) {
+      let tempWidth = this.container.nativeElement.attributes.width.value;
+      let tempHeight = this.container.nativeElement.attributes.height.value;
+      this.container.nativeElement.attributes.width.value = 800;
+      this.container.nativeElement.attributes.height.value = 1131;
+      document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
+      var svg = document.getElementById("cover");
+      var img = document.querySelector('img');
+      var canvas = <HTMLCanvasElement>document.getElementById('zoomcanvas'),
+        context = canvas.getContext("2d");
+      // get svg data
+      var xml = new XMLSerializer().serializeToString(svg);
 
-    document.getElementById("list").setAttribute("fill", "url(#smallGrid)");
-    document.getElementById("cover").setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    var svgData = document.getElementById("cover").outerHTML;
-    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
-    var svgBlob = new Blob([preface, svgData], { type: "image/svg+xml;charset=utf-8" });
-    var svgUrl = URL.createObjectURL(svgBlob);
+      // make it base64
+      var svg64 = btoa(unescape(encodeURIComponent(xml)))
+      var b64Start = 'data:image/svg+xml;base64,';
 
+      // prepend a "header"
+      var image64 = b64Start + svg64;
+      var newX = -1 * (x / 2) * 2 + 60;
+      var newY = -1 * (y / 2) * 2 + 60;
+      // set it as the source of the img element
+      img.src = image64;
 
-    var canvas = <HTMLCanvasElement>document.getElementById('zoomcanvas'),
-      context = canvas.getContext("2d");
+      img.onload = function () {
+        context.beginPath();
+        context.rect(0, 0, 120, 120);
+        context.fillStyle = "#427a8d";
+        context.fill();
+        context.drawImage(img, newX, newY);
+      };
 
-    var image = new Image;
-    image.src = svgUrl;
+      // draw the image onto the canv
 
-    var newX = -1 * x * 2 + 125;
-    var newY = -1 * y * 2 + 125;
-    image.onload = function () {
-      context.beginPath();
-      context.rect(0, 0, 250, 250);
-      context.fillStyle = "#427a8d";
-      context.fill();
-      context.drawImage(image, newX, newY);
-    };
-
-    document.getElementById("list").setAttribute("fill", "url(" + window.location.href + "#smallGrid)");
-    this.container.nativeElement.attributes.width.value = tempWidth;
-    this.container.nativeElement.attributes.height.value = tempHeight;
-  }
-
-  initUI(scale) {
-    if (this.container) {
-      var container = this.container.nativeElement;
-
-      this.zoom(scale);
-
-      interact('.drag-handler')
-        .draggable({
-          inertia: true,
-          autoScroll: true,
-          onstart: function (event) {
-          },
-          onmove: exDragListener.bind(this),
-          onend: function (event) {
-            this.isZooming = false;
-          }.bind(this)
-        });
-
-      interact('.drag-handler').on('down', function (event) {
-        this.isZooming = true;
-        console.log(event);
-        document.getElementById("cover").setAttribute("style", "touch-action: none !important; user-select: none !important;");
-        this.ref.detectChanges();
-        var lupax = 0;
-        var lupay = 0;
-        var docHeight = window.innerHeight || document.body.clientHeight;
-        var docWidth = window.innerWidth || document.body.clientWidth;
-        if (event.pageX > docWidth / 2) {
-          lupax = event.pageX - Number(document.getElementById('zoom-body').offsetWidth + 20);
-        } else {
-          lupax = event.pageX + 20;
-        }
-        if (event.pageY > docHeight / 2) {
-          lupay = event.pageY - Number(document.getElementById('zoom-body').offsetHeight + 20);
-        } else {
-          lupay = event.pageY + 20;
-        }
-        document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
-
-      }.bind(this));
-
-      interact('.drag-handler').on('up', function (event) {
-        this.isZooming = false;
-        document.getElementById("cover").setAttribute("style", "");
-        this.ref.detectChanges();
-
-      }.bind(this));
-
-
-      interact('.touch')
-        .draggable({
-          inertia: true,
-          autoScroll: true,
-          onstart: function (event) {
-          },
-          onmove: geoDragListener.bind(this),
-          onend: function (event) {
-          }
-        });
-
-      interact('#cover').on('down', function (event) {
-        if (this.modeType == "select") {
-          this.container.nativeElement.attributes.class.value = "touch";
-          this.tempSelection.type = "select";
-          this.tempSelection.sx = this.setSX(event.offsetX);
-          this.tempSelection.sy = this.setSY(event.offsetY);
-          this.tempSelection.dx = event.offsetX;
-          this.tempSelection.dy = event.offsetY;
-          this.tempSelection.x = this.setSX(event.offsetX);
-          this.tempSelection.y = this.setSY(event.offsetY);
-          this.tempSelection.width = 20;
-          this.tempSelection.height = 20;
-        }
-        this.ref.detectChanges();
-      }.bind(this));
-
-      interact('#cover').on('up', function (event) {
-        if (this.modeType == "select" && this.wasSelMoving) {
-          this.tempSelection = {
-            type: "none"
-          }
-          this.modeType = "";
-        }
-        this.container.nativeElement.attributes.class.value = "";
-        this.ref.detectChanges();
-      }.bind(this));
-    }
-
-    function exDragListener(event) {
-      var target = event.target
-
-      var cW = Number(container.attributes.width.value);
-      var cH = Number(container.attributes.height.value);
-      var cA = container.attributes.viewBox.value.split(' ');
-      var id = Number(target.getAttribute('data-lineid'));
-      var lupax = 0;
-      var lupay = 0;
-      var docHeight = window.innerHeight || document.body.clientHeight;
-      var docWidth = window.innerWidth || document.body.clientWidth;
-
-      if (event.page.x > docWidth / 2) {
-        lupax = event.page.x - Number(document.getElementById('zoom-body').offsetWidth + 20);
-      } else {
-        lupax = event.page.x + 20;
-      }
-      if (event.page.y > docHeight / 2) {
-        lupay = event.page.y - Number(document.getElementById('zoom-body').offsetHeight + 20);
-      } else {
-        lupay = event.page.y + 20;
-      }
-      document.getElementById("zoom-body").setAttribute("style", "top:" + lupay + "px !important; left:" + lupax + "px !important;");
-
-      this.lines[id].dx += Number(event.dx) * (cA[2] / cW);
-      this.lines[id].x = Math.ceil((this.lines[id].dx - 5) / 10) * 10;
-      this.lines[id].dy += Number(event.dy) * (cA[3] / cH);
-      this.lines[id].y = Math.ceil((this.lines[id].dy - 5) / 10) * 10;
-      this.lupa(this.lines[id].dx, this.lines[id].dy);
-      this.ref.detectChanges();
-    }
-
-    function geoDragListener(event) {
-      switch (this.modeType) {
-        case "select": {
-          if (this.tempSelection.type == "select") {
-            this.wasSelMoving = true;
-            this.tempSelection.dx += event.dx;
-            this.tempSelection.dy += event.dy;
-            if (this.setSX(this.tempSelection.dx) > this.tempSelection.sx) {
-              this.tempSelection.x = this.tempSelection.sx;
-              this.tempSelection.width = this.setSX(this.tempSelection.dx) - this.tempSelection.x;
-            } else {
-              this.tempSelection.x = this.setSX(this.tempSelection.dx);
-              this.tempSelection.width = this.tempSelection.sx - this.tempSelection.x;
-            }
-            if (this.setSY(this.tempSelection.dy) > this.tempSelection.sy) {
-              this.tempSelection.y = this.tempSelection.sy;
-              this.tempSelection.height = this.setSY(this.tempSelection.dy) - this.tempSelection.y;
-            } else {
-              this.tempSelection.y = this.setSY(this.tempSelection.dy);
-              this.tempSelection.height = this.tempSelection.sy - this.tempSelection.y;
-            }
-            for (var i = 0; i < this.geoElements.dots.length; i++) {
-              var dot = this.geo.dots[this.geoElements.dots[i]];
-              if (dot.x >= this.tempSelection.x && dot.x <= (this.tempSelection.x + this.tempSelection.width) && dot.y >= this.tempSelection.y && dot.y <= (this.tempSelection.y + this.tempSelection.height)) {
-                if (!this.geo.dots[this.geoElements.dots[i]].selected) {
-                  this.select(this.geoElements.dots[i], "dots");
-                }
-              }
-            }
-          }
-          break;
-        }
-        default: break;
-      }
-
-      this.ref.detectChanges();
+      document.getElementById("list").setAttribute("fill", "url(" + window.location.href + "#smallGrid)");
+      this.container.nativeElement.attributes.width.value = tempWidth;
+      this.container.nativeElement.attributes.height.value = tempHeight;
     }
   }
 

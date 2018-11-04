@@ -61,12 +61,19 @@
         font-size: 0px !important;
     }
 
+
+    #changeLineType {
+        left: 13.8vw;
+        bottom: 11vw;
+    }
+
+
     #zoom-body {
         width: 30vw;
         height: 30vw;
         top: 0;
         right: 0;
-        position: absolute;
+        position: fixed;
         z-index: 9999;
     }
 
@@ -89,12 +96,83 @@
     #cover {
         user-select: none !important;
     }
-</style>
 
+    #debug {
+        position: fixed;
+        z-index: 9999;
+        bottom: 1vw;
+        left: 1vw;
+    }
+
+    .dragDebug {
+        user-select: none;
+        touch-action: none;
+    }
+
+    .dragDot {
+        user-select: none;
+        touch-action: none;
+    }
+
+    .draggableField {
+        user-select: none;
+        touch-action: none;
+    }
+
+    .selectedLT {
+        background-color: #ed7e28;
+    }
+
+    #debug mat-card-content {
+        max-height: 150px;
+        height: 20vw;
+        min-height: 100px;
+        width: 200px;
+        overflow: auto;
+    }
+
+    #debug mat-card-actions {
+        display: flex;
+        flex-direction: row;
+        justify-content: stretch;
+        height: 30px;
+    }
+
+    #debug mat-card-actions button {
+        width: 100%;
+    }
+
+    .keyB {
+        width: 80%;
+        height: 80%;
+    }
+</style>
+<div id="zoom-body" *ngIf="isZooming">
+    <img id="zoom-img" style="display: none;">
+    <canvas class="zoom-content" id="zoomcanvas" width="120px" height="120px">
+        This text is displayed if your browser does not support HTML5 Canvas.
+    </canvas>
+    <div class="zoomed">
+
+    </div>
+</div>
 <div *ngIf="!loading" id="autoScroll">
-    <svg version="1.1" id="cover" (mousedown)="onMouseDown($event)" (mousemove)="onMouseMove($event)" (mouseup)="onMouseUp($event)"
-        #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class="" [attr.width]="0.9 * vw" [attr.height]="0.9 * 1.41375 * vw"
-        viewBox="0 0 800 1131">
+    <mat-card id="debug" *ngIf="absUrl.indexOf('dev') != -1 || absUrl.indexOf('local') != -1 || absUrl.indexOf('192') != -1">
+        <mat-card-title class="dragDebug">
+            Debug
+        </mat-card-title>
+        <mat-card-subtitle class="dragDebug">
+            Only on dev (drag me)
+        </mat-card-subtitle>
+        <mat-card-content>
+            <p *ngFor="let msg of debug.msg">{{msg}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-flat-button (click)="clearDeb()" color="primary">Clear</button>
+        </mat-card-actions>
+    </mat-card>
+    <svg version="1.1" id="cover" #container baseProfile="full" xmlns="http://www.w3.org/2000/svg" class=""
+        [attr.width]="0.9 * vw" [attr.height]="0.9 * 1.41375 * vw" viewBox="0 0 800 1131">
         <defs>
             <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
                 <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#69b0b7" id="cell" stroke-width="0.5" />
@@ -107,6 +185,9 @@
                 <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
             </filter>
         </defs>
+
+
+
         <rect width="100%" height="100%" fill="#fff" />
         <svg:rect #list id="list" [class.sResizeCursor]="isResizing == 2" [class.wResizeCursor]="isResizing == 1"
             [class.geoCursor]="mode == 'geo' && modeType != 'select'" [class.selectCursor]="modeType == 'select'"
@@ -125,11 +206,11 @@
             font-family="scwlsWorkspace" [attr.font-size]="16 * selection.fdc">&#xe911;</text>
 
 
-        <line *ngIf="tempLine.type == 'line' && wasMoving" [attr.x1]="tempLine.x1" [attr.y1]="tempLine.y1" [attr.x2]="tempLine.x2"
-            [attr.y2]="tempLine.y2" stroke="black" />
+        <line *ngIf="tempLine.type == 'line' && isDragging" [attr.x1]="tempLine.x1" [attr.y1]="tempLine.y1" [attr.x2]="tempLine.x2"
+            [attr.stroke-dasharray]="lineType" [attr.y2]="tempLine.y2" stroke="black" />
 
-        <circle *ngIf="tempLine.type == 'circle' && wasMoving" [attr.cx]="tempLine.cx" [attr.cy]="tempLine.cy" [attr.r]="tempLine.r"
-            [attr.stroke-width]="1" stroke="black" fill="none"></circle>
+        <circle *ngIf="tempLine.type == 'circle' && isDragging" [attr.cx]="tempLine.cx" [attr.cy]="tempLine.cy"
+            [attr.r]="tempLine.r" [attr.stroke-width]="1" [attr.stroke-dasharray]="lineType" stroke="black" fill="none"></circle>
 
         <svg:g *ngFor="let line of elements.lines; let i = index;">
             <g [innerHTML]="getExpression(lines[line]) | safeHTML"></g>
@@ -138,28 +219,28 @@
         <svg:g *ngFor="let el of geoElements.circles; let i = index;">
             <circle [attr.data-id]="el" data-type="circle" *ngIf="geo.circles[el].type == 'circle'" [attr.cx]="geo.dots[geo.circles[el].cDot].x"
                 [attr.cy]="geo.dots[geo.circles[el].cDot].y" [attr.r]="geo.circles[el].r" [attr.stroke-width]="geo.circles[el].strokeW"
-                stroke="black" fill="none"></circle>
+                [attr.stroke-dasharray]="geo.dots[geo.circles[el].cDot].lineType" stroke="black" fill="none"></circle>
 
             <circle [attr.data-id]="el" style="cursor: w-resize;" data-type="radius" data-dType="w" data-direction="1"
-                class="svgDraggable touch" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x + geo.circles[el].r"
+                class="dragDot" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x + geo.circles[el].r"
                 [attr.cy]="geo.dots[geo.circles[el].cDot].y" [attr.r]="5" [attr.stroke-width]="1" stroke="black" fill="#ed7e28"></circle>
             <circle [attr.data-id]="el" style="cursor: s-resize;" data-type="radius" data-dType="s" data-direction="1"
-                class="svgDraggable touch" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x"
+                class="dragDot" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x"
                 [attr.cy]="geo.dots[geo.circles[el].cDot].y + geo.circles[el].r" [attr.r]="5" [attr.stroke-width]="1"
                 stroke="black" fill="#ed7e28"></circle>
 
             <circle [attr.data-id]="el" style="cursor: w-resize;" data-type="radius" data-dType="w" data-direction="-1"
-                class="svgDraggable touch" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x - geo.circles[el].r"
+                class="dragDot" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x - geo.circles[el].r"
                 [attr.cy]="geo.dots[geo.circles[el].cDot].y" [attr.r]="5" [attr.stroke-width]="1" stroke="black" fill="#ed7e28"></circle>
             <circle [attr.data-id]="el" style="cursor: s-resize;" data-type="radius" data-dType="s" data-direction="-1"
-                class="svgDraggable touch" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x"
+                class="dragDot" *ngIf="geo.dots[geo.circles[el].cDot].selected" [attr.cx]="geo.dots[geo.circles[el].cDot].x"
                 [attr.cy]="geo.dots[geo.circles[el].cDot].y - geo.circles[el].r" [attr.r]="5" [attr.stroke-width]="1"
                 stroke="black" fill="#ed7e28"></circle>
         </svg:g>
 
         <svg:g *ngFor="let el of geoElements.lines; let i = index;">
             <line [attr.x1]="geo.dots[geo.lines[el].sDot].x" [attr.y1]="geo.dots[geo.lines[el].sDot].y" [attr.x2]="geo.dots[geo.lines[el].eDot].x"
-                [attr.y2]="geo.dots[geo.lines[el].eDot].y" stroke="black" />
+                [attr.y2]="geo.dots[geo.lines[el].eDot].y" [attr.stroke-dasharray]="geo.lines[el].lineType" stroke="black" />
         </svg:g>
 
         <svg:g *ngFor="let el of geoElements.dots; let i = index;">
@@ -171,16 +252,20 @@
                         font-size="7">{{geo.dots[el].gen}}</tspan>
                 </tspan>
             </text>
-            <circle [attr.data-id]="el" class="dot" data-type="dot" [class.primaryFill]="lastDraw.fDot == el" [ngClass]="{ 'svgDraggable touch primaryFill' : geo.dots[el].selected }"
+            <circle [attr.data-id]="el" class="dot" data-type="dot" [class.primaryFill]="lastDraw.fDot == el" [ngClass]="{ 'dragDot primaryFill' : geo.dots[el].selected }"
                 (click)="select(el, 'dots')" *ngIf="geo.dots[el].type == 'dot'" [attr.cx]="geo.dots[el].x" [attr.cy]="geo.dots[el].y"
-                [attr.r]="geo.dots[el].r" [attr.stroke-width]="1" stroke="black" fill="gray"></circle>
+                [attr.r]="geo.dots[el].r" [attr.stroke-width]="1" [attr.stroke-dasharray]="geo.dots[el].lineType / 2"
+                stroke="black" fill="gray"></circle>
         </svg:g>
 
-        <svg:g *ngIf="tempDot.type == 'dot' && wasMoving">
+        <svg:g *ngIf="tempDot.type == 'dot' && isDragging">
             <text [attr.filter]="'url(' + absUrl + '#f1)'" [attr.x]="tempDot.x - 3" [attr.y]="tempDot.y - 9"
                 [attr.font-size]="10">{{tempDot.name}}<tspan *ngIf="tempDot.gen" [attr.y]="tempDot.y - 7" font-size="7">{{tempDot.gen}}</tspan></text>
+            <text [attr.x]="tempDot.x - 3" [attr.y]="tempDot.y - 9" [attr.font-size]="10">{{tempDot.name}}<tspan *ngIf="tempDot.gen"
+                    [attr.y]="tempDot.y - 7" font-size="7">{{tempDot.gen}}</tspan></text>
             <circle (click)="setCursor($event, 'dot', 0);" style="cursor: crosshair;" [attr.cx]="tempDot.x" [attr.cy]="tempDot.y"
-                [attr.r]="tempDot.r" [attr.stroke-width]="1" stroke="black" [attr.fill]="tempDot.fill"></circle>
+                [attr.r]="tempDot.r" [attr.stroke-width]="1" stroke="black" [attr.fill]="tempDot.fill"
+                [attr.stroke-dasharray]="lineType / 2"></circle>
         </svg:g>
 
         <rect *ngIf="tempSelection.type != 'none'" [attr.x]="tempSelection.x" [attr.y]="tempSelection.y" [attr.width]="tempSelection.width"
@@ -188,18 +273,9 @@
 
     </svg>
 
-    <div id="zoom-body" *ngIf="isZooming">
-        <canvas class="zoom-content" id="zoomcanvas" width="250px" height="250px">
-            This text is displayed if your browser does not support HTML5 Canvas.
-        </canvas>
-        <div class="zoomed">
-
-        </div>
-    </div>
 
 
-
-    <mat-card id="fullscreen" class="ui squareSingle draggable touch" *ngIf="this.brows().name !='Safari'">
+    <mat-card id="fullscreen" class="ui squareSingle" *ngIf="this.brows().name !='Safari'">
         <button mat-fab color="accent" class="fullscreen" *ngIf="!isFullscreen" (click)="isFullscreen = true;" onclick="editor_fullscreen()">
             <mat-icon>fullscreen</mat-icon>
         </button>
@@ -209,24 +285,24 @@
         </button>
     </mat-card>
 
-    <mat-card class="ui squareSingle zIn draggable touch">
+    <mat-card class="ui squareSingle zIn">
         <button mat-fab color="accent" (click)="zoom('1.15')">
             <mat-icon>zoom_in</mat-icon>
         </button>
     </mat-card>
-    <mat-card class="ui squareSingle zOut draggable touch">
+    <mat-card class="ui squareSingle zOut">
         <button mat-fab color="accent" (click)="zoom(0.85)">
             <mat-icon>zoom_out</mat-icon>
         </button>
     </mat-card>
 
-    <mat-card class="ui squareSingle exitToApp draggable touch">
+    <mat-card class="ui squareSingle exitToApp">
         <button mat-fab color="accent" (click)="exit()" md-fab>
             <mat-icon>exit_to_app</mat-icon>
         </button>
     </mat-card>
 
-    <mat-card class="ui squareSingle download draggable touch">
+    <mat-card class="ui squareSingle download">
         <button mat-fab color="accent" (click)="saveAsSvg();" md-fab>
             <mat-icon>file_download</mat-icon>
         </button>
@@ -352,17 +428,17 @@
     <mat-card #advOperators id="advOperators" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-stroked-button (click)="write(null, 'br');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/brackets.svg">
+                <button mat-stroked-button (click)="write(null, 'br');" style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/brackets.svg">
                 </button>
-                <button mat-stroked-button (click)="write(null, 'fr');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/fraction.svg">
+                <button mat-stroked-button (click)="write(null, 'fr');" style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/fraction.svg">
                 </button>
-                <button mat-stroked-button (click)="write(null, 'pw');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/power.svg">
+                <button mat-stroked-button (click)="write(null, 'pw');" style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/power.svg">
                 </button>
-                <button mat-stroked-button (click)="write(null, 'rt');" style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/root.svg">
+                <button mat-stroked-button (click)="write(null, 'rt');" style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/root.svg">
                 </button>
             </div>
         </div>
@@ -372,36 +448,50 @@
         <div class="flex-column">
             <div class="flex-row">
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'select'" (click)="switchModeType('select');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/select.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/select.svg">
                 </button>
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'dot'" (click)="switchModeType('dot');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/dot.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/dot.svg">
                 </button>
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'line'" (click)="switchModeType('line');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/line.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/line.svg">
                 </button>
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'multiline'" (click)="switchModeType('multiline');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/multiline.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/multiline.svg">
                 </button>
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'circle'" (click)="switchModeType('circle');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/circle.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/circle.svg">
                 </button>
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'rectangle'" (click)="switchModeType('');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/rectangle.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/rectangle.svg">
                 </button>
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'triangle'" (click)="switchModeType('');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/triangle.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/triangle.svg">
                 </button>
                 <button mat-stroked-button [class.selectedGeoTool]="modeType == 'letters'" (click)="switchModeType('letters');"
-                    style="min-height: 6vw !important; min-width: 6vw !important; padding: 1vw !important;">
-                    <img src="../../../../assets/img/keys/letters.svg">
+                    style="min-height: 6vw !important; max-width: 8vw !important; padding: 1vw !important;">
+                    <img class="keyB" src="../../../../assets/img/keys/letters.svg">
+                </button>
+            </div>
+        </div>
+    </mat-card>
+
+
+    <mat-card #addRisk id="changeLineType" class="ui keyboard" *ngIf="mode === 'geo' && modeType != 'select' && modeType != ''">
+        <div class="flex-column">
+            <div class="flex-row" style="flex-wrap: wrap; justify-content: flex=start;">
+                <button [class.selectedLT]="lineType == 0" mat-flat-button (click)="switchLineType(0);" style="margin: 0.1vw; display: flex; font-size: 2vw; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important; display: flex; justify-content: center; align-items: center;">
+                    <img class="keyB" src="../../../../assets/img/keys/solid.svg">
+                </button>
+                <button [class.selectedLT]="lineType == 4" mat-flat-button (click)="switchLineType(4);" style="margin: 0.1vw; display: flex; font-size: 2vw; font-weight: bold; font-family: 'Times New Roman', Times, serif; height: 4vw !important; min-width: 4vw !important; max-width: 4vw !important; padding: 0px !important; display: flex; justify-content: center; align-items: center;">
+                    <img class="keyB" src="../../../../assets/img/keys/dashed.svg">
                 </button>
             </div>
         </div>
