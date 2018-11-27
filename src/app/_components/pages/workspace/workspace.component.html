@@ -28,6 +28,11 @@
         user-select: none !important;
     }
 
+    /deep/ circle {
+        touch-action: none !important;
+        user-select: none !important;
+    }
+
     /deep/ .arrow {
         fill: none;
         stroke: #000000;
@@ -388,13 +393,13 @@
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-stroked-button (click)="write('.', 'di');">
+                <button mat-stroked-button style="font-size: 4vw !important;" (click)="write('.', 'di');">
                     <span>.</span>
                 </button>
                 <button mat-stroked-button (click)="write(0, 'di');">
                     <span class="i-font i-zero"></span>
                 </button>
-                <button mat-stroked-button (click)="write(',', 'di');">
+                <button mat-stroked-button style="font-size: 4vw !important;" (click)="write(',', 'di');">
                     <span>,</span>
                 </button>
             </div>
@@ -404,18 +409,36 @@
     <mat-card #operators id="operators" class="ui keyboard" *ngIf="mode === 'math'">
         <div class="flex-column">
             <div class="flex-row">
-                <button mat-stroked-button (click)="write('×', 'op');">
+                <button mat-stroked-button style="font-size: 4vw;min-width: 4vw !important;" (click)="write('a', 'di');">
+                    <span>a</span>
+                </button>
+                <button mat-stroked-button style="font-size: 4vw;min-width: 4vw !important;" (click)="write('b', 'di');">
+                    <span>b</span>
+                </button>
+                <button mat-stroked-button style="font-size: 4vw;min-width: 4vw !important;" (click)="write('c', 'di');">
+                    <span>c</span>
+                </button>
+                <button mat-stroked-button style="min-width: 5vw !important;" (click)="write('×', 'op');">
                     <span class="i-font i-mult"></span>
                 </button>
-                <button mat-stroked-button (click)="write('/', 'op');">
+                <button mat-stroked-button style="min-width: 5vw !important;" (click)="write('/', 'op');">
                     <span class="i-font i-divide"></span>
                 </button>
             </div>
             <div class="flex-row">
-                <button mat-stroked-button (click)="write('+', 'op');">
+                <button mat-stroked-button style="font-size: 4vw;min-width: 4vw !important;" (click)="write('x', 'di');">
+                    <span>x</span>
+                </button>
+                <button mat-stroked-button style="font-size: 4vw;min-width: 4vw !important;" (click)="write('y', 'di');">
+                    <span>y</span>
+                </button>
+                <button mat-stroked-button style="font-size: 4vw;min-width: 4vw !important;" (click)="write('z', 'di');">
+                    <span>z</span>
+                </button>
+                <button mat-stroked-button style="min-width: 5vw !important;" (click)="write('+', 'op');">
                     <span class="i-font i-plus"></span>
                 </button>
-                <button mat-stroked-button (click)="write('-', 'op');">
+                <button mat-stroked-button style="min-width: 5vw !important;" (click)="write('-', 'op');">
                     <span class="i-font i-minus"></span>
                 </button>
             </div>

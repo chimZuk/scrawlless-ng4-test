@@ -511,6 +511,22 @@ export class WorkspaceComponent implements OnInit {
         return "&#xe90d;";
       case "=":
         return "&#xe90e;";
+      case ".":
+        return ".";
+      case ",":
+        return ",";
+      case "a":
+        return "a";
+      case "b":
+        return "b";
+      case "c":
+        return "c";
+      case "x":
+        return "x";
+      case "y":
+        return "y";
+      case "z":
+        return "z";
       default:
         break;
     }
@@ -1120,9 +1136,9 @@ export class WorkspaceComponent implements OnInit {
 
 
           lastDI.di.s += 0.73;
-          lastDI.di.value = Number(String(lastDI.di.value) + String(val));
+          lastDI.di.value = String(lastDI.di.value) + String(val);
           lastDI.di.text += this.getCharacter(val);
-
+          console.log(lastDI.di.value);
 
           //region Addition to History
           hist.diForRedo = Object.assign({}, this.lines[line].di[lastDI.id]);
@@ -2106,6 +2122,18 @@ export class WorkspaceComponent implements OnInit {
     return n * (cA[3] / cH);
   }
 
+  resetSX(n) {
+    var cW = Number(this.container.nativeElement.attributes.width.value);
+    var cA = this.container.nativeElement.attributes.viewBox.value.split(' ');
+    return n / (cA[2] / cW);
+  }
+
+  resetSY(n) {
+    var cH = Number(this.container.nativeElement.attributes.height.value);
+    var cA = this.container.nativeElement.attributes.viewBox.value.split(' ');
+    return n / (cA[3] / cH);
+  }
+
   zoom(scale) {
     this.container.nativeElement.attributes.width.value *= scale;
     this.container.nativeElement.attributes.height.value *= scale;
@@ -2344,14 +2372,31 @@ export class WorkspaceComponent implements OnInit {
         });
 
       interact('#cover').on('down', function (event) {
+        console.log(event);
         if (this.modeType != "") {
           this.deb("DOWN WITH TOUCH");
           this.container.nativeElement.attributes.class.value = "touch";
           this.ref.detectChanges();
           var target = event.target || event.srcElement,
             rect = target.getBoundingClientRect(),
-            offsetX = event.clientX - rect.left,
+            offsetX, offsetY;
+
+
+          if (event.path[0].nodeName == "rect") {
+            offsetX = event.clientX - rect.left;
             offsetY = event.clientY - rect.top;
+            this.deb(offsetX + " offX; " + offsetY + " offY;")
+          } else {
+            if (event.path[0].nodeName == "circle") {
+              offsetX = this.resetSX(Number(this.geo.dots[event.path[0].getAttribute("data-id")].x));
+              offsetY = this.resetSY(Number(this.geo.dots[event.path[0].getAttribute("data-id")].y));
+              this.deb(offsetX + " ofX; " + offsetY + " ofY;")
+            } else {
+              offsetX = -1;
+              offsetY = -1;
+            }
+          }
+
 
           if (this.modeType != "" && this.modeType != "select") {
             this.isZooming = true;
@@ -2677,6 +2722,10 @@ export class WorkspaceComponent implements OnInit {
           break;
         }
         case "dot": {
+          if (this.tempDot.dx < 0) {
+            this.tempDot.dx = event.x0;
+            this.tempDot.dy = event.y0;
+          }
           this.tempDot.type = "dot";
           this.tempDot.dx += event.dx;
           this.tempDot.dy += event.dy;
@@ -2695,6 +2744,10 @@ export class WorkspaceComponent implements OnInit {
           break;
         }
         case "line": {
+          if (this.tempDot.dx < 0) {
+            this.tempDot.dx = event.x0;
+            this.tempDot.dy = event.y0;
+          }
           if (this.lastDraw.type == "none") {
             this.tempDot.type = "dot";
             this.tempDot.dx += event.dx;
@@ -2723,6 +2776,10 @@ export class WorkspaceComponent implements OnInit {
           break;
         }
         case "multiline": {
+          if (this.tempDot.dx < 0) {
+            this.tempDot.dx = event.x0;
+            this.tempDot.dy = event.y0;
+          }
           if (this.lastDraw.type == "none") {
             this.tempDot.type = "dot";
             this.tempDot.dx += event.dx;
@@ -2751,6 +2808,10 @@ export class WorkspaceComponent implements OnInit {
           break;
         }
         case "circle": {
+          if (this.tempDot.dx < 0) {
+            this.tempDot.dx = event.x0;
+            this.tempDot.dy = event.y0;
+          }
           if (this.lastDraw.type == "none") {
             this.tempDot.type = "dot";
             this.tempDot.dx += event.dx;
@@ -2782,6 +2843,10 @@ export class WorkspaceComponent implements OnInit {
           break;
         }
         case "letters": {
+          if (this.tempDot.dx < 0) {
+            this.tempDot.dx = event.x0;
+            this.tempDot.dy = event.y0;
+          }
           this.tempDot.type = "dot";
           this.tempDot.dx += event.dx;
           this.tempDot.dy += event.dy;
